@@ -12,6 +12,7 @@ App({
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
       }
     })
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -34,6 +35,10 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    appID: "wx663f60640393fd1e",
+    appSecure: "60b630f2c9a13f0af355390ad3fc481c",
+    openID: null,
+    session_key: null
   }
 })

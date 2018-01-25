@@ -1,3 +1,42 @@
-<view>
+<view id='bg'>
+  <!-- 标题和LOGO  -->
+  <image id='logo' src='./占位图.png' mode='widthFix'></image>
+  <text id='name'>海潮之家</text>
 
+  <!-- 操作区域  -->
+  <view id='opera_area'>
+    
+    <!--  错误提示，内容及显示开关在js文件中  -->
+    <text id='warning' 
+      style='visibility: {{warning_switch ? "" : "hidden"}};'>{{warning_content}}</text>
+
+    <!--  输入区域  -->
+    <view class='input_part'>
+      <text class='input_title' >安全码</text>
+      <input class='input_box' id='secure_code' 
+        type='text' 
+        confirm-type='next'
+        maxlength='10'
+        placeholder='请输入安全码'
+        bindconfirm='nextClick'
+        bindinput='SecureCodeInput' />
+    </view>
+
+    <view id="split_line"></view>
+    
+    <view class='input_part'>
+      <text class='input_title'>验证码</text>
+      <input class='input_box' id='auth'
+        type='text'
+        maxlength='4'
+        placeholder='请输入验证码'
+        focus='{{authFocus}}'
+        bindconfirm='register'
+        bindinput='AuthCodeInput' />
+      <image id='auth_img' src='{{auth_img_src}}' mode='widthFix' bindtouchend='renewAuthimg' />
+    </view>
+
+    <!--  注册按钮  -->
+    <button id='button' hover-class='clicking' bindtouchend='register'>{{button_name}}</button>
+  </view>
 </view>

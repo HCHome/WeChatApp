@@ -1,1 +1,84 @@
 /* pages/home/home.wxss */
+#bg {
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+  align-items: center;
+}
+
+#logo {
+  display: flex;
+  width: 325rpx;
+}
+
+#name {
+  font-family: '华文新魏';
+  font-size: 100rpx;
+  margin: 50rpx 0 50rpx 0;
+}
+
+#opera_area {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#warning {
+  margin: 20rpx 0;
+  text-align: center;
+  color: red;
+  font-size: 35rpx;
+}
+
+.input_part {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20rpx 0;
+  font-size: 40rpx;
+  align-items: center;
+}
+
+#split_line {
+  width: 650rpx;
+  height: 1px;
+  background-color: gray;
+}
+
+.input_title {
+  width: 120rpx;
+  height: 40rpx;
+    display: flex;
+    align-items: center;
+}
+
+.input_box {
+  margin: 0 15rpx;
+  height: 40rpx;
+  align-content: center;
+}
+
+#secure_code {
+  width: 420rpx;
+}
+
+#auth {
+  width: 300rpx;
+}
+
+#auth_img {
+  width: 120rpx;
+}
+
+#button {
+  margin-top: 40rpx;
+  width: 300rpx;
+  background: #08A406;
+  color: white;
+}
+
+.click {
+  background: #179A16;
+  color: black;
+}
