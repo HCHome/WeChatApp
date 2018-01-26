@@ -69,6 +69,7 @@
 
 #auth_img {
   width: 120rpx;
+  height: 40rpx;
 }
 
 #button {
