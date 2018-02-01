@@ -1,0 +1,41 @@
+/* Component/post.wxss */
+
+.post {
+    display: flex;
+    flex-direction: column;
+}
+
+.post_info {
+    display: flex;
+    flex-direction: row;
+}
+
+.post_avatar {
+    width: 100rpx;
+    height: 100rpx;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    margin: 10rpx;
+}
+
+.post_info_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.post_category_time {
+    font-size: 25rpx;
+}
+
+.post_image {
+    display: flex;
+    flex-direction: row;
+}
+
+.post_img {
+    display: inline-block;
+    width: 100rpx;
+    height: 100rpx;
+    margin: 10rpx;
+}

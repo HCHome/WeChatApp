@@ -1,85 +1,129 @@
 /* pages/home/home.wxss */
-#bg {
-  display: flex;
-  flex-direction: column;
-  justify-content:center;
-  align-items: center;
+
+page {
+    display: flex;
+    flex-direction: column;
 }
 
-#logo {
-  display: flex;
-  width: 325rpx;
+/*搜索框  */
+
+#search_part {
+    display: flex;
+    flex-direction: row;
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #eee;
+    padding: 5rpx 30rpx;
 }
 
-#name {
-  font-family: '华文新魏';
-  font-size: 100rpx;
-  margin: 50rpx 0 50rpx 0;
-}
-
-#opera_area {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#warning {
-  margin: 20rpx 0;
-  text-align: center;
-  color: red;
-  font-size: 35rpx;
-}
-
-.input_part {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin: 20rpx 0;
-  font-size: 40rpx;
-  align-items: center;
-}
-
-#split_line {
-  width: 650rpx;
-  height: 1px;
-  background-color: gray;
-}
-
-.input_title {
-  width: 120rpx;
-  height: 40rpx;
+#search_box {
+    width: 600rpx;
+    height: 60rpx;
+    border: 1px solid #ccc;
+    border-radius: 30rpx;
+    margin-right: 30rpx;
+    padding: 0 30rpx;
+    font-size: 40rpx;
     display: flex;
     align-items: center;
 }
 
-.input_box {
-  margin: 0 15rpx;
-  height: 40rpx;
-  align-content: center;
+#search_button {
+    width: 60rpx;
+    height: 60rpx;
+    border: 0px;
+    border-radius: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-color: transparent;
 }
 
-#secure_code {
-  width: 420rpx;
+/* 下拉刷新  */
+
+#pullRefresh {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 60rpx;
 }
 
-#auth {
-  width: 300rpx;
+#refreshTip {
+    font-size: 30rpx;
 }
 
-#auth_img {
-  width: 120rpx;
-  height: 40rpx;
+/*分区  */
+
+#category_part {
+    white-space: nowrap;
+    border-bottom: 1px solid #ccc;
+    padding: 10rpx 0;
 }
 
-#button {
-  margin-top: 40rpx;
-  width: 300rpx;
-  background: #08A406;
-  color: white;
+.category {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200rpx;
+    height: 200rpx;
 }
 
-.click {
-  background: #179A16;
-  color: black;
+.category_img {
+    width: 150rpx;
+    height: 150rpx;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+}
+
+.category_name {
+    font-size: 40rpx;
+    width: 150rpx;
+    text-align: center;
+}
+
+/*公告和帖子  */
+
+#notice {
+    padding: 10rpx;
+    border-bottom: 1px solid #ccc;
+}
+
+#post_list {
+    padding: 10rpx;
+}
+
+.part_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: red;
+}
+
+.part_titleName {
+    font-size: 40rpx;
+    margin-right: 100rpx;
+}
+
+.part_title_tip {
+    float: right;
+    font-size: 30rpx;
+}
+
+/* 底部按钮  */
+
+#menu {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 70rpx;
+    border-top: 1px #ccc solid;
+}
+
+.bottom_button {
+    display: inline-block;
+    width: 20%;
+    height: 70rpx;
+    background-size: 50rpx;
+    background-repeat: no-repeat;
+    background-position: 50rpx 10rpx;
+    background-color: transparent;
 }

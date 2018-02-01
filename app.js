@@ -1,13 +1,16 @@
 //app.js
+
 App({
-  globalData: {
-    userInfo: null,
-    js_code: null,
-    session_key: null,
-    url_hc: "http://cjtellyou.xyz/HCHomeServer"
-  },
-  data: {
-    wxlogin_count: 0
-  },
-  onLaunch: function () {}         
+    globalData: {
+        applyDate: null,
+        url_hc: "https://cjtellyou.xyz/HCHomeServer"
+    },
+    onLaunch: function () { 
+
+    },
+    onHide: function () {
+        var loginManager = require('..//utils/loginManager.js');
+        loginManager.hc_logout();
+    }
+
 })

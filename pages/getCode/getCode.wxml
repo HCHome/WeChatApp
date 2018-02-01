@@ -1,0 +1,20 @@
+<!-- 获取安全码/留言 -->
+<view id='frame'>
+  <text id='title'>请填写以下信息并提交</text>
+  <form id='form'>
+    <view class='input_view'>
+      <text class='input_tip' id='time'>入会年份</text>
+      <picker class='input_area' id='term_picker' mode='selector' range='{{yearArray}}' value="{{index}}" bindchange='picker_change'>
+        <text class='input_show'>{{yearArray[index]}}</text>
+      </picker>
+      <text class='input_tip'>姓名</text>
+      <view class='input_area'>
+        <input class='input_show' bindinput='name_input' maxlength='4'></input>
+      </view>
+    </view>
+    <text id='msg'>留言</text>
+    <textarea id='msg_input' maxlength='100' bindinput='msg_input' placeholder='请输入其他可以证明您潮友身份的信息'></textarea>
+    <view id='tip'>还可以输入{{100 - msg_length}}字</view>
+    <button id='confirm' bindtap='confirm'>提交</button>
+  </form>
+</view>

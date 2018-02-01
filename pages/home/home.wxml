@@ -1,44 +1,41 @@
-<view id='bg'>
-  <!-- 标题和LOGO  -->
-  <image id='logo' src='../resource/占位图.png' mode='widthFix'></image>
-  <text id='name'>海潮之家</text>
+<!--pages/home/home.wxml-->
 
-  <!-- 操作区域  -->
-  <view id='opera_area'>
-    
-    <!--  错误提示，内容及显示开关在js文件中  -->
-    <text id='warning' 
-      style='visibility: {{warning_switch ? "" : "hidden"}};'>{{warning_content}}</text>
-
-    <!--  输入区域  -->
-    <view class='input_part' style='visibility: {{show_input ? "" : "hidden"}}'>
-      <text class='input_title' >安全码</text>
-      <input class='input_box' id='secure_code' 
-        type='text' 
-        confirm-type='next'
-        maxlength='10'
-        placeholder='请输入安全码'
-        bindconfirm='nextClick'
-        bindinput='SecureCodeInput' />
+<view id='search_part'>
+    <view id='search_box'>
+        <input id='search_input' bindinput='search_input'></input>
     </view>
-
-    <view id="split_line" style='visibility: {{show_input ? "" : "hidden"}}'></view>
-    
-    <view class='input_part' style='visibility: {{show_input ? "" : "hidden"}}'>
-      <text class='input_title'>验证码</text>
-      <input class='input_box' id='auth'
-        type='text'
-        maxlength='4'
-        placeholder='请输入验证码'
-        focus='{{authFocus}}'
-        bindconfirm='register'
-        bindinput='AuthCodeInput' />
-      <image id='auth_img' src='{{auth_img_src}}' mode='scaleToFill' bindtouchend='renewAuthimg' />
+    <image id='search_button' src='../resource/search.png' bindtap='search_click'></image>
+</view>
+<!-- 中间的区域大小 = 总高 - 上下各70rpx - 上下边框  -->
+<scroll-view scroll-y style='height: calc(100vh - 140rpx - 5px);' scroll-into-view='category_part' scroll-top='{{scrollTop}}' bindscrolltoupper='onTop' bindscroll='onScroll' bindtouchend='onTouchEnd' enable-back-to-top >
+    <view id='pullRefresh'>
+        <text id='refreshTip'>{{refreshTip}}</text>
     </view>
-
-    <!--  注册按钮  -->
-    <button id='button' hover-class='clicking' 
-      bindtouchend='buttonClick'
-      style='display:{{button_show ? "" : "none"}}'>{{button_name}}</button>
-  </view>
+    <scroll-view id='category_part' scroll-x='true'>
+        <view class='category' wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
+            <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
+            <text class='category_name'>{{item.name}}</text>
+        </view>
+    </scroll-view>
+    <view id='notice'>
+        <view class='part_title'>
+            <view class='part_titleName'>公告栏</view>
+            <view class='part_title_tip' style='{{hasNotice ? "display: none;" : ""}}'>暂无新公告</view>
+        </view>
+        <post-view style='{{hasNotice ? "" : "display: none;"}}' post='{{notice}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+    </view>
+    <view id='post_list'>
+        <view class='part_title'>
+            <view class='part_titleName'>最新</view>
+        </view>
+        <post-view wx:for='{{posts}}' wx:key='id' post='{{item}}' id='{{item.id}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+    </view>
+</scroll-view>
+<!-- 底部按钮区 emmm 本地背景图片不能在wxss里获取  -->
+<view id='menu'>
+    <view class='bottom_button' style='background-image: url(../resource/home.png)' id='home' bindtap='bottom_button'></view>
+    <view class='bottom_button' style='background-image: url(../resource/sign.png)' id='sign' bindtap='bottom_button'></view>
+    <view class='bottom_button' style='background-image: url(../resource/new_post.png)' id='new_post' bindtap='bottom_button'></view>
+    <view class='bottom_button' style='background-image: url(../resource/rank.png)' id='rank' bindtap='bottom_button'></view>
+    <view class='bottom_button' style='background-image: url(../resource/person.png)' id='person' bindtap='bottom_button'></view>
 </view>

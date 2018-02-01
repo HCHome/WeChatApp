@@ -1,0 +1,2 @@
+<!--pages/test/test.wxml-->
+<post-view post='{{post}}' bind:AvatarTap='avatar' bind:Tap='onTap' />

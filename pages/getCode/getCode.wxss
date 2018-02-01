@@ -1,0 +1,72 @@
+#frame {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#title {
+    font-size: 35rpx;
+    margin: 20rpx 0 50rpx 0;
+}
+
+#form {
+    font-size: 35rpx;
+    width: 750rpx;
+}
+
+.input_view {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30rpx;
+}
+
+.input_tip {
+    width: 70rpx;
+    height: 50rpx;
+    margin-right: 20rpx;
+}
+
+#time {
+    width: 140rpx;
+}
+
+.input_area {
+    width: 170rpx;
+    height: 50rpx;
+    border-bottom: solid 1px gray;
+    text-align: center;
+    padding: 0;
+}
+
+#term_picker {
+    margin-right: 60rpx;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+#msg {
+    margin: 20rpx 50rpx;
+}
+
+#msg_input {
+    width: 650rpx;
+    margin: 20rpx 50rpx;
+    border: 1px solid gray;
+}
+
+#tip {
+    font-size: 30rpx;
+    color: #ddd;
+    text-align: right;
+    margin-right: 50rpx;
+}
+
+#confirm {
+    margin-top: 20rpx;
+    width: 650rpx;
+    background-color: #08a406;
+    color: white;
+}

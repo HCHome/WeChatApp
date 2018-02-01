@@ -1,245 +1,215 @@
 // pages/home/home.js
-const app = getApp()
+const app = getApp();
+const loginManager = require('../../utils/loginManager.js');
+const unitConvert = require('../../utils/unitConvert.js');
+
 Page({
-  /**
-   * 页面的初始数据
-   */
-  data: {
-    button_name: '登录',
-    button_show: true,
-    warning_switch: false,
-    warning_content: "warning",
-    auth_img_src: 'https://www.baidu.com/img/baidu_jgylogo3.gif',
-    inputSecureCode: null,
-    inputAuth: null,
-    show_input: false,
-    authFocus: false,
-    auth_img_code: null,
-    emmCode: null,
-    wxlogin_count: 0
-  },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    this.wx_login();
-  },
+    /**
+     * 页面的初始数据
+     */
+    data: {
+        // 基础数据
+        categoryItems: [
+            { name: '实习就业', img: '../resource/占位图.png' },
+            { name: '海潮日常', img: '../resource/占位图.png' },
+            { name: '学习交流', img: '../resource/占位图.png' },
+            { name: '线上活动', img: '../resource/占位图.png' },
+            { name: '求助发帖', img: '../resource/占位图.png' },
+        ],
 
-  /**
-   * 自定义的各个绑定函数（和页面元素绑定）
-   */
-  // 处理输入
-  SecureCodeInput: function (e) { this.setData({ inputSecureCode: e.detail.value }); },
-  AuthCodeInput: function (e) { this.setData({ inputAuth: e.detail.value }); },
-
-  // 安全码输入框键盘的完成按钮点击事件
-  nextClick: function () { this.setData({ authFocus: true }); },
-
-  buttonClick: function () {
-    if (this.data.button_name == '认证')
-      this.hc_register();
-    else if (this.data.button_name == '重新登录')
-      this.hc_login();
-    else if (this.data.button_name == '重试')
-      this.wx_login();
-  },
-
-  renewAuthimg: function () {
-    // 获取验证码图片
-    var that = this;
-    wx.request({
-      url: '',
-      success: function (res) {
-        that.setData({
-          auth_img_src: res.src
-        });
-      }
-    })
-  },
-
-  /**
-   * 功能函数，供后台调用
-   */
-
-  wx_login: function () {
-    // 使用微信号登录小程序
-    // 超过三次登录态过期则失败
-    if (this.data.wxlogin_count >= 3) {
-      this.warning('wx_fail');
-    } else {
-      this.setData({ wxlogin_count: this.data.wxlogin_count + 1 });
-      var that = this;
-      wx.login({
-        // 登录成功则进行HC的登录
-        success: function (res) {
-          console.log("Login Success");
-          app.globalData.js_code = res.code;
-          that.hc_login();
+        notice: {
+            userid: 1,
+            username: "帆会",
+            avatar: '/pages/resource/占位图.png',
+            title: "标题",
+            category: "公告栏",
+            date: '2000.1.1',
+            content: "内容内容内容内容内容内容内容内容",
+            imgs: [
+                { id: 1, src: '/pages/resource/占位图.png' },
+                { id: 2, src: '/pages/resource/占位图.png' },
+                { id: 3, src: '/pages/resource/占位图.png' },
+                { id: 4, src: '/pages/resource/占位图.png' },
+            ]
         },
-        fail: function (res) { that.warning('hc_fail'); }
-      });
-    }
-  },
 
-  getWxInfo: function () {
-    // 获取头像和昵称
-    wx.getUserInfo({
-      success: function (res) {
-        app.globalData.userInfo = res.userInfo;
-      },
-      fail: function () {
-        wx.showToast({
-          title: '您可以在登录后设置重新获取',
-          icon: 'none',
-          duration: 2000
-        })
-      }
+        posts: [
+            {
+                id: 1,
+                userid: 1,
+                username: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "分类1",
+                date: '2000.1.1',
+                content: "内容内容内容内容内容内容内容内容",
+                imgs: [
+                    { id: 1, src: '/pages/resource/占位图.png' },
+                    { id: 2, src: '/pages/resource/占位图.png' },
+                    { id: 3, src: '/pages/resource/占位图.png' },
+                    { id: 4, src: '/pages/resource/占位图.png' },
+                ]
+            },
+            {
+                id: 2,
+                userid: 1,
+                username: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "分类1",
+                date: '2000.1.1',
+                content: "内容内容内容内容内容内容内容内容",
+                imgs: [
+                    { id: 1, src: '/pages/resource/占位图.png' },
+                    { id: 2, src: '/pages/resource/占位图.png' },
+                    { id: 3, src: '/pages/resource/占位图.png' },
+                    { id: 4, src: '/pages/resource/占位图.png' },
+                ]
+            },
+            {
+                id: 3,
+                userid: 1,
+                username: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "分类1",
+                date: '2000.1.1',
+                content: "内容内容内容内容内容内容内容内容",
+                imgs: [
+                    { id: 1, src: '/pages/resource/占位图.png' },
+                    { id: 2, src: '/pages/resource/占位图.png' },
+                    { id: 3, src: '/pages/resource/占位图.png' },
+                    { id: 4, src: '/pages/resource/占位图.png' },
+                ]
+            }
+        ],
 
-    })
-  },
+        // 隐显等界面控制
+        hasNotice: true,
+        refreshTip: '再拉我就刷给你看',
+    },
 
-  hc_login: function () {
-    // 登录HC，获取潮友信息
-    var that = this;
-    if (app.globalData.js_code) {
-      wx.showLoading({
-        title: '登录中...',
-        mask: true
-      })
-      wx.request({
-        url: app.globalData.url_hc + '/user/login',
-        method: 'POST',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          jsCode: app.globalData.js_code
-        },
-        success: function (res) {
-          wx.hideLoading();
-          console.log(res);
-          if (res.data.status == '10001') {
-            // TODO 处理潮友信息，进入首页
-            console.log("hc login success");
-          } else if (res.data.status == '10002') {
-            // 发生异常
-            that.warning('hc_fail');
-          } else if (res.data.status == '10003') {
-            // 未认证潮友，进行注册流程
-            that.warning('hc_no_found');
-          } else if (res.data.status == '10004') {
-            // 登录态超时，尝试重登
-            that.wx_login();
-          }
-        },
-        fail: function (res) {
-          that.warning('hc_fail');
+    _data: {
+        search_word: '',
+        tipHeight: null, // 下拉刷新提示的高度
+        scrollTop: null  // 记录实时高度
+    },
+
+    /**
+     * 生命周期函数--监听页面加载
+     */
+    onLoad: function (options) {
+        // 准备必要的数据
+        this._data.tipHeight = unitConvert.rpx2px(60);
+        // 关闭跳转时的loading提示
+        wx.hideToast();
+        // TODO 从文件中读取
+        console.log('load')
+    },
+
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
+        console.log("show")
+    },
+    /**
+     * 绑定页面的函数
+     */
+
+    // 输入搜索词
+    search_input: function (e) { this._data.search_word = e.detail.value; },
+
+    // 点击搜索按钮
+    search_click: function () {
+        // TODO 跳到搜索页面
+        console.log(this._data.search_word)
+    },
+
+    // 分类点击
+    category_tap: function (e) {
+        var category = e.currentTarget.id;
+        // TODO 跳转到新页面
+        console.log(category);
+    },
+
+    // 点击楼主头像
+    postAvatarTap: function (e) {
+        // TODO 跳转到新页面
+        var user = {};
+        user.id = e.detail.avatar;
+        user.avatar = e.detail.userid;
+    },
+
+    // 点击帖子内容
+    postTap: function (e) {
+        // TODO 跳转到新页面
+        var post = e.detail.post;
+    },
+
+    // 底部按钮
+    bottom_button: function (e) {
+        // TODO 页面跳转
+        switch (e.currentTarget.id) {
+            case 'home':
+                break;
+            case 'sign':
+                break;
+            case 'new_post':
+                break;
+            case 'rank':
+                break;
+            case 'person':
+                break;
         }
-      });
+    },
+
+    // 滚动，实现下拉刷新
+    // 触发TOP就刷新，scroll的时候记录位置，touchend的时候回到原位，记录isFreshing
+    onTouchEnd: function(e) {
+        console.log('touch_end')
+    },
+    onScroll: function(e) {
+        this._data;
+    },
+    onTop: function(e) {
+        console.log('top');
+    },
+
+    /**************************************/
+    /**
+     * 生命周期函数--监听页面隐藏
+     */
+    onHide: function () {
+
+    },
+
+    /**
+     * 生命周期函数--监听页面卸载
+     */
+    onUnload: function () {
+
+    },
+
+    /**
+     * 页面相关事件处理函数--监听用户下拉动作
+     */
+    onPullDownRefresh: function () {
+
+    },
+
+    /**
+     * 页面上拉触底事件的处理函数
+     */
+    onReachBottom: function () {
+
+    },
+
+    /**
+     * 用户点击右上角分享
+     */
+    onShareAppMessage: function () {
+
     }
-    else
-      that.wx_login();
-  },
-
-  hc_register: function () {
-    // 向hc服务器发起注册请求
-    console.log(this.data);
-    this.setData({ warning_switch: false });
-    // 检测输入框
-    if (!this.data.inputSecureCode || this.data.inputSecureCode == '') {
-      this.setData({ warning_content: "请输入安全码", warning_switch: true });
-    } else if (!this.data.inputAuth || this.data.inputAuth == '') {
-      this.setData({ warning_content: "请输入验证码", warning_switch: true });
-    } else {
-      // TODO 注册
-      console.log('TODO 注册')
-    }
-  },
-
-  // warning的集成
-  warning: function (warningType) {
-    wx.hideLoading();
-    // 微信登录超过3次失败
-    if (warningType == "wx_fail") {
-      this.setData({
-        button_show: true,
-        button_name: '重试',
-        show_input: false,
-        warning_switch: true,
-        warning_content: "登录失败！"
-      });
-    }
-    // 未认证潮友 
-    else if (warningType == "hc_no_found") {
-      this.setData({
-        button_show: true,
-        button_name: "认证",
-        show_input: true,
-        warning_switch: true,
-        warning_content: "未认证潮友，请认证"
-      });
-    }
-    // 连接HC服务器异常
-    else if (warningType == "hc_fail") {
-      this.setData({
-        button_show: true,
-        button_name: '重新登录',
-        show_input: false,
-        warning_switch: true,
-        warning_content: "服务器发生异常，请重试"
-      });
-    }
-  },
-
-  /************************下面的我不关心，是自带的************************/
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
