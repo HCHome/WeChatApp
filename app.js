@@ -3,7 +3,7 @@
 App({
     globalData: {
         applyDate: null,
-        url_hc: "https://cjtellyou.xyz/HCHomeServer"
+        url_hc: "https://119.29.189.146/HCHomeServer"
     },
     onLaunch: function () { 
 

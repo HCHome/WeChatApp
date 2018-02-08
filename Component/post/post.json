@@ -1,4 +1,6 @@
 {
   "component": true,
-  "usingComponents": {}
+  "usingComponents": {
+      "avatar-view": "/Component/avatar/avatar"
+  }
 }

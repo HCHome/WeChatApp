@@ -1,2 +1,32 @@
 <!--pages/test/test.wxml-->
-<post-view post='{{post}}' bind:AvatarTap='avatar' bind:Tap='onTap' />
+<scroll-view scroll-y style='height: 100vh;' scroll-into-view='category_part' enable-back-to-top>
+<!--搜索框  -->
+    <view id='search_part'>
+        <view id='search_box'>
+            <input id='search_input' bindinput='search_input'></input>
+        </view>
+        <image id='search_button' src='../resource/search.png' bindtap='search_click'></image>
+    </view>
+<!--分区  -->
+        <scroll-view id='category_part' scroll-x='true'>
+            <view class='category' wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
+                <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
+                <text class='category_name'>{{item.name}}</text>
+            </view>
+        </scroll-view>
+        <!--置顶  -->
+        <view id='notice'>
+            <view class='part_title'>
+                <view class='part_titleName'>置顶</view>
+                <view class='part_title_tip' style='{{hasNotice ? "display: none;" : ""}}'>暂无新公告</view>
+            </view>
+            <post-view style='{{hasNotice ? "" : "display: none;"}}' wx:for='{{notice}}' post='{{item}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+        </view>
+        <!--帖子列表  -->
+        <view id='post_list'>
+            <view class='part_title'>
+                <view class='part_titleName'>最新</view>
+            </view>
+            <post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+        </view>
+</scroll-view>

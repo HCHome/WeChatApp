@@ -1,5 +1,6 @@
 // pages/test/test.js
 const loginManager = require('../../utils/loginManager.js')
+const net4Post = require('../../utils/net4Post.js')
 
 Page({
 
@@ -7,41 +8,86 @@ Page({
      * 页面的初始数据
      */
     data: {
-        msg: '',
-        post: {
-            username: "骨天乐",
-            avatar: '../../pages/resource/占位图.png',
-            title: "麻痹戒指",
-            category: "潮友日常",
-            date: '2017.2.2',
-            content: "是兄弟，就来糖丸蓝月",
-            imgs: [
-                { id: 1, src: '../../pages/resource/占位图.png' },
-                { id: 2, src: '../../pages/resource/占位图.png' },
-                { id: 3, src: '../../pages/resource/占位图.png' },
-                { id: 4, src: '../../pages/resource/占位图.png' }
-            ],
-        }
+        // 基础数据
+        categoryItems: [
+            { name: '实习就业', img: '../resource/占位图.png' },
+            { name: '海潮日常', img: '../resource/占位图.png' },
+            { name: '学习交流', img: '../resource/占位图.png' },
+            { name: '求助发帖', img: '../resource/占位图.png' },
+            { name: '线上活动', img: '../resource/占位图.png' },
+        ],
+
+        notice: null,
+
+        posts: [
+            {
+                postId: 1,
+                posterId: 1,
+                posterNickname: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "公告栏",
+                createdDate: '2000.1.1',
+                text: "内容内容内容内容内容内容内容内容",
+                pictureUrl: [
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                ]
+            },
+            {
+                postId: 2,
+                posterId: 1,
+                posterNickname: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "公告栏",
+                createdDate: '2000.1.1',
+                text: "内容内容内容内容内容内容内容内容",
+                pictureUrl: [
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                ]
+            },
+            {
+                postId: 3,
+                posterId: 1,
+                posterNickname: "帆会",
+                avatar: '/pages/resource/占位图.png',
+                title: "标题",
+                category: "公告栏",
+                createdDate: '2000.1.1',
+                text: "内容内容内容内容内容内容内容内容",
+                pictureUrl: [
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                    '/pages/resource/占位图.png',
+                ]
+            }
+        ]
     },
 
-    avatar: function() {
+    avatar: function () {
         console.log('avatar click')
     },
 
-    onTap: function() {
-        console.log('tap')
+    onTap: function () {
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) { },
+    onLoad: function (options) {
+    },
 
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-
     },
 
     /**

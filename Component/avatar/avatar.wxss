@@ -1,0 +1,12 @@
+/* Component/avatar/avatar.wxss */
+.avatarView {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.letter-canvas, .avatarImg {
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}

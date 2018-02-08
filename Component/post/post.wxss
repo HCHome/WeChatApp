@@ -3,6 +3,8 @@
 .post {
     display: flex;
     flex-direction: column;
+    padding: 10rpx;
+    border-bottom: #ccc 1px solid;
 }
 
 .post_info {
@@ -11,10 +13,6 @@
 }
 
 .post_avatar {
-    width: 100rpx;
-    height: 100rpx;
-    border: 1px solid #ccc;
-    border-radius: 50%;
     margin: 10rpx;
 }
 
@@ -25,7 +23,7 @@
 }
 
 .post_category_time {
-    font-size: 25rpx;
+    font-size: 0.5em;
 }
 
 .post_image {

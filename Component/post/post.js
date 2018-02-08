@@ -8,15 +8,17 @@ Component({
         post: {
             type: Object,
             value: {
-                userid: 0,
-                username: "",
+                postId: -1,
+                posterId: 0,
+                posterNickname: "",
                 avatar: '',
+                letter: '',
                 title: "",
                 category: "",
-                date: '2000.1.1',
-                content: "",
-                imgs: [
-                    { id: 0, src: '' },
+                createdDate: '2000.1.1',
+                text: "",
+                pictureUrl: [
+                    ''
                 ]
             }
         }
@@ -34,8 +36,7 @@ Component({
      */
     methods: {
         bindAvatarTap: function (e) {
-            e.userid = this.properties.post.userid;
-            e.avatar = this.properties.post.avatar;
+            e.post = this.properties.post;
             this.triggerEvent('AvatarTap', e, {})
         },
         bindTap: function (e) {

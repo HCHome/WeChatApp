@@ -58,6 +58,8 @@ const _loginManager = {
         var that = this;
         wx.getUserInfo({
             success: res => {
+                console.log(that)
+                console.log(res)
                 that.wx_info.nickName = res.userInfo.nickName;
                 that.wx_info.avatar = res.userInfo.avatarUrl;
                 if (Object && Object.success && typeof (Object.success) == 'function') Object.success(res);
@@ -81,9 +83,11 @@ const _loginManager = {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
                 data: {
-                    jsCode: that.wx_info.js_code
+                    jsCode: that.wx_info.js_code,
+                    avatar: (that.wx_info.avatar ? that.wx_info.avatar : '')
                 },
                 success: res => {
+                    console.log(that.wx_info.avatar ? that.wx_info.avatar : '');
                     if (res.data.status == '10001') that.hc_info.user = res.data.data.user;
                     if (res.data.data.emmCode) that.hc_info.emmCode = res.data.data.emmCode;
                     if (Object && Object.success && typeof (Object.success) == 'function') Object.success(res);

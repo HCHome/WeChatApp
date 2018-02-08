@@ -2,6 +2,7 @@
 const app = getApp();
 const loginManager = require('../../utils/loginManager.js');
 const unitConvert = require('../../utils/unitConvert.js');
+const net4Post = require('../../utils/net4Post.js');
 
 Page({
 
@@ -14,106 +15,47 @@ Page({
             { name: '实习就业', img: '../resource/占位图.png' },
             { name: '海潮日常', img: '../resource/占位图.png' },
             { name: '学习交流', img: '../resource/占位图.png' },
-            { name: '线上活动', img: '../resource/占位图.png' },
             { name: '求助发帖', img: '../resource/占位图.png' },
+            { name: '线上活动', img: '../resource/占位图.png' },
         ],
 
-        notice: {
-            userid: 1,
-            username: "帆会",
-            avatar: '/pages/resource/占位图.png',
-            title: "标题",
-            category: "公告栏",
-            date: '2000.1.1',
-            content: "内容内容内容内容内容内容内容内容",
-            imgs: [
-                { id: 1, src: '/pages/resource/占位图.png' },
-                { id: 2, src: '/pages/resource/占位图.png' },
-                { id: 3, src: '/pages/resource/占位图.png' },
-                { id: 4, src: '/pages/resource/占位图.png' },
-            ]
-        },
-
-        posts: [
-            {
-                id: 1,
-                userid: 1,
-                username: "帆会",
-                avatar: '/pages/resource/占位图.png',
-                title: "标题",
-                category: "分类1",
-                date: '2000.1.1',
-                content: "内容内容内容内容内容内容内容内容",
-                imgs: [
-                    { id: 1, src: '/pages/resource/占位图.png' },
-                    { id: 2, src: '/pages/resource/占位图.png' },
-                    { id: 3, src: '/pages/resource/占位图.png' },
-                    { id: 4, src: '/pages/resource/占位图.png' },
-                ]
-            },
-            {
-                id: 2,
-                userid: 1,
-                username: "帆会",
-                avatar: '/pages/resource/占位图.png',
-                title: "标题",
-                category: "分类1",
-                date: '2000.1.1',
-                content: "内容内容内容内容内容内容内容内容",
-                imgs: [
-                    { id: 1, src: '/pages/resource/占位图.png' },
-                    { id: 2, src: '/pages/resource/占位图.png' },
-                    { id: 3, src: '/pages/resource/占位图.png' },
-                    { id: 4, src: '/pages/resource/占位图.png' },
-                ]
-            },
-            {
-                id: 3,
-                userid: 1,
-                username: "帆会",
-                avatar: '/pages/resource/占位图.png',
-                title: "标题",
-                category: "分类1",
-                date: '2000.1.1',
-                content: "内容内容内容内容内容内容内容内容",
-                imgs: [
-                    { id: 1, src: '/pages/resource/占位图.png' },
-                    { id: 2, src: '/pages/resource/占位图.png' },
-                    { id: 3, src: '/pages/resource/占位图.png' },
-                    { id: 4, src: '/pages/resource/占位图.png' },
-                ]
-            }
-        ],
+        notice: null,
+        posts: null,
 
         // 隐显等界面控制
         hasNotice: true,
-        refreshTip: '再拉我就刷给你看',
+        moreTip: "加载更多"
     },
 
     _data: {
-        search_word: '',
-        tipHeight: null, // 下拉刷新提示的高度
-        scrollTop: null  // 记录实时高度
+        search_word: '' // 搜索词保存
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        // 准备必要的数据
-        this._data.tipHeight = unitConvert.rpx2px(60);
         // 关闭跳转时的loading提示
         wx.hideToast();
-        // TODO 从文件中读取
-        console.log('load')
+        this.renewPosts();
+        console.log("home")
     },
 
     /**
-     * 生命周期函数--监听页面显示
+     * 拉倒底部进行加载
      */
-    onShow: function () {
-        console.log("show")
+    onReachBottom: function () {
+        if (this.data.moreTip == "加载更多") {
+            this.setData({ moreTip: "加载中" });
+            this.getMorePosts();
+        }
     },
+
+    /**
+     * 下拉刷新
+     */
+    onPullDownRefresh: function () { this.renewPosts(); },
+
     /**
      * 绑定页面的函数
      */
@@ -138,78 +80,59 @@ Page({
     postAvatarTap: function (e) {
         // TODO 跳转到新页面
         var user = {};
-        user.id = e.detail.avatar;
-        user.avatar = e.detail.userid;
+        user.avatar = e.detail.post.posterAvatar;
+        user.id = e.detail.post.posterId;
+        console.log(user)
     },
 
     // 点击帖子内容
     postTap: function (e) {
         // TODO 跳转到新页面
         var post = e.detail.post;
-    },
-
-    // 底部按钮
-    bottom_button: function (e) {
-        // TODO 页面跳转
-        switch (e.currentTarget.id) {
-            case 'home':
-                break;
-            case 'sign':
-                break;
-            case 'new_post':
-                break;
-            case 'rank':
-                break;
-            case 'person':
-                break;
-        }
-    },
-
-    // 滚动，实现下拉刷新
-    // 触发TOP就刷新，scroll的时候记录位置，touchend的时候回到原位，记录isFreshing
-    onTouchEnd: function(e) {
-        console.log('touch_end')
-    },
-    onScroll: function(e) {
-        this._data;
-    },
-    onTop: function(e) {
-        console.log('top');
-    },
-
-    /**************************************/
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
+        console.log(post)
     },
 
     /**
-     * 生命周期函数--监听页面卸载
+     * 后台调用的自定义函数
      */
-    onUnload: function () {
+
+    renewPosts: function () {
+        var that = this;
+        net4Post.getPosts({
+            category: 'top',
+            success: res => { if (res.status == 10001) that.setData({ notice: res.posts }); },
+            complete: () => {
+                net4Post.getPosts({
+                    category: 'all',
+                    success: res => { if (res.status == 10001) that.setData({ posts: res.posts }); },
+                    complete: () => { wx.stopPullDownRefresh(); }
+                });
+            }
+        });
 
     },
 
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
+    getMorePosts: function () {
+        var that = this;
+        net4Post.getPosts({
+            category: 'all',
+            lastPostId: that.data.posts ? that.data.posts[that.data.posts.length - 1].postId : 0,
+            success: res => {
+                if (res.status == 10001) {
+                    var posts = that.data.posts;
+                    res.posts.forEach(function (item) {
+                        posts.push(item);
+                    });
+                    that.setData({ posts: posts });
+                }
+            },
+            complete: () => {
+                this.setData({ moreTip: "暂无更多" });
+                var that = this;
+                setTimeout(function () {
+                    that.setData({ moreTip: "加载更多" });
+                }, 5000);
+            }
+        })
     }
 })

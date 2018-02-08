@@ -1,4 +1,7 @@
 {
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 0,
     "usingComponents": {
         "post-view": "../../Component/post/post"
     }

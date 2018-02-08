@@ -1,8 +1,7 @@
 /* pages/home/home.wxss */
 
 page {
-    display: flex;
-    flex-direction: column;
+    min-height: 101%;
 }
 
 /*搜索框  */
@@ -38,19 +37,6 @@ page {
     background-color: transparent;
 }
 
-/* 下拉刷新  */
-
-#pullRefresh {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 60rpx;
-}
-
-#refreshTip {
-    font-size: 30rpx;
-}
-
 /*分区  */
 
 #category_part {
@@ -82,16 +68,9 @@ page {
 
 /*公告和帖子  */
 
-#notice {
-    padding: 10rpx;
-    border-bottom: 1px solid #ccc;
-}
-
-#post_list {
-    padding: 10rpx;
-}
-
 .part_title {
+    margin-top: 50rpx;
+    border-top: 1px #ccc solid;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -108,22 +87,8 @@ page {
     font-size: 30rpx;
 }
 
-/* 底部按钮  */
-
-#menu {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: 70rpx;
-    border-top: 1px #ccc solid;
-}
-
-.bottom_button {
-    display: inline-block;
-    width: 20%;
-    height: 70rpx;
-    background-size: 50rpx;
-    background-repeat: no-repeat;
-    background-position: 50rpx 10rpx;
-    background-color: transparent;
+/*加载更多的提示  */
+#morePostsTipView  {
+    text-align: center;
+    font-size: 0.8em;
 }

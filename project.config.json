@@ -8,7 +8,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.6.6",
+	"libVersion": "1.9.1",
 	"appid": "wx663f60640393fd1e",
 	"projectname": "%E6%B5%B7%E6%BD%AE%E4%B9%8B%E5%AE%B6",
 	"condition": {
@@ -17,6 +17,10 @@
 			"list": []
 		},
 		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
 			"current": -1,
 			"list": []
 		},

@@ -1,5 +1,6 @@
 {
     "usingComponents": {
-        "post-view": "../../Component/post/post"
+        "post-view": "/Component/post/post",
+        "avatar": "/Component/avatar/avatar"
     }
 }

@@ -1,41 +1,32 @@
-<!--pages/home/home.wxml-->
-
+<!--pages/test/test.wxml-->
+<!--搜索框  -->
 <view id='search_part'>
     <view id='search_box'>
         <input id='search_input' bindinput='search_input'></input>
     </view>
     <image id='search_button' src='../resource/search.png' bindtap='search_click'></image>
 </view>
-<!-- 中间的区域大小 = 总高 - 上下各70rpx - 上下边框  -->
-<scroll-view scroll-y style='height: calc(100vh - 140rpx - 5px);' scroll-into-view='category_part' scroll-top='{{scrollTop}}' bindscrolltoupper='onTop' bindscroll='onScroll' bindtouchend='onTouchEnd' enable-back-to-top >
-    <view id='pullRefresh'>
-        <text id='refreshTip'>{{refreshTip}}</text>
-    </view>
-    <scroll-view id='category_part' scroll-x='true'>
-        <view class='category' wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
-            <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
-            <text class='category_name'>{{item.name}}</text>
-        </view>
-    </scroll-view>
-    <view id='notice'>
-        <view class='part_title'>
-            <view class='part_titleName'>公告栏</view>
-            <view class='part_title_tip' style='{{hasNotice ? "display: none;" : ""}}'>暂无新公告</view>
-        </view>
-        <post-view style='{{hasNotice ? "" : "display: none;"}}' post='{{notice}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
-    </view>
-    <view id='post_list'>
-        <view class='part_title'>
-            <view class='part_titleName'>最新</view>
-        </view>
-        <post-view wx:for='{{posts}}' wx:key='id' post='{{item}}' id='{{item.id}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+<!--分区  -->
+<scroll-view id='category_part' scroll-x='true'>
+    <view class='category' wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
+        <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
+        <text class='category_name'>{{item.name}}</text>
     </view>
 </scroll-view>
-<!-- 底部按钮区 emmm 本地背景图片不能在wxss里获取  -->
-<view id='menu'>
-    <view class='bottom_button' style='background-image: url(../resource/home.png)' id='home' bindtap='bottom_button'></view>
-    <view class='bottom_button' style='background-image: url(../resource/sign.png)' id='sign' bindtap='bottom_button'></view>
-    <view class='bottom_button' style='background-image: url(../resource/new_post.png)' id='new_post' bindtap='bottom_button'></view>
-    <view class='bottom_button' style='background-image: url(../resource/rank.png)' id='rank' bindtap='bottom_button'></view>
-    <view class='bottom_button' style='background-image: url(../resource/person.png)' id='person' bindtap='bottom_button'></view>
+<!--置顶  -->
+<view id='notice'>
+    <view class='part_title'>
+        <view class='part_titleName'>置顶</view>
+        <view class='part_title_tip' style='{{hasNotice ? "display: none;" : ""}}'>暂无新公告</view>
+    </view>
+    <post-view style='{{hasNotice ? "" : "display: none;"}}' wx:for='{{notice}}' post='{{item}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
 </view>
+<!--帖子列表  -->
+<view id='post_list'>
+    <view class='part_title'>
+        <view class='part_titleName'>最新</view>
+    </view>
+    <post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+</view>
+<!--加载更多的提示  -->
+<view id="morePostsTipView">--{{moreTip}}--</view>

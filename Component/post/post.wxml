@@ -1,13 +1,13 @@
 <view class='post'>
     <view class='post_info'>
-        <image class='post_avatar' src='{{post.avatar}}' bindtap='bindAvatarTap'></image>
+        <avatar-view class='post_avatar' letter='{{post.letter}}' imageUrl='{{post.avatar}}' bindtap='bindAvatarTap' />
         <view class='post_info_right' bindtap='bindTap'>
             <text class='post_title'>{{post.title}}</text>
-            <text class='post_category_time'>{{post.username}}发布于{{post.category}}-{{post.date}}</text>
+            <text class='post_category_time'>{{post.posterNickname}}发布于{{post.category}}-{{post.createdDate}}</text>
         </view>
     </view>
-    <text class='post_content' bindtap='bindTap'>{{post.content}}</text>
+    <text class='post_content' bindtap='bindTap'>{{post.text}}</text>
     <view class='post_image' bindtap='bindTap'>
-        <image class='post_img' wx:for='{{post.imgs}}' wx:key='id' src='{{item.src}}' mode='scaleToFill'></image>
+        <image class='post_img' wx:for='{{post.pictureUrl}}' src='{{item}}' mode='scaleToFill'></image>
     </view>
 </view>

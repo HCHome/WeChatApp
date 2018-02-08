@@ -35,7 +35,11 @@ Page({
         var wx_login_callback = {
             success: res => {
                 console.log('wx_login_success');
-                loginManager.hc_login(hc_login_callback);
+                // 获取头像，无论成败，都进行hc登录
+                loginManager.get_wxInfo({
+                    success: function () { loginManager.hc_login(hc_login_callback); },
+                    fail: function () { loginManager.hc_login(hc_login_callback); }
+                });
             },
             fail: () => {
                 wx.hideLoading();
@@ -50,7 +54,7 @@ Page({
                     wx.hideLoading();
                     switch (res.data.status) {
                         case 10001:
-                            wx.showToast({ title: '登录成功！' });
+                            wx.showToast({ title: '登录成功！', mask: true, duration: 2000 });
                             wx.redirectTo({ url: '../home/home' });
                             break;
                         case 10002:

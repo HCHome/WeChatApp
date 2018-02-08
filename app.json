@@ -1,14 +1,50 @@
 {
     "pages": [
-        "pages/login/login",
         "pages/home/home",
+        "pages/login/login",
         "pages/getCode/getCode",
         "pages/test/test"
     ],
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#fff",
-        "navigationBarTitleText": "WeChat",
+        "navigationBarTitleText": "海潮之家",
         "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "color": "black",
+        "selectedColor": "green",
+        "list": [
+            {
+                "pagePath": "pages/home/home",
+                "iconPath": "pages/resource/占位图.png",
+                "selectedIconPath": "pages/resource/home.png",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/test/test",
+                "iconPath": "pages/resource/占位图.png",
+                "selectedIconPath": "pages/resource/rank.png",
+                "text": "签到"
+            },
+            {
+                "pagePath": "pages/test/test",
+                "iconPath": "pages/resource/占位图.png",
+                "selectedIconPath": "pages/resource/new_post.png",
+                "text": "发帖"
+            },
+            {
+                "pagePath": "pages/test/test",
+                "iconPath": "pages/resource/占位图.png",
+                "selectedIconPath": "pages/resource/search.png",
+                "text": "找人"
+            },
+            {
+                "pagePath": "pages/test/test",
+                "iconPath": "pages/resource/占位图.png",
+                "selectedIconPath": "pages/resource/person.png",
+                "text": "我的"
+            }
+        ]
     }
 }
