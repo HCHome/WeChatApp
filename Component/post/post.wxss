@@ -23,12 +23,11 @@
 }
 
 .post_category_time {
-    font-size: 0.5em;
+    font-size: 8px;
 }
 
 .post_image {
-    display: flex;
-    flex-direction: row;
+    display: block;
 }
 
 .post_img {
@@ -36,4 +35,10 @@
     width: 100rpx;
     height: 100rpx;
     margin: 10rpx;
+}
+
+.repliesCount {
+    font-size: 12px;
+    text-align: right;
+    margin: 3px;
 }

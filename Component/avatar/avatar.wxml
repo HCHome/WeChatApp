@@ -1,5 +1,5 @@
 <!--Component/avatar/avatar.wxml-->
-<view class='avatarView'>
-    <canvas wx:if='{{letter!=""}}' class='letter-canvas' canvas-id='avatar'></canvas>
-    <image wx:else class='avatarImg' mode='scaleToFill' src='{{imageUrl}}'></image>
+<view class='avatarView' style='width: {{size}}; height: {{size}};'>
+    <image wx:if='{{imageUrl&&imageUrl!=""}}' class='avatarImg' mode='scaleToFill' src='{{imageUrl}}' style='width: {{size}}; height: {{size}};'></image>
+    <canvas wx:else class='letter-canvas' canvas-id='avatar'></canvas>
 </view>

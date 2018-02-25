@@ -1,0 +1,13 @@
+<!--pages/sendpost/sendpost.wxml-->
+<picker id='category_picker' mode='selector' range='{{categoryArray}}' value='{{chosenCategory}}' bindchange='cateChange'>
+    <text>分类</text>
+    <text>{{chosenCategory}}</text>
+</picker>
+<input id='title' placeholder='请输入标题（最长20字）' bindinput='titleInput' maxlength='20' value='{{initValue}}'></input>
+<view class='splitLine'></view>
+<textarea id='text' placeholder='请输入帖子内容' bindinput='textInput'  value='{{initValue}}'></textarea>
+<view id='pictures'>
+    <image class='imgs' wx:for='{{chosenImgs}}' wx:key='{{item}}' src='{{item}}' mode='aspectFill' bindtap='deleteImg' data-img='{{item}}'></image>
+    <image id='imgButton' src='../resource/add.png' bindtap='chooseImg'></image>
+</view>
+<button id='postButton' bindtap='onPost'>发布</button>

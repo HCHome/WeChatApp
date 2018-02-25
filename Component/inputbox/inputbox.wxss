@@ -1,0 +1,33 @@
+/* Component/inputbox/inputbox.wxss */
+.modifyPart {
+    display: flex;
+    flex-direction: row;
+    margin: 5px;
+    font-size: 15px;
+}
+
+.propName {
+    display: inline-block;
+    width: 20vw;
+    height: 30px;
+    line-height: 30px;
+}
+
+.propInput {
+    display: inline-block;
+    width: 60vw;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 5px;
+    color: #FFFFFF;
+    background-color: #C9C9C9;
+    border: 1px #EEE solid;
+    border-radius: 5px;
+    padding: 0 5px;
+}
+
+.disabled {
+    color: black;
+    background-color: transparent;
+    border: 0;
+}

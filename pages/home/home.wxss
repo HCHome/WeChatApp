@@ -11,14 +11,14 @@ page {
     flex-direction: row;
     border-style: solid;
     border-width: 1px 0;
-    border-color: #eee;
+    border-color: #C9C9C9;
     padding: 5rpx 30rpx;
 }
 
 #search_box {
     width: 600rpx;
     height: 60rpx;
-    border: 1px solid #ccc;
+    border: 1px solid #C9C9C9;
     border-radius: 30rpx;
     margin-right: 30rpx;
     padding: 0 30rpx;
@@ -41,7 +41,6 @@ page {
 
 #category_part {
     white-space: nowrap;
-    border-bottom: 1px solid #ccc;
     padding: 10rpx 0;
 }
 
@@ -56,7 +55,7 @@ page {
 .category_img {
     width: 150rpx;
     height: 150rpx;
-    border: 1px solid #ccc;
+    border: 1px solid #C9C9C9;
     border-radius: 50%;
 }
 
@@ -68,9 +67,32 @@ page {
 
 /*公告和帖子  */
 
+#noticePart {
+    font-size: 16px;
+    padding: 5px;
+}
+
+.notice {
+    border-bottom: 2px solid #5AA7FF;
+    margin: 5px 0;
+}
+
+.notice_cls {
+    width: 36px;
+    padding: 2px;
+    background-color: #5AA7FF;
+    color: #FFFFFF;
+}
+
+.notice_title {
+    width: calc(100vw - 46px);
+    padding-left: 2px;
+    color: #5AA7FF;
+}
+
 .part_title {
     margin-top: 50rpx;
-    border-top: 1px #ccc solid;
+    border-top: 1px #C9C9C9 solid;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -85,6 +107,10 @@ page {
 .part_title_tip {
     float: right;
     font-size: 30rpx;
+}
+
+#post_list {
+    border-top: 1px #C9C9C9 solid;
 }
 
 /*加载更多的提示  */

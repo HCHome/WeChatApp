@@ -1,0 +1,18 @@
+<!--pages/sign/sign.wxml-->
+<view id='myPart'>
+    <avatar-view id='avatarLeft' letter='{{letter}}' imageUrl='{{imgUrl}}' pxSize='50'/>
+    <view id='infoRight'>
+        <text>签到积分：{{signScore}}</text>
+        <text>排名：{{order}}</text>
+    </view>
+    <button id='signButton' disabled='{{btnDisabled}}' plain='true' bindtap='signBtn'>{{buttonText}}</button>
+</view>
+<view id='rankList'>
+    <view id='rankTitle'>潮友排行</view>
+    <view class='rankItem' wx:for='{{scoreRankList}}' wx:key='{{userId}}'>
+        <text class='num cell'>{{item.scoreRank}}</text>
+        <avatar-view class='avatar cell' letter='{{item.letter}}' imageUrl='{{item.avatar}}' pxSize='24' />
+        <text class='nickName cell'>{{item.nickname}}</text>
+        <text class='day_count cell'>{{item.signScore}}天</text>
+    </view>
+</view>

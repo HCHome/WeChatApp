@@ -11,16 +11,10 @@ Page({
      */
     data: {
         // 基础数据
-        categoryItems: [
-            { name: '实习就业', img: '../resource/占位图.png' },
-            { name: '海潮日常', img: '../resource/占位图.png' },
-            { name: '学习交流', img: '../resource/占位图.png' },
-            { name: '求助发帖', img: '../resource/占位图.png' },
-            { name: '线上活动', img: '../resource/占位图.png' },
-        ],
+        categoryItems: [],
 
-        notice: null,
-        posts: null,
+        notice: [],
+        posts: [],
 
         // 隐显等界面控制
         hasNotice: true,
@@ -28,17 +22,27 @@ Page({
     },
 
     _data: {
-        search_word: '' // 搜索词保存
+        search_word: '', // 搜索词保存
+        postIds: []      // 记录当前的id，用于防止重复
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.setData({ categoryItems: app.globalData.categories });
         // 关闭跳转时的loading提示
         wx.hideToast();
+    },
+
+    /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow: function () {
+        // 刷新帖子
+        this.setData({ posts: [] });
+        this._data.postIds = [];
         this.renewPosts();
-        console.log("home")
     },
 
     /**
@@ -54,7 +58,10 @@ Page({
     /**
      * 下拉刷新
      */
-    onPullDownRefresh: function () { this.renewPosts(); },
+    onPullDownRefresh: function () {
+        this.setData({ moreTip: "加载中" });
+        this.renewPosts();
+    },
 
     /**
      * 绑定页面的函数
@@ -72,8 +79,12 @@ Page({
     // 分类点击
     category_tap: function (e) {
         var category = e.currentTarget.id;
-        // TODO 跳转到新页面
-        console.log(category);
+        if (category == '找潮友') {
+            console.log('找潮友的页面');
+            // TODO 找潮友的页面
+        } else {
+            wx.navigateTo({ url: '../category/category?category=' + category });
+        }
     },
 
     // 点击楼主头像
@@ -86,26 +97,50 @@ Page({
     },
 
     // 点击帖子内容
+    notice_tap: function(e) {
+        wx.navigateTo({
+            url: '../postdetail/postdetail?post=' + JSON.stringify(e.currentTarget.dataset.notice)
+        });
+    },
     postTap: function (e) {
-        // TODO 跳转到新页面
-        var post = e.detail.post;
-        console.log(post)
+        wx.navigateTo({
+            url: '../postdetail/postdetail?post=' + JSON.stringify(e.detail.post)
+        });
     },
 
     /**
      * 后台调用的自定义函数
      */
 
+    // 获取新的帖子
     renewPosts: function () {
+        wx.showNavigationBarLoading();
         var that = this;
         net4Post.getPosts({
             category: 'top',
-            success: res => { if (res.status == 10001) that.setData({ notice: res.posts }); },
+            success: res => {
+                if (res.status == 10001) that.setData({ notice: res.posts });
+                if (res.posts.length == 0) that.setData({ hasNotice: false });
+            },
             complete: () => {
                 net4Post.getPosts({
                     category: 'all',
-                    success: res => { if (res.status == 10001) that.setData({ posts: res.posts }); },
-                    complete: () => { wx.stopPullDownRefresh(); }
+                    success: res => {
+                        if (res.status == 10001) {
+                            var posts = that.data.posts;
+                            res.posts.forEach(item => {
+                                if (!that._data.postIds.includes(item.postId)) {
+                                    posts.unshift(item);
+                                    that._data.postIds.push(item.postId);
+                                }
+                            });
+                            that.setData({ posts: posts });
+                        }
+                    },
+                    complete: () => {
+                        wx.stopPullDownRefresh();
+                        wx.hideNavigationBarLoading();
+                    }
                 });
             }
         });
@@ -113,20 +148,25 @@ Page({
     },
 
     getMorePosts: function () {
+        wx.showNavigationBarLoading();
         var that = this;
         net4Post.getPosts({
             category: 'all',
-            lastPostId: that.data.posts ? that.data.posts[that.data.posts.length - 1].postId : 0,
+            lastPostId: that.data.posts[0] ? that.data.posts[that.data.posts.length - 1].postId : 0,
             success: res => {
                 if (res.status == 10001) {
                     var posts = that.data.posts;
-                    res.posts.forEach(function (item) {
-                        posts.push(item);
+                    res.posts.forEach(item => {
+                        if (!that._data.postIds.includes(item.postId)) {
+                            posts.push(item);
+                            that._data.postIds.push(item.postId);
+                        }
                     });
                     that.setData({ posts: posts });
                 }
             },
             complete: () => {
+                wx.hideNavigationBarLoading();
                 this.setData({ moreTip: "暂无更多" });
                 var that = this;
                 setTimeout(function () {

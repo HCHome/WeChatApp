@@ -43,7 +43,7 @@
 #split_line {
   width: 650rpx;
   height: 1px;
-  background-color: gray;
+  background-color: #C9C9C9;
 }
 
 .input_title {

@@ -1,0 +1,75 @@
+/* pages/postdetail/postdetail.wxss */
+
+page {
+    min-height: calc(100% + 1px);
+    background-color: #C9C9C9;
+    padding-bottom: 32px;
+}
+
+#posterPart {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 10px solid #C9C9C9;
+    background-color: white;
+}
+
+.userInfoPart {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+#postMenu {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+}
+
+#replyPoster {
+    width: 50%;
+    border-right: 1px black solid;
+    text-align: center;
+}
+
+#viewOrder {
+    width: 50%;
+    text-align: center;
+}
+
+.replies {
+    display: flex;
+    flex-direction: column;
+    border-bottom: solid 1px #C9C9C9;
+}
+
+#tip {
+    text-align: center;
+    font-size: 12px;
+}
+
+#replyView {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    border-top: 1px black solid;
+    padding: 2px;
+    width: 100%;
+    background-color: #C9C9C9;
+}
+
+#repliedFloorTip {
+    border-radius: 2px;
+    border: 1px solid #5AA7FF;
+    background-color: #5AA7FF;
+    font-size: 12px;
+    width: 20%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#replyInput {
+    padding-left: 3px;
+    height: 80%;
+}

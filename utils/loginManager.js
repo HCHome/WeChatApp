@@ -24,6 +24,32 @@ const _loginManager = {
     },
 
     /**
+     * 更新数据
+     */
+    setHC_info: function(Object) {
+        for (var item in Object) {
+            this.hc_info[item] = Object[item];
+        }
+    },
+
+    /**
+     * 完整的登录操作，最终回调获取的是HC的返回
+     */
+    login: function(Object) {
+        var that = this;
+        this.wx_login({
+            success: res => {
+                // 获取头像，无论成败，都进行hc登录
+                that.get_wxInfo({
+                    success: function () { that.hc_login(Object); },
+                    fail: function () { that.hc_login(Object); }
+                });
+            },
+            fail: () => { if (Object && Object.success && typeof (Object.success) == 'function') Object.success({ data: { status: '10004' } }); }
+        });
+    },
+
+    /**
      * 微信相关：登录、获取信息
      */
 
@@ -44,7 +70,7 @@ const _loginManager = {
                 },
                 fail: function () {
                     that.wx_info.js_code = null;
-                    if (this._data.wx_login_count < 3)
+                    if (that._data.wx_login_count < 3)
                         that.wx_login(); // 重试
                     else
                         if (Object && Object.fail && typeof (Object.fail) == 'function') Object.fail();
@@ -58,8 +84,6 @@ const _loginManager = {
         var that = this;
         wx.getUserInfo({
             success: res => {
-                console.log(that)
-                console.log(res)
                 that.wx_info.nickName = res.userInfo.nickName;
                 that.wx_info.avatar = res.userInfo.avatarUrl;
                 if (Object && Object.success && typeof (Object.success) == 'function') Object.success(res);
@@ -87,8 +111,11 @@ const _loginManager = {
                     avatar: (that.wx_info.avatar ? that.wx_info.avatar : '')
                 },
                 success: res => {
-                    console.log(that.wx_info.avatar ? that.wx_info.avatar : '');
-                    if (res.data.status == '10001') that.hc_info.user = res.data.data.user;
+                    if (res.data.status == '10001') {
+                        that.hc_info.user = res.data.data.user;
+                        if (that.hc_info.user.avatar)
+                            that.hc_info.user.letter = that.hc_info.user.nickname[that.hc_info.user.nickname.length - 1];
+                    }
                     if (res.data.data.emmCode) that.hc_info.emmCode = res.data.data.emmCode;
                     if (Object && Object.success && typeof (Object.success) == 'function') Object.success(res);
                 },

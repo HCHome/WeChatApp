@@ -3,6 +3,7 @@
 const app = getApp()
 const loginManager = require('../../utils/loginManager.js')
 const unitConvert = require('../../utils/unitConvert.js')
+const authImg = require('./authImg.js')
 
 Page({
     /**
@@ -14,7 +15,7 @@ Page({
         warning_switch: false,
         warning_content: "warning",
         show_input: false,
-        authFocus: false,
+        authFocus: false
     },
 
     // 内部用变量，避开setData，避免卡顿
@@ -29,53 +30,32 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        wx.setNavigationBarTitle({ title: '海潮之家' });
-        // 定义回调对象
+        wx.showLoading({ title: '登录中...', mask: true });
+        // 进行登录
         var that = this;
-        var wx_login_callback = {
+        loginManager.login({
             success: res => {
-                console.log('wx_login_success');
-                // 获取头像，无论成败，都进行hc登录
-                loginManager.get_wxInfo({
-                    success: function () { loginManager.hc_login(hc_login_callback); },
-                    fail: function () { loginManager.hc_login(hc_login_callback); }
-                });
-            },
-            fail: () => {
-                wx.hideLoading();
-                that.warning('wx_fail');
-            }
-        };
-        var count = 0;
-        var hc_login_callback = {
-            success: res => {
-                console.log(res)
                 if (res.data.status) {
                     wx.hideLoading();
                     switch (res.data.status) {
                         case 10001:
-                            wx.showToast({ title: '登录成功！', mask: true, duration: 2000 });
-                            wx.redirectTo({ url: '../home/home' });
-                            break;
+                        wx.showToast({ title: '登录成功！', mask: true, duration: 1000 });
+                        wx.switchTab({ url: '../home/home' });
+                        break;
                         case 10002:
-                            that.warning('hc_login_fail');
-                            break;
+                        that.warning('hc_login_fail');
+                        break;
                         case 10003:
-                            that.warning('hc_no_found');
-                            that.renewAuthimg();
-                            break;
+                        that.warning('hc_no_found');
+                        that.renewAuthimg();
+                        break;
                         case 10004:
-                            if (count++ >= 3) {
-                                count = 0;
-                                this.fail();
-                            } else {
-                                wx.showLoading({ title: '出错重试中...', mask: true });
-                                loginManager.wx_login(wx_login_callback);
-                            }
-                            break;
+                        that.warning('hc_login_fail');
+                        break;
                         case 10006:
-                            that._data.applying = res.data.data;
-                            break;
+                        that._data.applying = res.data.data;
+                        this.warning('hc_applying');
+                        break;
                     }
                 }
             },
@@ -83,18 +63,13 @@ Page({
                 wx.hideLoading();
                 that.warning('hc_login_fail');
             }
-        };
-
-        // 进行登录
-        wx.showLoading({ title: '登录中...', mask: true });
-        loginManager.wx_login(wx_login_callback);
+        });
     },
 
     /**
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-        if (this._data.applying) this.warning('hc_applying');
     },
 
     /**
@@ -112,43 +87,20 @@ Page({
         if (this.data.button_name == '认证')
             this.hc_register();
         else if (this.data.button_name == '重试')
-            this.hc_login();
+            this.onShow();
         else if (this.data.button_name == '重新登录')
-            this.wx_login();
+            this.onShow();
     },
 
     // 刷新验证码
     renewAuthimg: function () {
         // 设置验证码图片
         // 随机字符串
-        this._data.auth_img_code = this.randStr();
+        this._data.auth_img_code = authImg.randStr();
         // 获取画布大小
-        var width = unitConvert.rpx2pr(120);
-        var height = unitConvert.rpx2pr(40);
-
-        // 进行绘制
-        // 设定颜色
-        var rand = Math.random();
-        var lineColor = 'red';
-        var bgColor = 'green';
-        if (rand * 3 < 1) {
-            lineColor = 'green';
-            bgColor = 'blue';
-        } else if (rand * 3 < 2) {
-            lineColor = 'blue';
-            bgColor = 'red';
-        }
-
-        var context = wx.createCanvasContext('auth_img');
-        // 背景
-        context.setFillStyle(bgColor);
-        context.fillRect(0, 0, width, height);
-        // 写字
-        context.setFontSize(width / 4);
-        context.setFillStyle(lineColor);
-        context.fillText(this._data.auth_img_code, width / 4 - rand * 5, width / 5 + rand * 5);
-        // 完成
-        context.draw();
+        var width = unitConvert.rpx2px(120);
+        var height = unitConvert.rpx2px(40);
+        authImg.buildImg(this, this._data.auth_img_code, 'auth_img', width, height);
     },
 
     /**
@@ -157,7 +109,7 @@ Page({
 
     hc_register: function () {
         // 向hc服务器发起注册请求
-        this.setData({ warning_switch: false });
+        this.setData({ warning_switch: false, button_show: false });
         // 检测输入框
         if (!this._data.inputSecureCode || this._data.inputSecureCode == '') {
             this.warning('no_secure_code');
@@ -170,17 +122,17 @@ Page({
                 secureCode: that._data.inputSecureCode,
                 success: res => {
                     wx.hideLoading();
-                    if (res.data.status == '10001') {
+                    if (res.data.status == 10001) {
                         // 注册成功，跳转页面
-                        wx.redirectTo({ url: '../home/home' });
-                    } else if (res.data.status == '10002') {
+                        wx.switchTab({ url: '../home/home' });
+                    } else if (res.data.status == 10002) {
                         // hc服务器异常
                         that.warning('hc_register_fail');
-                    } else if (res.data.status == '10003') {
+                    } else if (res.data.status == 10003) {
                         // 安全码错误
                         that.warning('secure_code_fail');
                         that.renewAuthimg();
-                    } else if (res.data.status == '10004') {
+                    } else if (res.data.status == 10004) {
                         // 登录态过期
                         that.warning('wx_fail');
                     }
@@ -198,18 +150,6 @@ Page({
     setApply: function (applying) {
         this._data.applying = applying;
         //this.warning('hc_applying');
-    },
-
-    randStr: function () {
-        var len = 4;
-        // 默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1
-        var chrs = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';
-        var maxPos = chrs.length;
-        var pwd = '';
-        for (var i = 0; i < len; i++) {
-            pwd += chrs.charAt(Math.floor(Math.random() * maxPos));
-        }
-        return pwd;
     },
 
     testAuth: function () {
@@ -247,7 +187,7 @@ Page({
                 warning_content: "微信登录失败！"
             });
 
-        // 未认证潮友 
+        // 未认证潮友
         else if (warningType == "hc_no_found")
             this.setData({
                 button_show: true,
@@ -292,43 +232,6 @@ Page({
                 warning_switch: true,
                 warning_content: '申请审核中！'
             })
-    },
-
-    /************************下面的我不关心，是自带的************************/
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function () {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function () {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function () {
-
     },
 
     /**

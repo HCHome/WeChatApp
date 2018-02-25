@@ -1,0 +1,3 @@
+<!--pages/category/category.wxml-->
+<post-view wx:for='{{postLists}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+<view id='tip' bindtap='onReachBottom'>--{{tip}}--</view>

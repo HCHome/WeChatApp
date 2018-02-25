@@ -1,0 +1,10 @@
+/* pages/category/category.wxss */
+
+page {
+    min-height: 101%;
+}
+
+#tip {
+    text-align: center;
+    font-size: 12px;
+}

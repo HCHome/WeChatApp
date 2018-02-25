@@ -2,7 +2,7 @@
 <!--搜索框  -->
 <view id='search_part'>
     <view id='search_box'>
-        <input id='search_input' bindinput='search_input'></input>
+        <input id='search_input' bindinput='search_input' placeholder='搜人、帖子'></input>
     </view>
     <image id='search_button' src='../resource/search.png' bindtap='search_click'></image>
 </view>
@@ -14,19 +14,16 @@
     </view>
 </scroll-view>
 <!--置顶  -->
-<view id='notice'>
-    <view class='part_title'>
-        <view class='part_titleName'>置顶</view>
-        <view class='part_title_tip' style='{{hasNotice ? "display: none;" : ""}}'>暂无新公告</view>
+<view id='noticePart'>
+    <view class='notice' wx:for='{{notice}}' bindtap='notice_tap' data-notice='{{item}}'>
+        <text class='notice_cls'>置顶</text>
+        <text class='notice_title' wx:if='{{hasNotice}}'>{{item.title}}</text>
+        <text class='notice_title' wx:else>暂无新公告</text>
     </view>
-    <post-view style='{{hasNotice ? "" : "display: none;"}}' wx:for='{{notice}}' post='{{item}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
 </view>
 <!--帖子列表  -->
 <view id='post_list'>
-    <view class='part_title'>
-        <view class='part_titleName'>最新</view>
-    </view>
     <post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
 </view>
 <!--加载更多的提示  -->
-<view id="morePostsTipView">--{{moreTip}}--</view>
+<view id="morePostsTipView" bindtap='onReachBottom'>--{{moreTip}}--</view>

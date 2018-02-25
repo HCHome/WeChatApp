@@ -1,0 +1,24 @@
+<!--pages/postdetail/postdetail.wxml-->
+<!--楼主部分  -->
+<view id='posterPart'>
+    <text id='title'>{{title}}</text>
+    <view class='userInfoPart'>
+        <avatar-view class='posterAvatar' letter='{{letter}}' imageUrl='{{posterAvatar}}' pxSize='24' />
+        <text class='userInfo'>{{posterNickname}}发布于{{category}}-{{createdDate}}</text>
+    </view>
+    <image id='imgs' wx:for='{{pictureUrl}}' src='{{item}}' mode='aspectFit' bindtap='imgTap' data-img='{{item}}'></image>
+    <text class='context'>{{text}}</text>
+    <view id='postMenu'>
+        <text id='replyPoster' bindtap='replyPoster'>回复楼主</text>
+        <text id='viewOrder' bindtap='changeOrder'>{{viewOrder}}</text>
+    </view>
+</view>
+<!--评论部分  -->
+<reply-view wx:for='{{replyList}}' wx:key='{{item.floor}}' reply='{{item}}' bind:replyMenu='onMenu' bind:avatarTap='avatarTap' />
+<!--上拉加载  -->
+<!--加载更多的提示  -->
+<view id="tip" bindtap='onReachBottom'>--{{tip}}--</view>
+<view id='replyView'>
+    <text id='repliedFloorTip'>{{repliedFloorTip}}</text>
+    <input id='replyInput' bindchange='replyInput' placeholder='回复此贴' confirm-type='send' value='{{replyValue}}' bindconfirm='confirmReply' focus='{{replyInputFocus}}'></input>
+</view>

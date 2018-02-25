@@ -11,7 +11,7 @@ Component({
                 postId: -1,
                 posterId: 0,
                 posterNickname: "",
-                avatar: '',
+                posterAvatar: '',
                 letter: '',
                 title: "",
                 category: "",
@@ -19,7 +19,8 @@ Component({
                 text: "",
                 pictureUrl: [
                     ''
-                ]
+                ],
+                repliesCount: 0
             }
         }
     },
@@ -42,6 +43,12 @@ Component({
         bindTap: function (e) {
             e.post = this.properties.post;
             this.triggerEvent('Tap', e, {})
+        },
+        previewImg: function(e) {
+            wx.previewImage({
+                current: e.target.dataset.img,
+                urls: this.properties.post.pictureUrl
+            });
         }
     }
 })

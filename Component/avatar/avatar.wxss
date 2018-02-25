@@ -1,8 +1,4 @@
 /* Component/avatar/avatar.wxss */
-.avatarView {
-    width: 100rpx;
-    height: 100rpx;
-}
 
 .letter-canvas, .avatarImg {
     border: 1px solid #ccc;

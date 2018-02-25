@@ -1,48 +1,50 @@
 {
     "pages": [
-        "pages/home/home",
         "pages/login/login",
+        "pages/test/test",
+        "pages/sendpost/sendpost",
+        "pages/home/home",
         "pages/getCode/getCode",
-        "pages/test/test"
+        "pages/category/category",
+        "pages/postdetail/postdetail",
+        "pages/sign/sign",
+        "pages/person/person",
+        "pages/userinfosetting/userinfosetting",
+        "pages/search/search"
     ],
     "window": {
-        "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#fff",
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#5AA7FF",
         "navigationBarTitleText": "海潮之家",
-        "navigationBarTextStyle": "black"
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#5AA7FF"
     },
     "tabBar": {
-        "color": "black",
-        "selectedColor": "green",
+        "color": "#5AA7FF",
+        "selectedColor": "#5AA7FF",
         "list": [
             {
                 "pagePath": "pages/home/home",
-                "iconPath": "pages/resource/占位图.png",
-                "selectedIconPath": "pages/resource/home.png",
+                "iconPath": "pages/resource/home.png",
+                "selectedIconPath": "pages/resource/home_on.png",
                 "text": "首页"
             },
             {
-                "pagePath": "pages/test/test",
-                "iconPath": "pages/resource/占位图.png",
-                "selectedIconPath": "pages/resource/rank.png",
+                "pagePath": "pages/sign/sign",
+                "iconPath": "pages/resource/sign.png",
+                "selectedIconPath": "pages/resource/sign_on.png",
                 "text": "签到"
             },
             {
-                "pagePath": "pages/test/test",
-                "iconPath": "pages/resource/占位图.png",
-                "selectedIconPath": "pages/resource/new_post.png",
+                "pagePath": "pages/sendpost/sendpost",
+                "iconPath": "pages/resource/newPost.png",
+                "selectedIconPath": "pages/resource/newPost_on.png",
                 "text": "发帖"
             },
             {
-                "pagePath": "pages/test/test",
-                "iconPath": "pages/resource/占位图.png",
-                "selectedIconPath": "pages/resource/search.png",
-                "text": "找人"
-            },
-            {
-                "pagePath": "pages/test/test",
-                "iconPath": "pages/resource/占位图.png",
-                "selectedIconPath": "pages/resource/person.png",
+                "pagePath": "pages/person/person",
+                "iconPath": "pages/resource/person.png",
+                "selectedIconPath": "pages/resource/person_on.png",
                 "text": "我的"
             }
         ]

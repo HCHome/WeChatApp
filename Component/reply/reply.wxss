@@ -1,0 +1,27 @@
+/* Component/reply/reply.wxss */
+
+.userInfoPart {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    align-items: center;
+}
+
+.posterAvatar {
+    margin: 2px;
+}
+
+.floor {
+    position: absolute;
+    right: 2px;
+}
+
+.reply {
+    display: flex;
+    flex-direction: column;
+    border-bottom: solid 1px #eee;
+    border-top: solid 1px #eee;
+    margin: 5px 0;
+    padding: 2px;
+    background-color: white;
+}

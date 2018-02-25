@@ -1,6 +1,8 @@
 {
     "usingComponents": {
         "post-view": "/Component/post/post",
-        "avatar": "/Component/avatar/avatar"
+        "avatar": "/Component/avatar/avatar",
+        "reply-view" : "/Component/reply/reply",
+        "inputbox" : "/Component/inputbox/inputbox"
     }
 }

@@ -1,0 +1,9 @@
+{
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true,
+    "onReachBottomDistance": 0,
+    "usingComponents": {
+        "avatar-view": "../../Component/avatar/avatar",
+        "reply-view": "/Component/reply/reply"
+    }
+}

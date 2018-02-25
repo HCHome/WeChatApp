@@ -1,0 +1,9 @@
+<!--Component/reply/reply.wxml-->
+<view class='reply' bindtap='onMenu'>
+    <view class='userInfoPart'>
+        <avatar-view class='posterAvatar' letter='{{reply.letter}}' imageUrl='{{reply.replierAvatar}}' pxSize='24' catchtap='avatarTap' />
+        <text class='userInfo'  >{{reply.replierNickname}}</text>
+        <view class='floor' >#{{reply.floor}}</view>
+    </view>
+    <text class='replyText' >{{text}}</text>
+</view>

@@ -36,7 +36,7 @@
 .input_area {
     width: 170rpx;
     height: 50rpx;
-    border-bottom: solid 1px gray;
+    border-bottom: solid 1px #C9C9C9;
     text-align: center;
     padding: 0;
 }
@@ -54,12 +54,12 @@
 #msg_input {
     width: 650rpx;
     margin: 20rpx 50rpx;
-    border: 1px solid gray;
+    border: 1px solid #C9C9C9;
 }
 
 #tip {
     font-size: 30rpx;
-    color: #ddd;
+    color: #C9C9C9;
     text-align: right;
     margin-right: 50rpx;
 }
