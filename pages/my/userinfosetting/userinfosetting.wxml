@@ -1,0 +1,98 @@
+<!--pages/userinfosetting/userinfosetting.wxml-->
+<view class="weui-cells__title">个人信息</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class="weui-input disabled" disabled value='{{nickname}}' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">性别</view>
+        </view>
+        <view class="weui-cell__bd">
+            <picker disabled='{{disabled}}' value='{{sex == "男" ? 0 : 1}}' range='{{sexRange}}' bindchange='onChange' data-prop='sex'>
+                <view class='weui-input {{disabled ? "disabled" : ""}}' >{{sex}}</view>
+            </picker>
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">是否单身</view>
+        </view>
+        <view class="weui-cell__bd">
+            <picker disabled='{{disabled}}' value='{{isSingleDog ? 0 : 1}}' range='{{YNRange}}' bindchange='onChange' data-prop='isSingleDog'>
+                <view class='weui-input {{disabled ? "disabled" : ""}}'>{{isSingleDog ? "是" : "否"}}</view>
+            </picker>
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">入会年级</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{term}}' placeholder="未填写" bindchange='onChange' data-prop='term' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">工作</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{job}}' placeholder="未填写" bindchange='onChange' data-prop='job' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">学校</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{school}}' placeholder="未填写" bindchange='onChange' data-prop='school' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">专业</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{profession}}' placeholder="未填写" bindchange='onChange' data-prop='profession' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">联系方式</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{phoneNumber}}' placeholder="未填写" bindchange='onChange' data-prop='phoneNumber' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">QQ</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{qqNumber}}' placeholder="未填写" bindchange='onChange' data-prop='qqNumber' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">微信</view>
+        </view>
+        <view class="weui-cell__bd">
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{wechatNumber}}' placeholder="未填写" bindchange='onChange' data-prop='wechatNumber' />
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_switch">
+        <view class="weui-cell__bd">对外展示信息</view>
+        <view wx:if='{{disabled}}' class="weui-cell__ft">
+            <view class='weui-input disabled'>{{isDisplay ? "是" : "否"}}</view>
+        </view>
+        <view wx:else class="weui-cell__ft">
+            <switch checked='{{isDisplay}}' bindchange='onChange' data-prop='isDisplay' />
+        </view>
+    </view>
+</view>
+<button class="weui-btn" type="primary" bindtap='btnTap'>{{btnText}}</button>

@@ -5,7 +5,8 @@
         <text>签到积分：{{signScore}}</text>
         <text>排名：{{order}}</text>
     </view>
-    <button id='signButton' disabled='{{btnDisabled}}' plain='true' bindtap='signBtn'>{{buttonText}}</button>
+    <button class="weui-btn mini-btn" type="default" size="mini" bindtap='signBtn' disabled='{{btnDisabled}}'>{{buttonText}}</button>
+    <!-- <button id='signButton' disabled='{{btnDisabled}}' plain='true' bindtap='signBtn'>{{buttonText}}</button> -->
 </view>
 <view id='rankList'>
     <view id='rankTitle'>潮友排行</view>

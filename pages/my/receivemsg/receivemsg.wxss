@@ -1,0 +1,14 @@
+/* pages/receivemsg/receivemsg.wxss */
+.simpleMsg {
+    font-size: 13px;
+    color: #888888;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: calc(100vw - 100px);
+}
+
+avatar-view {
+    position: relative;
+    left: 0;
+}

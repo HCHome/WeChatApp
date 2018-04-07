@@ -1,0 +1,5 @@
+/* Component/ninegrid/ninegrid.wxss */
+.imgs {
+    display: block;
+    margin: 10px 10px 0px 30px;
+}

@@ -1,4 +1,5 @@
 const app = getApp();
+const loginManager = require('loginManager.js')
 
 var _net4User = {
     // 签到排名
@@ -38,7 +39,12 @@ var _net4User = {
             data: {
                 userId: Object.userId
             },
-            success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },
+            success: res => {
+                // 把新增的信息放进loginManager
+                var user = res.data.data.user;
+                loginManager.setHC_info(user);
+                if (Object.success && typeof(Object.success) == 'function') Object.success(res);
+            },
             complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
             fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
         })

@@ -1,5 +1,3 @@
-const util = require('../../utils/util.js');
-
 module.exports = {
     draw: function (canvasID, componentInstance, letter, size) {
         if (!size) var size = 300;

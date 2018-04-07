@@ -21,6 +21,9 @@ Component({
                     ''
                 ],
                 repliesCount: 0
+            },
+            observer: function(newVal, oldVal) {
+                this.setText(newVal.text)
             }
         }
     },
@@ -29,18 +32,18 @@ Component({
      * 组件的初始数据
      */
     data: {
-
+        showedText: ""
     },
 
     /**
      * 组件的方法列表
      */
     methods: {
-        bindAvatarTap: function (e) {
+        bindAvatarTap: function(e) {
             e.post = this.properties.post;
             this.triggerEvent('AvatarTap', e, {})
         },
-        bindTap: function (e) {
+        bindTap: function(e) {
             e.post = this.properties.post;
             this.triggerEvent('Tap', e, {})
         },
@@ -49,6 +52,18 @@ Component({
                 current: e.target.dataset.img,
                 urls: this.properties.post.pictureUrl
             });
+        },
+        setText: function(text) {
+            var sText = text;
+            var count = 0;
+            for (var i = 0; i < text.length; i++) {
+                if (text[i] == "\n") count++;
+                if (count >= 5) {
+                    sText = text.substr(0, i) + "...";
+                    break;
+                }
+            }
+            this.setData({ showedText: sText });
         }
     }
 })

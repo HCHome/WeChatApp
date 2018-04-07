@@ -40,7 +40,7 @@ Page({
                     switch (res.data.status) {
                         case 10001:
                         wx.showToast({ title: '登录成功！', mask: true, duration: 1000 });
-                        wx.switchTab({ url: '../home/home' });
+                        wx.switchTab({ url: '/pages/home/home' });
                         break;
                         case 10002:
                         that.warning('hc_login_fail');
@@ -67,12 +67,6 @@ Page({
     },
 
     /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function () {
-    },
-
-    /**
      * 自定义的各个绑定函数（和页面元素绑定）
      */
     // 处理输入
@@ -87,9 +81,9 @@ Page({
         if (this.data.button_name == '认证')
             this.hc_register();
         else if (this.data.button_name == '重试')
-            this.onShow();
+            this.onLoad();
         else if (this.data.button_name == '重新登录')
-            this.onShow();
+            this.onLoad();
     },
 
     // 刷新验证码
@@ -124,7 +118,7 @@ Page({
                     wx.hideLoading();
                     if (res.data.status == 10001) {
                         // 注册成功，跳转页面
-                        wx.switchTab({ url: '../home/home' });
+                        wx.switchTab({ url: '/pages/home/home' });
                     } else if (res.data.status == 10002) {
                         // hc服务器异常
                         that.warning('hc_register_fail');
@@ -160,8 +154,8 @@ Page({
             return this._data.inputAuth.toUpperCase() == this._data.auth_img_code.toUpperCase();
     },
 
+    // warning的集成，修改警告信息并改变按钮和输入区可见性
     warning: function (warningType) {
-        // warning的集成，修改警告信息并改变按钮和输入区可见性
         wx.hideLoading();
         // 未输入安全码
         if (warningType == 'no_secure_code')

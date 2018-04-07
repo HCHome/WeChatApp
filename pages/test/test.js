@@ -9,12 +9,13 @@ Page({
      */
     data: {
         // 基础数据
-        name : '按时大大',
-        range : ['x1', 'x2'],
-        initVal : 'x1',
-        disabled: true
+        value: ""
     },
     onLoad: function() {
+        var that = this;
+        setTimeout(function() {
+            that.setData({ value : "啊啊啊啊" });
+        }, 6000);
     },
     onChange: function(e) {
         console.log(e)

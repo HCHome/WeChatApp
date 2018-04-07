@@ -1,0 +1,4 @@
+/* pages/userinfosetting/userinfosetting.wxss */
+.disabled {
+    color: gray;
+}

@@ -1,24 +1,37 @@
 <!--pages/postdetail/postdetail.wxml-->
 <!--楼主部分  -->
-<view id='posterPart'>
-    <text id='title'>{{title}}</text>
-    <view class='userInfoPart'>
-        <avatar-view class='posterAvatar' letter='{{letter}}' imageUrl='{{posterAvatar}}' pxSize='24' />
-        <text class='userInfo'>{{posterNickname}}发布于{{category}}-{{createdDate}}</text>
+<view id='title'>{{title}}</view>
+<view id='context'>
+    <text>{{text}}</text>
+</view>
+<ninegrid-view pictureCount="{{pictureCount}}" pictureUrl="{{pictureUrl}}" />
+<view class="weui-cell" style="border: none;">
+    <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
+        <avatar-view letter='{{letter}}' imageUrl='{{posterAvatar}}' pxSize='25' />
     </view>
-    <image id='imgs' wx:for='{{pictureUrl}}' src='{{item}}' mode='aspectFit' bindtap='imgTap' data-img='{{item}}'></image>
-    <text class='context'>{{text}}</text>
-    <view id='postMenu'>
-        <text id='replyPoster' bindtap='replyPoster'>回复楼主</text>
-        <text id='viewOrder' bindtap='changeOrder'>{{viewOrder}}</text>
+    <view class="weui-cell__bd">
+        <view style="font-size: 10px;color: #888888;">{{posterNickname}}</view>
+        <view style="font-size: 10px;color: #888888;">{{category}} | {{createdDate}}</view>
     </view>
 </view>
+<label id="btn">
+    <button class="weui-btn mini-btn" type="default" size="mini" bindtap='replyPoster'>回复楼主</button>
+</label>
 <!--评论部分  -->
 <reply-view wx:for='{{replyList}}' wx:key='{{item.floor}}' reply='{{item}}' bind:replyMenu='onMenu' bind:avatarTap='avatarTap' />
 <!--上拉加载  -->
 <!--加载更多的提示  -->
-<view id="tip" bindtap='onReachBottom'>--{{tip}}--</view>
+<view class="weui-loadmore" style="font-size: 13px; color: #888888; margin: 5px auto;">
+    <block wx:if="{{tip == '正在加载'}}">
+        <view class="weui-loading"></view>
+        <view class="weui-loadmore__tips">正在加载</view>
+    </block>
+    <block wx:else>
+        <view class="weui-loadmore__tips" bindtap="onReachBottom">{{tip}}</view>
+    </block>
+</view>
+<!-- 输入回复 -->
 <view id='replyView'>
     <text id='repliedFloorTip'>{{repliedFloorTip}}</text>
-    <input id='replyInput' bindchange='replyInput' placeholder='回复此贴' confirm-type='send' value='{{replyValue}}' bindconfirm='confirmReply' focus='{{replyInputFocus}}'></input>
+    <textarea id='replyInput' bindchange='replyInput' placeholder='回复此贴' confirm-type='send' value='{{replyValue}}' bindconfirm='confirmReply' focus='{{replyInputFocus}}' cursor-spacing="15" auto-height fixed></textarea>
 </view>

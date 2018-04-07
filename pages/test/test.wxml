@@ -1,2 +1,0 @@
-<inputbox name='{{name}}' range='{{range}}' bind:change='onChange'/>
-<inputbox name='{{name}}' mode='input' bind:change='onChange' disabled="{{disabled}}" value='aa'/>

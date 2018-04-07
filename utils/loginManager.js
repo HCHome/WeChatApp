@@ -28,7 +28,7 @@ const _loginManager = {
      */
     setHC_info: function(Object) {
         for (var item in Object) {
-            this.hc_info[item] = Object[item];
+            this.hc_info.user[item] = Object[item];
         }
     },
 

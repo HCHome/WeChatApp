@@ -34,13 +34,13 @@ Page({
         if (!this.data.name)
             wx.showToast({
                 title: '请输入姓名',
-                image: '../resource/warning.png',
+                image: '/pages/resources/warning.png',
                 duration: 1000
             });
         else if (!this.data.msg)
             wx.showToast({
                 title: '留言不能为空',
-                image: '../resource/warning.png',
+                image: '/pages/resources/warning.png',
                 duration: 1000
             });
         // 输入没有问题，进行提交
@@ -74,7 +74,7 @@ Page({
                 fail: () => {
                     wx.showToast({
                         title: '发生异常，请重试',
-                        image: '../resource/warning.png',
+                        image: '/pages/resources/warning.png',
                         duration: 3000,
                         mask: true
                     });

@@ -1,0 +1,32 @@
+/* pages/cylist/cylist.wxss */
+.filter {
+    font-size: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#search_word-tip {
+    margin: 0.5em;
+}
+
+.weui-btn {
+    margin: 5px;
+}
+
+.weui-btn:first-child {
+    margin: 5px;
+}
+
+.filter-title {
+    width: 5em;
+    padding-left: 0.5em;
+    text-align: left;
+}
+
+.loading_tip {
+    font-size: 13px;
+    width: 100vw;
+    border-top: 1rpx solid #ccc;
+    margin-top: 10px;
+}

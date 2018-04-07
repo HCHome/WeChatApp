@@ -75,28 +75,18 @@ Page({
      * 页面函数绑定
      */
 
-    // 点击图片
-    imgTap: function(e) {
-        wx.previewImage({
-            current: e.target.dataset.img,
-            urls: this.data.pictureUrl
-        });
-    },
-
     // 回复楼主的按钮
-    replyPoster: function(e) { this.setRepliedFloor(null); },
+    replyPoster: function(e) {
+        this.setRepliedFloor(null);
+        this.setData({ replyInputFocus: true });
+    },
 
     // 改变排序
     changeOrder: function(e) {
-        var replies = this.data.replyList;
-        this.setData({replyList: null});
-        if (this.data.viewOrder == '倒序查看') {
-            replies.sort((a, b) => { return a.floor < b.floor; });
-            this.setData({ viewOrder: '正序查看', replyList: replies });
-        } else {
-            replies.sort((a, b) => { return a.floor > b.floor; });
-            this.setData({ viewOrder: '倒序查看', replyList: replies });
-        }
+        if (this.data.viewOrder == '正序查看')
+            this.sortReply('倒序查看');
+        else
+            this.sortReply('正序查看');
     },
 
     // 针对回复的操作菜单
@@ -109,11 +99,16 @@ Page({
                 wx.showActionSheet({
                     itemList: ['回复', '删除'],
                     success: res => {
-                        if (res.tapIndex == 0) this.setRepliedFloor(targetReply);
-                        else if (res.tapIndex == 1) this.deleteReply(targetReply);
+                        if (res.tapIndex == 0) {
+                            this.setRepliedFloor(targetReply);
+                            this.setData({ replyInputFocus: true });
+                        } else if (res.tapIndex == 1) this.deleteReply(targetReply);
                     }
                 });
-            } else this.setRepliedFloor(targetReply)
+            } else {
+                this.setRepliedFloor(targetReply);
+                this.setData({ replyInputFocus: true });
+            }
         }
     },
 
@@ -125,7 +120,15 @@ Page({
     // 点击确定按钮
     confirmReply: function(e) {
         this._data.replyText = e.detail.value;
-        this.postReply();
+        if (this._data.replyText == "")
+            wx.showToast({
+                title: '请输入回复',
+                duration: 1000,
+                mask: true,
+                image: '/pages/resources/warning.png'
+            });
+        else
+            this.postReply();
     },
 
     /**
@@ -139,8 +142,11 @@ Page({
      * 页面上拉触底事件的处理函数
      */
     onReachBottom: function() {
-        if (this.data.tip == '加载更多')
-            this.getReply(this.data.replyList[this.data.replyList.length - 1].replyId);
+        if (this.data.tip == '加载更多') {
+            var nextID = 0;
+            if (this.data.replyList.length > 0) nextID = this.data.replyList[this.data.replyList.length - 1].replyId;
+            this.getReply(nextID);
+        }
     },
 
     /**
@@ -168,8 +174,8 @@ Page({
                                 res.replyList[i].letter = res.replyList[i].replierNickname[res.replyList[i].replierNickname.length - 1];
                             replies.push(res.replyList[i]);
                         }
-                    replies.sort((a, b) => { return a.floor > b.floor; });
                     that.setData({ replyList: replies });
+                    that.sortReply();
                 }
             },
             complete: () => {
@@ -198,6 +204,7 @@ Page({
                     var replyList = that.data.replyList;
                     replyList.splice(i, 1);
                     that.setData({ replyList: replyList });
+                    that.sortReply();
                     // 弹窗提示
                     wx.showToast({
                         title: '已删除',
@@ -211,7 +218,7 @@ Page({
                 // 弹窗提示
                 wx.showToast({
                     title: '删除失败',
-                    image: '../resource/warning.png',
+                    image: '/pages/resources/warning.png',
                     mask: true,
                     duration: 1500
                 });
@@ -224,10 +231,9 @@ Page({
         this._data.repliedReply = repliedReply;
         if (repliedReply == null) this.setData({ repliedFloorTip: '回复楼主' });
         else this.setData({ repliedFloorTip: '回复#' + repliedReply.floor });
-        this.setData({ replyInputFocus: true });
     },
 
-    // 回复
+    // 发送回复
     postReply: function() {
         var that = this;
         wx.showLoading({
@@ -249,14 +255,14 @@ Page({
                     duration: 1500
                 });
                 that.getReply(that.data.replyList.length > 0 ? that.data.replyList[that.data.replyList.length - 1].replyId : 0);
-                that.setData({ replyValue: '' });
+                that.setData({ replyValue: '' }); // 清空输入框
                 that.setRepliedFloor(null);
             },
             fail: () => {
                 wx.hideLoading();
                 wx.showToast({
                     title: '发布失败',
-                    image: '../resource/warning.png',
+                    image: '/pages/resources/warning.png',
                     duration: 1500
                 });
             },
@@ -264,5 +270,15 @@ Page({
     },
 
     // 输入回复
-    replyInput: function(e) { this._data.replyText = e.detail.value; }
+    replyInput: function(e) { this._data.replyText = e.detail.value; },
+
+    // 给回复排序，注意会设定界面显示的字，所以调用之前不需要先设定
+    sortReply: function(viewOrder) {
+        if (!viewOrder) var viewOrder = this.data.viewOrder;
+        if (viewOrder == '正序查看') { var sortFun = (a, b) => (b.floor - a.floor); } else { var sortFun = (a, b) => (a.floor - b.floor); }
+        var replies = this.data.replyList;
+        replies.sort(sortFun);
+        this.setData({ replyList: null });
+        this.setData({ viewOrder: viewOrder, replyList: replies });
+    }
 })

@@ -10,27 +10,30 @@ Page({
      * 页面的初始数据
      */
     data: {
-        // 基础数据
-        categoryItems: [],
-
-        notice: [],
-        posts: [],
+        categoryItems: [], // 分类
+        notice: [], // 置顶帖子
+        posts: [], // 帖子
 
         // 隐显等界面控制
         hasNotice: true,
-        moreTip: "加载更多"
+        moreTip: "加载更多",
+
+        // 搜索相关
+        inputShowed: false,
+        inputVal: ""
     },
 
     _data: {
-        search_word: '', // 搜索词保存
-        postIds: []      // 记录当前的id，用于防止重复
+        postIds: [] // 记录当前的id，用于防止重复
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
-        this.setData({ categoryItems: app.globalData.categories });
+    onLoad: function(options) {
+        var tmp = app.globalData.categories.concat();
+        tmp.push({ name: '找潮友', img: '/pages/resources/找潮友.png' });
+        this.setData({ categoryItems: tmp });
         // 关闭跳转时的loading提示
         wx.hideToast();
     },
@@ -38,7 +41,7 @@ Page({
     /**
      * 生命周期函数--监听页面显示
      */
-    onShow: function () {
+    onShow: function() {
         // 刷新帖子
         this.setData({ posts: [] });
         this._data.postIds = [];
@@ -48,7 +51,7 @@ Page({
     /**
      * 拉倒底部进行加载
      */
-    onReachBottom: function () {
+    onReachBottom: function() {
         if (this.data.moreTip == "加载更多") {
             this.setData({ moreTip: "加载中" });
             this.getMorePosts();
@@ -58,37 +61,26 @@ Page({
     /**
      * 下拉刷新
      */
-    onPullDownRefresh: function () {
+    onPullDownRefresh: function() {
         this.setData({ moreTip: "加载中" });
         this.renewPosts();
     },
 
     /**
-     * 绑定页面的函数
+     * 分类点击
      */
-
-    // 输入搜索词
-    search_input: function (e) { this._data.search_word = e.detail.value; },
-
-    // 点击搜索按钮
-    search_click: function () {
-        // TODO 跳到搜索页面
-        console.log(this._data.search_word)
-    },
-
-    // 分类点击
-    category_tap: function (e) {
+    category_tap: function(e) {
         var category = e.currentTarget.id;
-        if (category == '找潮友') {
-            console.log('找潮友的页面');
-            // TODO 找潮友的页面
-        } else {
-            wx.navigateTo({ url: '../category/category?category=' + category });
-        }
+        if (category == '找潮友')
+            wx.navigateTo({ url: '/pages/cylist/cylist' });
+        else
+            wx.navigateTo({ url: '/pages/category/category?category=' + category });
     },
 
-    // 点击楼主头像
-    postAvatarTap: function (e) {
+    /**
+     * 点击头像
+     */
+    postAvatarTap: function(e) {
         // TODO 跳转到新页面
         var user = {};
         user.avatar = e.detail.post.posterAvatar;
@@ -96,24 +88,24 @@ Page({
         console.log(user)
     },
 
-    // 点击帖子内容
+    /**
+     * 点击帖子内容
+     */
     notice_tap: function(e) {
-        wx.navigateTo({
-            url: '../postdetail/postdetail?post=' + JSON.stringify(e.currentTarget.dataset.notice)
-        });
+        wx.navigateTo({ url: '/pages/postdetail/postdetail?post=' + JSON.stringify(e.currentTarget.dataset.notice) });
     },
-    postTap: function (e) {
+    postTap: function(e) {
         wx.navigateTo({
-            url: '../postdetail/postdetail?post=' + JSON.stringify(e.detail.post)
+            url: '/pages/postdetail/postdetail?post=' + JSON.stringify(e.detail.post)
         });
     },
 
     /**
-     * 后台调用的自定义函数
+     * 获取帖子相关
      */
 
     // 获取新的帖子
-    renewPosts: function () {
+    renewPosts: function() {
         wx.showNavigationBarLoading();
         var that = this;
         net4Post.getPosts({
@@ -147,7 +139,8 @@ Page({
 
     },
 
-    getMorePosts: function () {
+    // 获取更多帖子
+    getMorePosts: function() {
         wx.showNavigationBarLoading();
         var that = this;
         net4Post.getPosts({
@@ -169,10 +162,62 @@ Page({
                 wx.hideNavigationBarLoading();
                 this.setData({ moreTip: "暂无更多" });
                 var that = this;
-                setTimeout(function () {
+                setTimeout(function() {
                     that.setData({ moreTip: "加载更多" });
                 }, 5000);
             }
         })
-    }
+    },
+
+    /**
+     * WeUI搜索的函数
+     */
+    showInput: function() {
+        this.setData({
+            inputShowed: true
+        });
+    },
+    hideInput: function() {
+        this.setData({
+            inputVal: "",
+            inputShowed: false
+        });
+    },
+    clearInput: function() {
+        this.setData({
+            inputVal: ""
+        });
+    },
+    inputTyping: function(e) {
+        this.setData({
+            inputVal: e.detail.value
+        });
+    },
+    /**
+     * 搜索
+     */
+    search_all: function(e) {
+        if (this.data.inputVal != "") {
+            wx.navigateTo({
+                url: '/pages/search/result/result?keyWord=' + this.data.inputVal
+            });
+            this.hideInput();
+        }
+    },
+    search_post: function(e) {
+        if (this.data.inputVal != "") {
+            wx.navigateTo({
+                url: '/pages/search/post/post?keyWord=' + this.data.inputVal
+            });
+            this.hideInput();
+        }
+    },
+    search_person: function(e) {
+        if (this.data.inputVal != "") {
+            wx.navigateTo({
+                url: '/pages/search/person/person?keyWord=' + this.data.inputVal
+            });
+            this.hideInput();
+        }
+    },
 })

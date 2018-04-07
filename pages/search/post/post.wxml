@@ -1,0 +1,20 @@
+<!--pages/search/search.wxml-->
+<scroll-view id="tabs" scroll-x>
+    <block wx:for="{{tabs}}" wx:key="*this">
+        <view class="tab" id="{{index}}" style="{{index == activeIndex ? 'color: #1aad19' : 'color: black'}}" bindtap="slideClick">{{item}}</view>
+    </block>
+    <view id="slider" style="transform: translateX({{sliderLeft}}); transition: transform 0.3s"></view>
+</scroll-view>
+<block wx:if="{{posts.length > 0}}">
+    <post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+    <!--加载更多的提示  -->
+</block>
+<view class="weui-loadmore" style="font-size: 13px; color: #888888; margin: 5px auto;">
+    <block wx:if="{{tip == '正在加载'}}">
+        <view class="weui-loading"></view>
+        <view class="weui-loadmore__tips">正在加载</view>
+    </block>
+    <block wx:else>
+        <view class="weui-loadmore__tips" bindtap="onReachBottom">{{tip}}</view>
+    </block>
+</view>

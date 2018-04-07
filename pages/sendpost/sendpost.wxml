@@ -1,13 +1,27 @@
 <!--pages/sendpost/sendpost.wxml-->
-<picker id='category_picker' mode='selector' range='{{categoryArray}}' value='{{chosenCategory}}' bindchange='cateChange'>
-    <text>分类</text>
-    <text>{{chosenCategory}}</text>
-</picker>
-<input id='title' placeholder='请输入标题（最长20字）' bindinput='titleInput' maxlength='20' value='{{initValue}}'></input>
-<view class='splitLine'></view>
-<textarea id='text' placeholder='请输入帖子内容' bindinput='textInput'  value='{{initValue}}'></textarea>
-<view id='pictures'>
-    <image class='imgs' wx:for='{{chosenImgs}}' wx:key='{{item}}' src='{{item}}' mode='aspectFill' bindtap='deleteImg' data-img='{{item}}'></image>
-    <image id='imgButton' src='../resource/add.png' bindtap='chooseImg'></image>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell weui-cell_select">
+        <view class="weui-cell__hd" style="width: 8em">
+            <picker bindchange="cateChange" value="{{chosenCategory}}" range="{{categoryArray}}">
+                <view class="weui-select">{{chosenCategory}}</view>
+            </picker>
+        </view>
+        <view class="weui-cell__bd weui-cell__bd_in-select-before">
+            <input class="weui-input" placeholder='请输入标题（最长20字）' bindinput='titleInput' maxlength='20' value='{{initValue}}' />
+        </view>
+    </view>
 </view>
-<button id='postButton' bindtap='onPost'>发布</button>
+<view id="content-part">
+    <textarea class="weui-textarea" placeholder='请输入帖子内容' bindinput='textInput' value='{{initValue}}'></textarea>
+    <view class="weui-uploader">
+        <block wx:for='{{chosenImgs}}' wx:key='*this'>
+            <view class="weui-uploader__file" bindtap='deleteImg'>
+                <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+            </view>
+        </block>
+        <view class="weui-uploader__input-box">
+            <view class="weui-uploader__input" bindtap="chooseImg"></view>
+        </view>
+    </view>
+</view>
+<button class='weui-btn mini-btn' type='primary' size="mini" bindtap='onPost'>发布</button>

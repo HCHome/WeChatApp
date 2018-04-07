@@ -100,7 +100,7 @@ Page({
                         });
                     } else wx.showToast({
                         title: '签到失败',
-                        image: '../resource/warning.png',
+                        image: '/pages/resources/warning.png',
                         duration: 1500
                     });
                 }

@@ -1,29 +1,53 @@
 <!--pages/test/test.wxml-->
 <!--搜索框  -->
-<view id='search_part'>
-    <view id='search_box'>
-        <input id='search_input' bindinput='search_input' placeholder='搜人、帖子'></input>
+<view class="weui-search-bar">
+    <view class="weui-search-bar__form">
+        <view class="weui-search-bar__box">
+            <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+            <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="搜索" bindconfirm="search_all" maxlength="10" />
+            <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                <icon type="clear" size="14"></icon>
+            </view>
+        </view>
+        <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+            <icon class="weui-icon-search" type="search" size="14"></icon>
+            <view class="weui-search-bar__text">搜索</view>
+        </label>
     </view>
-    <image id='search_button' src='../resource/search.png' bindtap='search_click'></image>
+    <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
 </view>
-<!--分区  -->
-<scroll-view id='category_part' scroll-x='true'>
-    <view class='category' wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
-        <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
-        <text class='category_name'>{{item.name}}</text>
+<view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
+    <view class="weui-cell" hover-class="weui-cell_active" bindtap="search_post">
+        <view class="weui-cell__bd">
+            <view>找帖子：{{inputVal}}</view>
+        </view>
     </view>
-</scroll-view>
-<!--置顶  -->
-<view id='noticePart'>
-    <view class='notice' wx:for='{{notice}}' bindtap='notice_tap' data-notice='{{item}}'>
-        <text class='notice_cls'>置顶</text>
-        <text class='notice_title' wx:if='{{hasNotice}}'>{{item.title}}</text>
-        <text class='notice_title' wx:else>暂无新公告</text>
+    <view class="weui-cell" hover-class="weui-cell_active" bindtap="search_person">
+        <view class="weui-cell__bd">
+            <view>找人：{{inputVal}}</view>
+        </view>
     </view>
 </view>
-<!--帖子列表  -->
-<view id='post_list'>
-    <post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
-</view>
-<!--加载更多的提示  -->
-<view id="morePostsTipView" bindtap='onReachBottom'>--{{moreTip}}--</view>
+<label hidden="{{inputShowed}}">
+    <!--分区  -->
+    <scroll-view id='category_part' scroll-x='true'>
+        <view class='category' hover-class="weui-grid_active" wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
+            <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
+            <text class='category_name'>{{item.name}}</text>
+        </view>
+    </scroll-view>
+    <!--置顶  -->
+    <view id='noticePart'>
+        <view class='notice' wx:for='{{notice}}' wx:key='*this' bindtap='notice_tap' data-notice='{{item}}'>
+            <text class='notice_cls'>置顶</text>
+            <text class='notice_title' wx:if='{{hasNotice}}'>{{item.title}}</text>
+            <text class='notice_title' wx:else>暂无新公告</text>
+        </view>
+    </view>
+    <!--帖子列表  -->
+    <view id='post_list'>
+        <post-view wx:for='{{posts}}' wx:key='{{item.postId}}' post='{{item}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+    </view>
+    <!--加载更多的提示  -->
+    <view id="morePostsTipView" bindtap='onReachBottom'>--{{moreTip}}--</view>
+</label>

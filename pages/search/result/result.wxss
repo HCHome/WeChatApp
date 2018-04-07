@@ -1,0 +1,35 @@
+/* pages/search/search.wxss */
+/* 修改weui的部分样式 */
+/* 列表头部不需要空白 */
+.weui-panel {
+    margin-top: 0;
+}
+/* 去掉头部的边框 */
+.weui-panel:before {
+    border-top: 0;
+}
+
+#user__hd:after {
+    border-bottom: 0;
+}
+
+#user-part:after {
+    border-bottom: 5px solid #888888;
+}
+
+avatar-view {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+post-view {
+    border: none;
+}
+
+.loading_tip {
+    font-size: 13px;
+    width: 100vw;
+    border-top: 1rpx solid #ccc;
+    margin-top: 10px;
+}

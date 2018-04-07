@@ -1,0 +1,25 @@
+<!--pages/search/search.wxml-->
+<scroll-view id="tabs" scroll-x>
+    <block wx:for="{{tabs}}" wx:key="*this">
+        <view class="tab" id="{{index}}" style="{{index == activeIndex ? 'color: #1aad19' : 'color: black'}}" bindtap="slideClick">{{item}}</view>
+    </block>
+    <view id="slider" style="transform: translateX({{sliderLeft}}); transition: transform 0.3s"></view>
+</scroll-view>
+<!-- 搜人结果 -->
+<view wx:if="{{users.length > 0}}" class="weui-panel weui-panel_access">
+    <view class="weui-panel__bd">
+        <view wx:for="{{users}}" wx:key="{{item.userid}}" class="weui-cell weui-cell_access weui-cell_link" style="border: none;" bindtap="onUserTap" data-user="{{item}}">
+            <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
+                <avatar-view letter='{{item.nickname[item.nickname.length - 1]}}' imageUrl='{{item.avatar}}' pxSize='25' />
+            </view>
+            <view class="weui-cell__bd">
+                <view style="font-size: 13px; color:{{item.matchType=='nickname' ? 'red' : 'black'}}">{{item.nickname}}</view>
+                <view wx:if="{{item.matchType != 'nickname'}}" style="font-size: 10px;color: #888888;">
+                    {{item.matchType}}：
+                    <label style="color: red">{{item.matchVal}}</label>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view wx:else class="weui-loadmore__tips">暂时无相关用户</view>

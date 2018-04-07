@@ -1,3 +1,12 @@
 <!--pages/category/category.wxml-->
+<image src="/pages/resources/tb_long.png" style="width: 750rpx; height: 250rpx;" mode="aspectFit" />
 <post-view wx:for='{{postLists}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
-<view id='tip' bindtap='onReachBottom'>--{{tip}}--</view>
+<view class="weui-loadmore" style="font-size: 13px; color: #888888; margin: 5px auto;">
+    <block wx:if="{{tip == '正在加载'}}">
+        <view class="weui-loading"></view>
+        <view class="weui-loadmore__tips">正在加载</view>
+    </block>
+    <block wx:else>
+        <view class="weui-loadmore__tips" bindtap="onReachBottom">{{tip}}</view>
+    </block>
+</view>

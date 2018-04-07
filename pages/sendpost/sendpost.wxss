@@ -1,46 +1,11 @@
 /* pages/sendpost/sendpost.wxss */
 page {
+    font-size: 15px;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-#title {
-    font-size: 20px;
-    padding: 2px;
-}
-
-.splitLine {
-    background-color: black;
-    height: 1px;
-    width: 750rpx;
-}
-
-#text {
-    padding: 2px;
-}
-
-#pictures {
-    display: block;
-}
-
-#imgButton, .imgs {
-    display: inline-block;
-    width: 60px;
-    height: 60px;
-    margin: 2px;
-}
-
-#imgButton {
-    border-radius: 0;
-}
-
-#bottom {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#category_picker {
-    font-size: 16px;
+#content-part {
+    margin: 2px 5px;
 }

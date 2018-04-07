@@ -1,0 +1,73 @@
+<!--pages/cylist/cylist.wxml-->
+<!-- 搜索框 -->
+<view class="weui-search-bar">
+    <view class="weui-search-bar__form">
+        <view class="weui-search-bar__box">
+            <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+            <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="搜索" bindconfirm="search" bindblur="hideInput" maxlength="10" />
+            <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                <icon type="clear" size="14"></icon>
+            </view>
+        </view>
+        <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+            <icon class="weui-icon-search" type="search" size="14"></icon>
+            <view class="weui-search-bar__text">搜索</view>
+        </label>
+    </view>
+    <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+</view>
+
+<!-- 筛选 -->
+<view class="filter" wx:if="{{searchWord != ''}}">
+    <text id="search_word-tip">关键词：{{searchWord}}</text>
+    <icon type="clear" size="14" bindtap="rmSearch"></icon>
+</view>
+
+<view class="filter">
+    <text class="filter-title">年级</text>
+    <picker mode='selector' range='{{termArr}}' value="{{termIndex}}" bindchange="termSelect">
+        <button class="weui-btn mini-btn" type="primary" size="mini">{{termArr[termIndex]}}</button>
+    </picker>
+</view>
+
+<view class="filter">
+    <text class="filter-title">性别</text>
+    <block wx:for="{{sexArr}}" wx:key="*this.val">
+        <button class="weui-btn mini-btn" type="{{item.checked ? 'primary' : 'default'}}" size="mini" bindtap="sexSelect" data-index="{{index}}">
+            {{item.val}}
+        </button>
+    </block>
+</view>
+
+<view class="filter">
+    <text class="filter-title">是否单身</text>
+    <block wx:for="{{singleArr}}" wx:key="*this.val">
+        <button class="weui-btn mini-btn" type="{{item.checked ? 'primary' : 'default'}}" size="mini" bindtap="singleSelect" data-index="{{index}}">
+            {{item.val}}
+        </button>
+    </block>
+</view>
+
+<!-- 结果 -->
+<view wx:if="{{isLoading}}" class="weui-loadmore loading_tip">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
+</view>
+<view wx:elif="{{users.length == 0}}" class="weui-loadmore loading_tip">
+    <view class="weui-loadmore__tips">暂无符合要求的潮友</view>
+</view>
+<view wx:else class="weui-panel weui-panel_access">
+    <view class="weui-panel__bd">
+        <view wx:for="{{users}}" wx:key="{{item.userId}}" class="weui-cell weui-cell_access weui-cell_link" style="border: none;" bindtap="onUserTap" data-user="{{item}}">
+            <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
+                <avatar-view letter='{{item.nickname[item.nickname.length - 1]}}' imageUrl='{{item.avatar}}' pxSize='25' />
+            </view>
+            <view class="weui-cell__bd">
+                <view style="font-size: 13px;">{{item.nickname}}</view>
+                <view style="font-size: 10px; color: #888888;">
+                    {{item.term}}-{{item.school}}-{{item.major}}-{{item.job}}
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

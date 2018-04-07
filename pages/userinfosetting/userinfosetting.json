@@ -1,6 +1,0 @@
-{
-    "usingComponents": {
-        "avatar-view": "../../Component/avatar/avatar",
-        "input-box": "../../Component/inputbox/inputbox"
-    }
-}

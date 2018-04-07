@@ -45,7 +45,7 @@ Component({
      * 组件的初始数据
      */
     data: {
-        size: '100rpx'
+        size: '50px'
     },
 
 

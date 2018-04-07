@@ -27,11 +27,17 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-        var tmp = [];
-        app.globalData.categories.forEach(item => {
-            tmp.push(item.name);
-        });
+        var tmp = []
+        app.globalData.categories.forEach(item => { tmp.push(item.name) })
         this.setData({ categoryArray: tmp, chosenCategory: tmp[0] });
+    },
+
+    /**
+     * 生命周期函数--监听页面加载
+     */
+    onShow: function() {
+        this._data.title = null;
+        this._data.text = null;
     },
 
     /**
@@ -69,7 +75,7 @@ Page({
                 title: '请输入标题',
                 duration: 1000,
                 mask: true,
-                image: '../resource/warning.png'
+                image: '/pages/resources/warning.png'
             });
         // 输入检查·内容
         else if (this._data.text == null || this._data.text == '')
@@ -77,7 +83,7 @@ Page({
                 title: '请输入帖子内容',
                 duration: 1000,
                 mask: true,
-                image: '../resource/warning.png'
+                image: '/pages/resources/warning.png'
             });
         // 发布
         else {
@@ -99,7 +105,7 @@ Page({
                         duration: 1500
                     })
                     that.setData({ chosenImgs: [], initValue: ''});
-                    wx.switchTab({ url: '../home/home' });
+                    wx.switchTab({ url: '/pages/home/home' });
                 }
             })
         }

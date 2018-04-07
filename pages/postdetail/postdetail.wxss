@@ -1,75 +1,68 @@
 /* pages/postdetail/postdetail.wxss */
 
 page {
-    min-height: calc(100% + 1px);
-    background-color: #C9C9C9;
     padding-bottom: 32px;
 }
 
-#posterPart {
-    display: flex;
-    flex-direction: column;
-    border-bottom: 10px solid #C9C9C9;
-    background-color: white;
+avatar-view {
+    position: relative;
+    left: 0;
+    top: 0;
 }
 
-.userInfoPart {
+#title {
+    padding: 0 15px;
+    font-size: 20px;
+}
+
+#context {
+    padding: 0 15px;
+    font-size: 15px;
+}
+
+.weui-cell:before {
+    border: none;
+}
+
+#btn {
+    padding: 10px 0;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
+    align-items: center;
+    border-bottom: 5px solid #d9d9d9;
 }
 
-#postMenu {
-    display: flex;
-    flex-direction: row;
-    border-top: 1px black solid;
-    border-bottom: 1px black solid;
-}
-
-#replyPoster {
-    width: 50%;
-    border-right: 1px black solid;
-    text-align: center;
-}
-
-#viewOrder {
-    width: 50%;
-    text-align: center;
-}
-
-.replies {
-    display: flex;
-    flex-direction: column;
-    border-bottom: solid 1px #C9C9C9;
-}
-
-#tip {
-    text-align: center;
-    font-size: 12px;
+#imgs {
+    display: block;
+    margin: 10px 10px 0px 30px;
 }
 
 #replyView {
-    display: flex;
-    flex-direction: row;
+    font-size: 15px;
+    background-color: #fff;
     position: fixed;
     bottom: 0;
-    border-top: 1px black solid;
-    padding: 2px;
-    width: 100%;
-    background-color: #C9C9C9;
+    border-top: 1px #C9C9C9 solid;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 750rpx;
+    min-height: 25px;
 }
 
 #repliedFloorTip {
-    border-radius: 2px;
-    border: 1px solid #5AA7FF;
-    background-color: #5AA7FF;
-    font-size: 12px;
-    width: 20%;
+    padding: 3px 5px;
+    width: 70px;
     text-align: center;
-    vertical-align: middle;
 }
 
 #replyInput {
-    padding-left: 3px;
-    height: 80%;
+    border-left: 1px #C9C9C9 solid;
+    max-height: 100px;
+    min-height: 25px;
+    position: relative;
+    bottom: 0;
+    padding: 3px 5px;
+    width: calc(100vw - 91px);
 }

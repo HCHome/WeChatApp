@@ -1,0 +1,59 @@
+/* pages/search/search.wxss */
+/* 修改weui的部分样式 */
+/* 列表头部不需要空白 */
+.weui-panel {
+    margin-top: 0px;
+}
+
+/* 去掉头部的边框 */
+.weui-panel:before {
+    border: none;
+}
+
+.weui-cell:first-child:before {
+    border: none;
+}
+
+avatar-view {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+/*选项卡*/
+#tabs {
+    white-space: nowrap;
+    font-size: 16px;
+    position: relative;
+    border-bottom: 1rpx solid #ccc;
+    height: 40px;
+}
+
+.tab {
+    display: inline-block;
+    width: 6em;
+    line-height: 1em;
+    padding: 12px 0;
+    text-align: center;
+}
+
+#slider {
+    content: " ";
+    position: absolute;
+    left: 0;
+    top: 37px;
+    width: 6em;
+    border-bottom: 3px #1aad19 solid;
+    -webkit-transition: -webkit-transform .3s;
+    transition: -webkit-transform .3s;
+    transition: transform .3s;
+    transition: transform .3s, -webkit-transform .3s
+}
+
+.weui-loadmore__tips {
+    width: 100vw;
+    font-size: 13px;
+    color: #888888;
+    margin: 5px auto;
+    text-align: center;
+}

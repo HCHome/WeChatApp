@@ -1,14 +1,16 @@
-<view class='post'  bindtap='bindTap'>
-    <view class='post_info'>
-        <avatar-view class='post_avatar' letter='{{post.letter}}' imageUrl='{{post.posterAvatar}}' catchtap='bindAvatarTap' />
-        <view class='post_info_right'>
-            <text class='post_title'>{{post.title}}</text>
-            <text class='post_category_time'>{{post.posterNickname}}发布于{{post.category}}-{{post.createdDate}}</text>
+<view class="post" bindtap='bindTap'>
+    <view class="weui-cell">
+        <view class="weui-cell__hd" style="margin-right: 10px;">
+            <avatar-view letter='{{post.letter}}' imageUrl='{{post.posterAvatar}}' catchtap='bindAvatarTap' pxSize="50" />
+        </view>
+        <view class="weui-cell__bd">
+            <view class="title">{{post.title}}</view>
+            <view style="font-size: 10px; color: #888888;">{{post.posterNickname}}发布于{{post.category}}-{{post.createdDate}}</view>
         </view>
     </view>
-    <text class='post_content'>{{post.text}}</text>
-    <view class='post_image'>
-        <image class='post_img' wx:for='{{post.pictureUrl}}' src='{{item}}' mode='aspectFill' catchtap='previewImg' data-img='{{item}}'></image>
+    <view class="weui-cell post_text"><text>{{showedText}}</text></view>
+    <view class='post_imgs'>
+        <image class='post_img' wx:for='{{post.pictureUrl}}' wx:key="{{item}}" src='{{item}}' mode='aspectFill' catchtap='previewImg' data-img='{{item}}'></image>
     </view>
     <text class='repliesCount'>评论 {{post.repliesCount}}</text>
 </view>

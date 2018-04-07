@@ -1,0 +1,6 @@
+<!--Component/ninegrid/ninegrid.wxml-->
+<label class="imgs" style="width: {{imgContainWid}}px;">
+    <block wx:for='{{pictureUrl}}' wx:key="*this" >
+        <image style="width: {{imgWid}}px; height: {{imgHeig}}px; display: inline-block; margin-right: 10px;" src='{{item}}' mode='aspectFill' bindtap='imgTap' data-img='{{item}}' bindload='imgLoad'></image>
+    </block>
+</label>

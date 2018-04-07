@@ -86,7 +86,9 @@ const _net4Post = {
             item.createdDate = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
         });
         // 按最新排序
-        list.sort((a, b) => { return a.dateFormat.getTime() > b.dateFormat.getTime(); });
+        list.sort((a, b) => {
+            return a.dateFormat - b.dateFormat;
+        });
         return { status: status, posts: list };
     },
 

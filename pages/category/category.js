@@ -76,7 +76,7 @@ Page({
     postTap: function (e) {
         var post = e.detail.post;
         wx.navigateTo({
-            url: '../postdetail/postdetail?post=' + JSON.stringify(post)
+            url: '/pages/postdetail/postdetail/postdetail?post=' + JSON.stringify(post)
         });
     },
 

@@ -1,0 +1,2 @@
+<!--pages/myposts/myposts.wxml-->
+<post-view wx:for='{{posts}}' wx:key='postId' post='{{item}}' id='{{item.postId}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' data-post='{{item}}' />

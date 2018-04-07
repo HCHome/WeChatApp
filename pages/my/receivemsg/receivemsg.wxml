@@ -1,0 +1,12 @@
+<!--pages/receivemsg/receivemsg.wxml-->
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" hover-class="weui-cell_active" wx:for='{{replies}}' wx:key="replyId" data-reply="{{item}}">
+        <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+            <avatar-view letter='{{letter}}' imageUrl='{{item.replierAvatar}}' pxSize='50' />
+        </view>
+        <view class="weui-cell__bd">
+            <view style="font-size: 13px;">{{item.replierNickname}}回复了你</view>
+            <view class='simpleMsg'>{{item.text}}</view>
+        </view>
+    </view>
+</view>

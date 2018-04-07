@@ -1,0 +1,30 @@
+<!--pages/person/person.wxml-->
+<view class="weui-cells">
+    <view class="weui-cell">
+        <view class="weui-cell__hd" style="position: relative; margin-right: 10px;">
+            <avatar-view letter='{{letter}}' imageUrl='{{avatar}}' pxSize='50' />
+        </view>
+        <view class="weui-cell__bd">
+            <view>{{nickName}}<image id='gender_img' mode='scaleToFill' src='{{gender_img}}' /></view>
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='toMsg'>
+        <view class="weui-cell__bd">
+            <view style="display: inline-block; vertical-align: middle">收到的回复</view>
+            <view wx:if='{{unReadCount != 0}}' class="weui-badge" style="margin-left: 5px;">{{unReadCount}}</view>
+        </view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='toMyPosts'>
+        <view class="weui-cell__bd">
+            <view style="display: inline-block; vertical-align: middle">发过的帖子</view>
+        </view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+    <view class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='infoModify'>
+        <view class="weui-cell__bd">
+            <view style="display: inline-block; vertical-align: middle">设置个人信息</view>
+        </view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </view>
+</view>

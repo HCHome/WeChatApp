@@ -1,44 +1,48 @@
 /* Component/post.wxss */
+@import "/weui.wxss"
 
 .post {
     display: flex;
     flex-direction: column;
-    padding: 10rpx;
     border-bottom: #ccc 1px solid;
 }
 
-.post_info {
-    display: flex;
-    flex-direction: row;
+avatar-view {
+    position: relative;
+    left: 0;
+    top: 0;
 }
 
-.post_avatar {
-    margin: 10rpx;
+.title {
+    width: calc(100vw - 95px);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap
 }
 
-.post_info_right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.post_text:before {
+    border: none;
 }
 
-.post_category_time {
-    font-size: 8px;
+.post_text {
+    padding: 0 15px;
+    font-size: 15px;
 }
 
-.post_image {
+.post_imgs {
     display: block;
+    padding: 0 10px;
 }
 
 .post_img {
     display: inline-block;
-    width: 100rpx;
-    height: 100rpx;
-    margin: 10rpx;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
 }
 
 .repliesCount {
     font-size: 12px;
     text-align: right;
-    margin: 3px;
+    margin: 3px 15px;
 }

@@ -1,8 +1,0 @@
-<!--Component/inputbox/inputbox.wxml-->
-<view class='modifyPart'>
-    <text class='propName'>{{name}}</text>
-    <picker wx:if='{{mode=="select"}}' class='propInput {{disabled ? "disabled" : ""}}' range='{{range}}' mode='selector' value='{{selectIndex}}' bindchange='selectChange' disabled='{{disabled}}' >
-        <text>{{showVal}}</text>
-    </picker>
-    <input wx:else class='propInput {{disabled ? "disabled" : ""}}' type="{{type}}" placeholder='未知' value='{{value}}' bindchange='inputChange' disabled='{{disabled}}' />
-</view>

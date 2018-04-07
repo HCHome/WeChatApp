@@ -1,9 +1,16 @@
 <!--Component/reply/reply.wxml-->
-<view class='reply' bindtap='onMenu'>
-    <view class='userInfoPart'>
-        <avatar-view class='posterAvatar' letter='{{reply.letter}}' imageUrl='{{reply.replierAvatar}}' pxSize='24' catchtap='avatarTap' />
-        <text class='userInfo'  >{{reply.replierNickname}}</text>
-        <view class='floor' >#{{reply.floor}}</view>
+<view class="reply" bindtap="onMenu">
+    <view class="weui-cell" style="border: none;">
+        <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
+            <avatar-view class='posterAvatar' letter='{{reply.letter}}' imageUrl='{{reply.replierAvatar}}' pxSize='25' catchtap='avatarTap' />
+        </view>
+        <view class="weui-cell__bd">
+            <view style="font-size: 13px;">{{reply.replierNickname}}</view>
+            <view style="font-size: 10px;color: #888888;">{{reply.createdDate}}</view>
+        </view>
+        <view class="weui-cell__ft">
+            <view style="font-size: 13px;color: #888888;">#{{reply.floor}}</view>
+        </view>
     </view>
-    <text class='replyText' >{{text}}</text>
+    <view class='replyText'>{{text}}</view>
 </view>
