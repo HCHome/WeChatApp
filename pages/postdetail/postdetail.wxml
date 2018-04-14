@@ -5,7 +5,7 @@
     <text>{{text}}</text>
 </view>
 <ninegrid-view pictureCount="{{pictureCount}}" pictureUrl="{{pictureUrl}}" />
-<view class="weui-cell" style="border: none;">
+<view class="weui-cell" style="border: none;" bindtap="onPosterTap">
     <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
         <avatar-view letter='{{letter}}' imageUrl='{{posterAvatar}}' pxSize='25' />
     </view>

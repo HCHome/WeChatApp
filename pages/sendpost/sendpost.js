@@ -27,6 +27,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
+        wx.setNavigationBarTitle({ title: "发帖页面" })
+
         var tmp = []
         app.globalData.categories.forEach(item => { tmp.push(item.name) })
         this.setData({ categoryArray: tmp, chosenCategory: tmp[0] });

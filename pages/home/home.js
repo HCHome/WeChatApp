@@ -78,17 +78,6 @@ Page({
     },
 
     /**
-     * 点击头像
-     */
-    postAvatarTap: function(e) {
-        // TODO 跳转到新页面
-        var user = {};
-        user.avatar = e.detail.post.posterAvatar;
-        user.id = e.detail.post.posterId;
-        console.log(user)
-    },
-
-    /**
      * 点击帖子内容
      */
     notice_tap: function(e) {

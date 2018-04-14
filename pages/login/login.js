@@ -10,26 +10,21 @@ Page({
      * 页面的初始数据
      */
     data: {
-        button_name: '登录',
-        button_show: false,
-        warning_switch: false,
-        warning_content: "warning",
-        show_input: false,
-        authFocus: false
+        showInput: false,
+        showApply: false,
+        button_text: ""
     },
 
-    // 内部用变量，避开setData，避免卡顿
     _data: {
         inputSecureCode: null,
         inputAuth: null,
-        auth_img_code: null,
-        applying: null
+        auth_img_code: null
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
-    onLoad: function (options) {
+    onLoad: function(options) {
         wx.showLoading({ title: '登录中...', mask: true });
         // 进行登录
         var that = this;
@@ -37,201 +32,171 @@ Page({
             success: res => {
                 if (res.data.status) {
                     wx.hideLoading();
-                    switch (res.data.status) {
-                        case 10001:
-                        wx.showToast({ title: '登录成功！', mask: true, duration: 1000 });
-                        wx.switchTab({ url: '/pages/home/home' });
-                        break;
-                        case 10002:
-                        that.warning('hc_login_fail');
-                        break;
-                        case 10003:
-                        that.warning('hc_no_found');
-                        that.renewAuthimg();
-                        break;
-                        case 10004:
-                        that.warning('hc_login_fail');
-                        break;
-                        case 10006:
-                        that._data.applying = res.data.data;
-                        this.warning('hc_applying');
-                        break;
-                    }
+                    that.loginHandle(res);
                 }
             },
             fail: () => {
                 wx.hideLoading();
-                that.warning('hc_login_fail');
+                wx.showToast({
+                    title: '服务器错误',
+                    image: "/pages/resources/warning.png",
+                    mask: true,
+                    duration: 1000
+                });
+                this.setData({ button_text: "重新登录" })
             }
         });
     },
 
-    /**
-     * 自定义的各个绑定函数（和页面元素绑定）
-     */
-    // 处理输入
-    SecureCodeInput: function (e) { this._data.inputSecureCode = e.detail.value; },
-    AuthCodeInput: function (e) { this._data.inputAuth = e.detail.value; },
+    loginHandle: function(res) {
+        switch (res.data.status) {
+            // 登录成功
+            case 10001:
+                wx.showToast({ title: '登录成功！', mask: true, duration: 1000 });
+                wx.switchTab({ url: '/pages/home/home' });
+                break;
+                // 登录后台服务器失败
+            case 10002:
+            case 10004:
+                wx.showToast({
+                    title: '服务器错误',
+                    image: "/pages/resources/warning.png",
+                    mask: true,
+                    duration: 1000
+                });
+                this.setData({ button_text: "重新登录" })
+                break;
+                // 需要注册
+            case 10003:
+                wx.showToast({
+                    title: '未认证潮友',
+                    image: "/pages/resources/warning.png",
+                    mask: true,
+                    duration: 1000
+                });
+                this.setData({ showInput: true, showApply: false, button_text: "认证" })
+                this.renewAuthimg();
+                break;
+                // 注册中
+            case 10006:
+                this._data.applying = res.data.data;
+                this.setData({ showInput: false, showApply: true });
+                break;
+        }
+    },
 
-    // 安全码输入框键盘的完成按钮点击事件
-    nextClick: function () { this.setData({ authFocus: true }); },
+    // 处理输入
+    SecureCodeInput: function(e) { this._data.inputSecureCode = e.detail.value; },
+    AuthCodeInput: function(e) { this._data.inputAuth = e.detail.value; },
 
     // 按钮
-    buttonClick: function () {
-        if (this.data.button_name == '认证')
+    buttonClick: function() {
+        if (this.data.button_text == '认证')
             this.hc_register();
-        else if (this.data.button_name == '重试')
-            this.onLoad();
-        else if (this.data.button_name == '重新登录')
+        else if (this.data.button_text == '重新登录')
             this.onLoad();
     },
 
     // 刷新验证码
-    renewAuthimg: function () {
-        // 设置验证码图片
-        // 随机字符串
+    renewAuthimg: function() {
         this._data.auth_img_code = authImg.randStr();
-        // 获取画布大小
-        var width = unitConvert.rpx2px(120);
-        var height = unitConvert.rpx2px(40);
-        authImg.buildImg(this, this._data.auth_img_code, 'auth_img', width, height);
+        authImg.buildImg(this, this._data.auth_img_code, 'auth_img', 108, 44);
     },
 
-    /**
-     * 功能函数，供后台调用
-     */
+    // 申请安全码
+    getcode: function() { wx.navigateTo({ url: "/pages/getCode/getCode" }); },
 
-    hc_register: function () {
-        // 向hc服务器发起注册请求
-        this.setData({ warning_switch: false, button_show: false });
-        // 检测输入框
+    /**
+     * 认证
+     */
+    hc_register: function() {
+        // 检查输入
         if (!this._data.inputSecureCode || this._data.inputSecureCode == '') {
-            this.warning('no_secure_code');
+            wx.showToast({
+                title: '请输入安全码',
+                image: "/pages/resources/warning.png",
+                duration: 1000
+            })
         } else if (!this.testAuth()) {
-            this.warning('no_auth_code');
+            wx.showToast({
+                title: '图形验证码错误',
+                image: "/pages/resources/warning.png",
+                duration: 1000
+            })
         } else {
-            var that = this;
             wx.showLoading({ title: '注册中...', mask: true });
+            var that = this;
             loginManager.hc_register({
                 secureCode: that._data.inputSecureCode,
                 success: res => {
                     wx.hideLoading();
-                    if (res.data.status == 10001) {
-                        // 注册成功，跳转页面
-                        wx.switchTab({ url: '/pages/home/home' });
-                    } else if (res.data.status == 10002) {
-                        // hc服务器异常
-                        that.warning('hc_register_fail');
-                    } else if (res.data.status == 10003) {
-                        // 安全码错误
-                        that.warning('secure_code_fail');
-                        that.renewAuthimg();
-                    } else if (res.data.status == 10004) {
-                        // 登录态过期
-                        that.warning('wx_fail');
-                    }
+                    that.registerHandler(res);
                 },
                 fail: () => {
                     wx.hideLoading();
-                    that.warning('hc_register_fail');
+                    wx.showToast({
+                        title: '服务器错误',
+                        image: "/pages/resources/warning.png",
+                        mask: true,
+                        duration: 1000
+                    });
                     that.renewAuthimg();
                 }
             });
         }
     },
 
-    // 供注册的时候返回用
-    setApply: function (applying) {
-        this._data.applying = applying;
-        //this.warning('hc_applying');
+    registerHandler: function(res) {
+        if (res.data.status == 10001) {
+            // 注册成功，跳转页面
+            wx.showToast({
+                title: "登录成功",
+                mask: true,
+                duration: 1500,
+                complete: () => { wx.redirectTo({ url: '/pages/my/userinfosetting/userinfosetting?toHome=true'}); }
+            });
+        } else if (res.data.status == 10002) {
+            // hc服务器异常
+            wx.showToast({
+                title: '服务器错误',
+                image: "/pages/resources/warning.png",
+                mask: true,
+                duration: 1000
+            });
+        } else if (res.data.status == 10003) {
+            // 安全码错误
+            wx.showToast({
+                title: '安全码错误',
+                image: "/pages/resources/warning.png",
+                mask: true,
+                duration: 1000
+            });
+            this.renewAuthimg();
+        } else if (res.data.status == 10004) {
+            // 登录态过期
+            wx.showToast({
+                title: '微信登录信息过期',
+                image: "/pages/resources/warning.png",
+                mask: true,
+                duration: 1000
+            });
+        }
     },
 
-    testAuth: function () {
-        // 对验证码进行比对
+    /**
+     * 对验证码进行比对
+     */
+    testAuth: function() {
         if (!this._data.inputAuth || this._data.inputAuth.length != 4)
             return false;
         else
             return this._data.inputAuth.toUpperCase() == this._data.auth_img_code.toUpperCase();
     },
 
-    // warning的集成，修改警告信息并改变按钮和输入区可见性
-    warning: function (warningType) {
-        wx.hideLoading();
-        // 未输入安全码
-        if (warningType == 'no_secure_code')
-            this.setData({
-                warning_content: "请输入安全码",
-                warning_switch: true
-            });
-
-        // 未输入验证码
-        else if (warningType == 'no_auth_code')
-            this.setData({
-                warning_content: "请输入验证码",
-                warning_switch: true
-            });
-
-        // 微信登录超过3次失败
-        else if (warningType == "wx_fail")
-            this.setData({
-                button_show: true,
-                button_name: '重新登录',
-                show_input: false,
-                warning_switch: true,
-                warning_content: "微信登录失败！"
-            });
-
-        // 未认证潮友
-        else if (warningType == "hc_no_found")
-            this.setData({
-                button_show: true,
-                button_name: "认证",
-                show_input: true,
-                warning_switch: true,
-                warning_content: "未认证潮友，请认证"
-            });
-
-        // 连接HC服务器异常-登录
-        else if (warningType == "hc_login_fail")
-            this.setData({
-                button_show: true,
-                button_name: '重试',
-                show_input: false,
-                warning_switch: true,
-                warning_content: "连接异常，请重试"
-            });
-
-        // 连接HC服务器异常-注册
-        else if (warningType == 'hc_register_fail')
-            this.setData({
-                button_show: true,
-                button_name: '认证',
-                show_input: true,
-                warning_switch: true,
-                warning_content: "连接异常，请重试"
-            });
-
-        // 安全码错误
-        else if (warningType == 'secure_code_fail')
-            this.setData({
-                warning_switch: true,
-                warning_content: "安全码错误"
-            });
-
-        // 已经提交申请
-        else if (warningType == 'hc_applying')
-            this.setData({
-                button_show: false,
-                show_input: false,
-                warning_switch: true,
-                warning_content: '申请审核中！'
-            })
-    },
-
     /**
      * 用户点击右上角分享
      */
-    onShareAppMessage: function () {
+    onShareAppMessage: function() {
 
     }
 })

@@ -46,7 +46,7 @@
     </view>
     <!--帖子列表  -->
     <view id='post_list'>
-        <post-view wx:for='{{posts}}' wx:key='{{item.postId}}' post='{{item}}' bind:AvatarTap='postAvatarTap' bind:Tap='postTap' />
+        <post-view wx:for='{{posts}}' wx:key='{{item.postId}}' post='{{item}}' bind:Tap='postTap' />
     </view>
     <!--加载更多的提示  -->
     <view id="morePostsTipView" bindtap='onReachBottom'>--{{moreTip}}--</view>

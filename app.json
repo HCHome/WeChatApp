@@ -1,10 +1,10 @@
 {
     "pages": [
-        "pages/cylist/cylist",
         "pages/login/login",
         "pages/getCode/getCode",
         "pages/home/home",
         "pages/category/category",
+        "pages/cylist/cylist",
         "pages/search/post/post",
         "pages/search/person/person",
         "pages/search/result/result",
@@ -15,7 +15,8 @@
         "pages/my/myposts/myposts",
         "pages/my/receivemsg/receivemsg",
         "pages/postdetail/postdetail",
-        "pages/test/test"
+        "pages/test/test",
+        "pages/personinfo/personinfo"
     ],
     "window": {
         "backgroundTextStyle": "dark",

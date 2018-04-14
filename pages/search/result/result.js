@@ -10,7 +10,7 @@ Page({
         inputShowed: false,
         inputVal: "",
         initVal: "搜索",
-        users: null
+        users: []
             // eg: {
             //     userid: 4,
             //     nickname: "名字",
@@ -52,7 +52,10 @@ Page({
      * 点击结果
      */
     onUserTap: function(e) {
-        console.log(e)
+        var user = {};
+        user.avatar = e.currentTarget.dataset.user.avatar;
+        user.id = e.currentTarget.dataset.user.userId;
+        wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
     },
 
     onPostTap: function(e) {

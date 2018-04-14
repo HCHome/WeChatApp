@@ -70,17 +70,13 @@ Page({
     },
 
     /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function() {
-
-    },
-
-    /**
      * 点击搜人的结果
      */
     onUserTap: function(e) {
-        console.log(e)
+        var user = {};
+        user.avatar = e.currentTarget.dataset.user.avatar;
+        user.id = e.currentTarget.dataset.user.userId;
+        wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
     },
 
     /**

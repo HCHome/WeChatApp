@@ -89,6 +89,17 @@ Page({
             this.sortReply('正序查看');
     },
 
+    /**
+     * 点击楼主
+     */
+    onPosterTap: function(e) {
+        var user = {
+            avatar : this.data.posterAvatar,
+            id: this.data.posterId
+        }
+        wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
+    },
+
     // 针对回复的操作菜单
     onMenu: function(e) {
         // 判断权限：楼主or回复发布者

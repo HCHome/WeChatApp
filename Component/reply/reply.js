@@ -33,8 +33,11 @@ Component({
             this.triggerEvent('replyMenu', e, {});
         },
         avatarTap: function (e) {
-            e.reply = this.properties.reply;
-            this.triggerEvent('avatarTap', e, {});
+            var user = {
+                avatar : this.properties.reply.replierAvatar,
+                id: this.properties.reply.replierId
+            }
+            wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
         }
     }
 })

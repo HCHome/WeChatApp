@@ -1,0 +1,12 @@
+/* pages/personinfo/personinfo.wxss */
+.weui-cells__title {
+    margin: 15px;
+    padding: 0;
+    text-align: center;
+    align-items: center;
+}
+/*
+.weui-cell:before {
+    left: 0;
+}
+*/

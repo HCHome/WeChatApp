@@ -40,9 +40,11 @@ var _net4User = {
                 userId: Object.userId
             },
             success: res => {
-                // 把新增的信息放进loginManager
-                var user = res.data.data.user;
-                loginManager.setHC_info(user);
+                // 如果是当前人物，把新增的信息放进loginManager
+                if (Object.userId == loginManager.hc_info.user.userId) {
+                    var user = res.data.data.user;
+                    loginManager.setHC_info(user);
+                }
                 if (Object.success && typeof(Object.success) == 'function') Object.success(res);
             },
             complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
@@ -81,7 +83,7 @@ var _net4User = {
                 phoneNumber : Object.phoneNumber  ? Object.phoneNumber : '',
                 qqNumber    : Object.qqNumber     ? Object.qqNumber : '',
                 wechatNumber: Object.wechatNumber ? Object.wechatNumber : '',
-                isDisplay   : Object.isDisplay   == '是',
+                isDisplay   : Object.isDisplay,
                 isSingleDog : Object.isSingleDog != '否'
             },
             success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },

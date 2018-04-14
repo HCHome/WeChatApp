@@ -1,48 +1,33 @@
 <!--登录注册页面  -->
-<view id='bg'>
-  <!-- 标题和LOGO  -->
-  <image id='logo' src='/pages/resources/占位图.png' mode='widthFix'></image>
-  <text id='name'>海潮之家</text>
 
-  <!-- 操作区域  -->
-  <view id='opera_area'>
-
-    <!--  错误提示，内容及显示开关在js文件中  -->
-    <text id='warning'
-      style='visibility: {{warning_switch ? "" : "hidden"}};'>{{warning_content}}</text>
-
-    <!--  输入区域  -->
-    <view class='input_part' style='visibility: {{show_input ? "" : "hidden"}}'>
-      <text class='input_title' >安全码</text>
-      <input class='input_box' id='secure_code'
-        type='text'
-        confirm-type='next'
-        maxlength='32'
-        placeholder='请输入安全码'
-        bindconfirm='nextClick'
-        bindinput='SecureCodeInput' />
-      <navigator class='get_code' id='getCodeButton'
-        open-type='navigate' url='/pages/getCode/getCode'>获取</navigator>
+<view id="main">
+    <view id="logo">
+        <image src='/pages/resources/logo.png' mode='widthFix'></image>
     </view>
-
-    <view id="split_line" style='visibility: {{show_input ? "" : "hidden"}}'></view>
-
-    <view class='input_part' style='visibility: {{show_input ? "" : "hidden"}}'>
-      <text class='input_title'>验证码</text>
-      <input class='input_box' id='auth'
-        type='text'
-        maxlength='4'
-        placeholder='请输入验证码'
-        focus='{{authFocus}}'
-        bindconfirm='register'
-        bindinput='AuthCodeInput'></input>
-      <canvas class='get_code' mode='scaleToFill' style='visibility: {{show_input ? "" : "hidden"}}' bindtap='renewAuthimg' canvas-id='auth_img'></canvas>
+    <view class="weui-cells" wx:if="{{showInput}}">
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+            <view class="weui-cell__hd">
+                <view class="weui-label">安全码</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入安全码" bindchange="SecureCodeInput"/>
+            </view>
+            <view class="weui-cell__ft">
+                <view class="weui-vcode-btn" bindtap="getcode">获取安全码</view>
+            </view>
+        </view>
+        <view class="weui-cell weui-cell_input weui-cell_vcode">
+            <view class="weui-cell__hd">
+                <view class="weui-label">验证码</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" placeholder="请输入验证码" bindchange="AuthCodeInput" />
+            </view>
+            <view class="weui-cell__ft">
+                <canvas mode='scaleToFill' style='width: 108px; height: 44px;' bindtap='renewAuthimg' canvas-id='auth_img'></canvas>
+            </view>
+        </view>
     </view>
-
-    <!--  注册按钮  -->
-    <button id='button' hover-class='clicking'
-        bindtap='buttonClick'
-        style='display:{{button_show ? "" : "none"}}'>{{button_name}}</button>
-
-  </view>
+    <button wx:if="{{showInput}}" class="weui-btn" type="primary" bindtap="buttonClick">{{button_text}}</button>
+    <view class="apply" wx:if="{{showApply}}">已提交注册申请，请等待管理员发送安全码</view>
 </view>

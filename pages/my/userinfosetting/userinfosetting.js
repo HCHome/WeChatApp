@@ -7,6 +7,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        toHome: false,
         // 初始信息
         nickname    : null,
         isSingleDog : null,
@@ -18,7 +19,7 @@ Page({
         sex         : null,
         term        : null,
         wechatNumber: null,
-        isDisplay   : null,
+        isDisplay   : null, // 保存为true or false 前端显示再转成中文
         // 选择范围
         sexRange: ['男', '女'],
         YNRange : ['是', '否'],
@@ -31,10 +32,9 @@ Page({
      * 同步信息到界面
      */
     syncUserInfo: function() {
-        console.log(loginManager.hc_info.user)
         this.setData({
-            isDisplay   :loginManager.hc_info.user.isDisplay,
-            isSingleDog :loginManager.hc_info.user.isSingleDog,
+            isDisplay   :!!(loginManager.hc_info.user.isDisplay),
+            isSingleDog :!!(loginManager.hc_info.user.isSingleDog),
             job         :loginManager.hc_info.user.job          ? loginManager.hc_info.user.job          : '',
             nickname    :loginManager.hc_info.user.nickname     ? loginManager.hc_info.user.nickname     : '',
             phoneNumber :loginManager.hc_info.user.phoneNumber  ? loginManager.hc_info.user.phoneNumber  : '',
@@ -48,9 +48,13 @@ Page({
     },
 
     /**
-     * 生命周期函数--监听页面显示
+     * 生命周期函数--监听页面加载
      */
-    onShow: function() {
+    onLoad: function(options) {
+        if (options && options.toHome) {
+            this.setData({ toHome: true });
+            this.btnTap();
+        }
         // 获取基础信息
         this.syncUserInfo();
     },
@@ -73,8 +77,6 @@ Page({
     onChange: function(e) {
         var value = e.detail.value;
         var prop = e.currentTarget.dataset.prop;
-        console.log(value)
-        console.log(prop)
         var temp = {};
         if (prop == 'isSingleDog')
             temp[prop] = (value==0);
@@ -94,7 +96,7 @@ Page({
         // 新的信息
         var reqData = {
             userId      : loginManager.hc_info.user.userId,
-            isDisplay   : this.data.isDisplay    == null ? this.data.isDisplay    : this.data.isDisplay,
+            isDisplay   : this.data.isDisplay,
             isSingleDog : this.data.isSingleDog  == null ? this.data.isSingleDog  : this.data.isSingleDog,
             job         : this.data.job          == null ? this.data.job          : this.data.job,
             phoneNumber : this.data.phoneNumber  == null ? this.data.phoneNumber  : this.data.phoneNumber,
@@ -120,9 +122,11 @@ Page({
                         mask: true,
                         duration: 2000
                     });
+                    if (that.data.toHome) wx.switchTab({ url: '/pages/home/home' });
                 }
             },
             fail: () => {
+                wx.hideLoading();
                 wx.showToast({
                     title: '保存失败',
                     mask: true,

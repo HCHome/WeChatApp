@@ -1,5 +1,5 @@
 <!--pages/userinfosetting/userinfosetting.wxml-->
-<view class="weui-cells__title">个人信息</view>
+<view class="weui-cells__title">{{toHome ? "首次登录请补全个人信息" : "个人信息"}}</view>
 <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
@@ -15,7 +15,7 @@
         </view>
         <view class="weui-cell__bd">
             <picker disabled='{{disabled}}' value='{{sex == "男" ? 0 : 1}}' range='{{sexRange}}' bindchange='onChange' data-prop='sex'>
-                <view class='weui-input {{disabled ? "disabled" : ""}}' >{{sex}}</view>
+                <view class='weui-input {{disabled ? "disabled" : ""}}' >{{sex == null ? "请选择" : sex}}</view>
             </picker>
         </view>
     </view>
@@ -34,7 +34,7 @@
             <view class="weui-label">入会年级</view>
         </view>
         <view class="weui-cell__bd">
-            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}'  value='{{term}}' placeholder="未填写" bindchange='onChange' data-prop='term' />
+            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}' value='{{term}}' maxlength="4" placeholder="未填写" bindchange='onChange' data-prop='term' />
         </view>
     </view>
     <view class="weui-cell weui-cell_input">

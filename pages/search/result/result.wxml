@@ -21,7 +21,7 @@
     <block wx:if="{{users.length > 0}}">
         <view id="user__hd" class="weui-panel__hd" style="font-size: 13px;">相关用户</view>
         <view class="weui-panel__bd">
-            <view wx:for="{{users}}" wx:key="{{item.userid}}" class="weui-cell weui-cell_access weui-cell_link" style="border: none;" bindtap="onUserTap" data-user="{{item}}">
+            <view wx:for="{{users}}" wx:key="{{item.userid}}" bindtap="onUserTap" data-user="{{item}}" class="weui-cell weui-cell_access weui-cell_link" style="border: none;">
                 <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
                     <avatar-view letter='{{item.nickname[item.nickname.length - 1]}}' imageUrl='{{item.avatar}}' pxSize='25' />
                 </view>
