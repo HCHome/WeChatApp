@@ -1,96 +1,111 @@
+/**
+ * 和用户相关的所有网络操作，包括
+ * 1.登录操作：微信登录、用户信息获取、海潮登录、海潮注册
+ * 2.
+ */
+
 const app = getApp();
-const loginManager = require('loginManager.js')
+var currentUser = require("./currentUser.js")
 
 var _net4User = {
-    // 签到排名
-    signRank: function(Object) {
-        return wx.request({
-            url: app.globalData.url_hc + '/user/scoreRankList',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-                userId: Object.userId
+
+    /***** 1.登录操作：微信登录、用户信息获取、海潮登录、海潮注册 *****/
+
+    /**
+     * 登录相关的信息保存地
+     * @type {Object}
+     */
+    loginData: {},
+
+    /**
+     * 完成微信登录和海潮登录两个操作
+     * @param  {Object} Object 包含回调函数和参数
+     * @return {null}
+     */
+    login: function(Object) {
+        var that = this;
+        this.login_wx({
+            success: res => {
+                // 获取头像，无论成败，都进行hc登录
+                that.getWxInfo({
+                    success: function () { that.login_hc(Object); },
+                    fail: function () { that.login_hc(Object); }
+                });
             },
-            success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },
-            complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
-            fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
+            fail: () => {
+                if (Object && Object.success && typeof (Object.success) == 'function')
+                   Object.success({ data: { status: '10004' } });
+           }
+       });
+    },
+
+    /**
+     * 微信登录操作
+     * @param  {Object} Object 包含回调函数
+     * @return {null}
+     */
+    login_wx: function(Object) {
+        var that = this;
+        wx.login({
+            success: function (res) {
+                that.loginData.js_code = res.code;
+                Object.success(res);
+            },
+            fail: function () {
+                that.loginData.js_code = null;
+                Object.fail();
+            }
         });
     },
-    // 签到
-    sign: function(Object) {
-        if (Object.userId) return wx.request({
-            url: app.globalData.url_hc + '/user/sign',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-                userId: Object.userId
+
+    /**
+     * 获取用户的微信信息
+     * @param  {Object} Object 包含回调函数
+     * @return {null}
+     */
+    getWxInfo: function(Object) {
+        var that = this;
+        wx.getUserInfo({
+            success: res => {
+                that.loginData.avatar = res.userInfo.avatarUrl;
+                Object.success(res);
             },
-            success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },
-            complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
-            fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
+            fail: () => { Object.fail(); }
         })
     },
-    // 获取用户详细信息
-    getUserInfo: function(Object) {
-        if (Object.userId) return wx.request({
-            url: app.globalData.url_hc + '/user/getUserInfo',
+
+    /**
+     * 海潮登录操作
+     * @param  {Object} Object 包含回调函数和参数
+     * @return {null}
+     */
+    login_hc: function(Object) {
+        var that = this;
+        if (this.loginData.js_code) wx.request({
+            url: app.globalData.url_hc + '/user/login',
             method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
+            header: {
+                'content-type': 'application/x-www-form-urlencoded'
+            },
             data: {
-                userId: Object.userId
+                jsCode: that.loginData.js_code,
+                avatar: (that.loginData.avatar ? that.loginData.avatar : '')
             },
             success: res => {
-                // 如果是当前人物，把新增的信息放进loginManager
-                if (Object.userId == loginManager.hc_info.user.userId) {
-                    var user = res.data.data.user;
-                    loginManager.setHC_info(user);
-                }
-                if (Object.success && typeof(Object.success) == 'function') Object.success(res);
+                // 登录成功进行信息更新
+                if (res.data.status == '10001') currentUser.renewHCInfo(res.data.data.user);
+                // 返回了奇怪的信息
+                if (res.data.data.emmCode) that.loginData.emmCode = res.data.data.emmCode;
+                if (Object && Object.success && typeof (Object.success) == 'function')
+                    Object.success(res);
             },
-            complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
-            fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
+            fail: res => {
+                if (Object && Object.fail && typeof (Object.fail) == 'function')
+                    Object.fail(res);
+            }
         })
     },
-    // 获取我的消息
-    getMyReceivedReplies: function(Object) {
-        return wx.request({
-            url: app.globalData.url_hc + '/post/getMyReceivedReplies',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-                userId: Object.userId,
-                lastReplyId: Object.lastReplyId ? Object.lastReplyId : 0
-            },
-            success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },
-            complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
-            fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
-        });
-    },
-    // 修改个人信息
-    modifyUserInfo: function(Object) {
-        // user/modifyUserInfo
-        return wx.request({
-            url: app.globalData.url_hc + '/user/modifyUserInfo',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-                userId      : Object.userId,
-                sex         : Object.sex          ? Object.sex : '',
-                school      : Object.school       ? Object.school : '',
-                profession  : Object.profession   ? Object.profession : '',
-                job         : Object.job          ? Object.job : '',
-                term        : Object.term         ? Object.term : '',
-                phoneNumber : Object.phoneNumber  ? Object.phoneNumber : '',
-                qqNumber    : Object.qqNumber     ? Object.qqNumber : '',
-                wechatNumber: Object.wechatNumber ? Object.wechatNumber : '',
-                isDisplay   : Object.isDisplay,
-                isSingleDog : Object.isSingleDog != '否'
-            },
-            success: res => { if (Object.success && typeof(Object.success) == 'function') Object.success(res); },
-            complete: () => { if (Object.complete && typeof(Object.complete) == 'function') Object.complete(); },
-            fail: () => { if (Object.fail && typeof(Object.fail) == 'function') Object.fail(); }
-        })
-    }
-}
+};
+
 
 module.exports = _net4User;

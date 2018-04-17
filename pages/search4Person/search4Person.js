@@ -73,10 +73,7 @@ Page({
      * 点击搜人的结果
      */
     onUserTap: function(e) {
-        var user = {};
-        user.avatar = e.currentTarget.dataset.user.avatar;
-        user.id = e.currentTarget.dataset.user.userId;
-        wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
+        wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + e.currentTarget.dataset.user.userId });
     },
 
     /**

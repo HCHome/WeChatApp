@@ -38,8 +38,6 @@ page {
 .category_img {
     width: 50px;
     height: 50px;
-    border: 1px solid #C9C9C9;
-    border-radius: 50%;
 }
 
 .category_name {

@@ -1,22 +1,21 @@
 {
     "pages": [
         "pages/login/login",
-        "pages/getCode/getCode",
+        "pages/apply/apply",
         "pages/home/home",
         "pages/category/category",
-        "pages/cylist/cylist",
-        "pages/search/post/post",
-        "pages/search/person/person",
-        "pages/search/result/result",
+        "pages/userList/userList",
+        "pages/search/search",
+        "pages/search4Post/search4Post",
+        "pages/search/search4Person",
         "pages/sign/sign",
-        "pages/sendpost/sendpost",
-        "pages/my/person/person",
-        "pages/my/userinfosetting/userinfosetting",
-        "pages/my/myposts/myposts",
-        "pages/my/receivemsg/receivemsg",
-        "pages/postdetail/postdetail",
-        "pages/test/test",
-        "pages/personinfo/personinfo"
+        "pages/sendPost/sendPost",
+        "pages/my/my",
+        "pages/replyList/replyList",
+        "pages/postHistory/postHistory",
+        "pages/setting/setting",
+        "pages/postDetail/postDetail",
+        "pages/userDetail/userDetail"
     ],
     "window": {
         "backgroundTextStyle": "dark",
@@ -31,26 +30,26 @@
         "list": [
             {
                 "pagePath": "pages/home/home",
-                "iconPath": "pages/resources/home.png",
-                "selectedIconPath": "pages/resources/home_on.png",
+                "iconPath": "resources/home.png",
+                "selectedIconPath": "resources/home_on.png",
                 "text": "首页"
             },
             {
                 "pagePath": "pages/sign/sign",
-                "iconPath": "pages/resources/sign.png",
-                "selectedIconPath": "pages/resources/sign_on.png",
+                "iconPath": "resources/sign.png",
+                "selectedIconPath": "resources/sign_on.png",
                 "text": "签到"
             },
             {
-                "pagePath": "pages/sendpost/sendpost",
-                "iconPath": "pages/resources/newPost.png",
-                "selectedIconPath": "pages/resources/newPost_on.png",
+                "pagePath": "pages/sendPost/sendPost",
+                "iconPath": "resources/newPost.png",
+                "selectedIconPath": "resources/newPost_on.png",
                 "text": "发帖"
             },
             {
-                "pagePath": "pages/my/person/person",
-                "iconPath": "pages/resources/person.png",
-                "selectedIconPath": "pages/resources/person_on.png",
+                "pagePath": "pages/my/my",
+                "iconPath": "resources/person.png",
+                "selectedIconPath": "resources/person_on.png",
                 "text": "我的"
             }
         ]

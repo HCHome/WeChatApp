@@ -40,10 +40,7 @@ Component({
      */
     methods: {
         bindAvatarTap: function(e) {
-            var user = {};
-            user.avatar = this.properties.post.posterAvatar;
-            user.id = this.properties.post.posterId;
-            wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
+            wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + this.properties.post.posterId });
         },
         bindTap: function(e) {
             e.post = this.properties.post;

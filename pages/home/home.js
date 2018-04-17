@@ -1,8 +1,8 @@
 // pages/home/home.js
 const app = getApp();
 const loginManager = require('../../utils/loginManager.js');
-const unitConvert = require('../../utils/unitConvert.js');
-const net4Post = require('../../utils/net4Post.js');
+const unitConvert  = require('../../utils/unitConvert.js');
+const net4Post     = require('../../utils/net4Post.js');
 
 Page({
 

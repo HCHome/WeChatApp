@@ -26,24 +26,8 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-        var user = JSON.parse(options.user);
-        this.setData({ avatar: user.avatar });
-        this._data.id = user.id;
+        this._data.id = options.userId;
         this.getUserInfo();
-    },
-
-    /**
-     * 生命周期函数--监听页面显示
-     */
-    onShow: function() {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function() {
-
     },
 
     /**
@@ -69,7 +53,6 @@ Page({
             userId: that._data.id,
             success: res => {
                 wx.hideLoading();
-                console.log(res);
                 var user = res.data.data.user;
                 var infos = [];
                 infos.push({ key: "姓名", value: user.nickname });
@@ -88,7 +71,7 @@ Page({
                     infos.push({ key: "", value: "因用户设置，其他信息不显示" });
                 }
 
-                that.setData({ nickname: user.nickname, infos: infos });
+                that.setData({ nickname: user.nickname, avatar: user.avatar, infos: infos });
             },
             fail: () => {
                 wx.hideLoading();

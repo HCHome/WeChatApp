@@ -93,11 +93,7 @@ Page({
      * 点击楼主
      */
     onPosterTap: function(e) {
-        var user = {
-            avatar : this.data.posterAvatar,
-            id: this.data.posterId
-        }
-        wx.navigateTo({ url: "/pages/personinfo/personinfo?user=" + JSON.stringify(user) });
+        wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + this.data.posterId });
     },
 
     // 针对回复的操作菜单

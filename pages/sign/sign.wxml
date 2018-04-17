@@ -1,19 +1,32 @@
 <!--pages/sign/sign.wxml-->
-<view id='myPart'>
-    <avatar-view id='avatarLeft' letter='{{letter}}' imageUrl='{{imgUrl}}' pxSize='50'/>
-    <view id='infoRight'>
-        <text>签到积分：{{signScore}}</text>
-        <text>排名：{{order}}</text>
+<view class="weui-cells">
+    <view class="weui-cell">
+        <view class="weui-cell__hd">
+            <avatar-view id='avatarUser' letter='{{letter}}' imageUrl='{{imgUrl}}' pxSize='50'/>
+        </view>
+        <view class="weui-cell__bd">
+            <view>签到积分：{{signScore}}</view>
+            <view>排名：{{order}}</view>
+        </view>
+        <view class="weui-cell__ft">
+            <text id="sign-btn" bindtap='signBtn'>{{buttonText}}</text>
+        </view>
     </view>
-    <button class="weui-btn mini-btn" type="default" size="mini" bindtap='signBtn' disabled='{{btnDisabled}}'>{{buttonText}}</button>
-    <!-- <button id='signButton' disabled='{{btnDisabled}}' plain='true' bindtap='signBtn'>{{buttonText}}</button> -->
 </view>
-<view id='rankList'>
-    <view id='rankTitle'>潮友排行</view>
-    <view class='rankItem' wx:for='{{scoreRankList}}' wx:key='{{userId}}'>
-        <text class='num cell'>{{item.scoreRank}}</text>
-        <avatar-view class='avatar cell' letter='{{item.letter}}' imageUrl='{{item.avatar}}' pxSize='24' />
-        <text class='nickName cell'>{{item.nickname}}</text>
-        <text class='day_count cell'>{{item.signScore}}天</text>
+<view class="weui-cells__title">潮友排行</view>
+<view class="weui-cells weui-cells_after-title">
+    <view class="weui-cell" wx:for='{{scoreRankList}}' wx:key='{{item.userId}}' data-id="{{item.userId}}" bindtap="onUserTap">
+        <view class="weui-cell__hd rank">
+            <view>{{item.scoreRank}}</view>
+        </view>
+        <view class="weui-cell__bd">
+            <view class="item-name">
+                <avatar-view class='avatarCell' letter='{{item.letter}}' imageUrl='{{item.avatar}}' pxSize='24' />
+                <view>{{item.nickname}}</view>
+            </view>
+        </view>
+        <view class="weui-cell__ft score">
+            <text>{{item.signScore}}天</text>
+        </view>
     </view>
 </view>

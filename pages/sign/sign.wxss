@@ -1,62 +1,44 @@
 /* pages/sign/sign.wxss */
-#myPart {
-    font-size: 16px;
-    display: flex;
-    flex-direction: row;
-    padding: 5px;
-    align-items: center;
-}
-
-#infoRight {
-    padding-left: 5px;
-    display: flex;
-    flex-direction: column;
-    width: calc(100vw - 140px);
-}
-
-#signButton {
-    font-size: 15px;
+.weui-cell {
     padding: 0;
-    width: 80px;
-    height: 50px;
-    background-color: transparent;
 }
 
-#rankList {
-    border-bottom: 1px #C9C9C9 solid;
+#avatarUser {
+    display: block;
+    margin: 10px;
 }
 
-#rankTitle {
-    text-align: center;
+.weui-cell__bd {
+    font-size: 13px;
 }
 
-.rankItem {
-    font-size: 16px;
+#sign-btn {
+    padding: 20px;
+    font-size: 13px;
+    text-decoration: underline;
+}
+
+.weui-cell:before {
+    left: 0;
+}
+
+.rank {
+    padding: 10px;
+}
+
+.item-name {
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 30px;
-    border-top: 1px #C9C9C9 solid;
+    font-size: 13px;
 }
 
-.cell {
+.avatarCell {
     display: inline-block;
-    font-size: 12px;
+    padding-right: 10px;
 }
 
-.num {
-    width: 20px;
-    text-align: center;
-}
-
-.avatar {
-    padding: 5px;
-}
-
-.nickName {
-    width: calc(100vw - 140px);
-}
-
-.day_count {
-    width: 80px;
+.score {
+    font-size: 13px;
+    padding: 10px;
 }
