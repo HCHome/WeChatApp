@@ -1,7 +1,7 @@
 <view class="post" bindtap='bindTap'>
     <view class="weui-cell">
         <view class="weui-cell__hd" style="margin-right: 10px;">
-            <avatar-view letter='{{post.letter}}' imageUrl='{{post.posterAvatar}}' catchtap='bindAvatarTap' pxSize="50" />
+            <avatar-view letter='{{letter}}' imageUrl='{{post.posterAvatar}}' catchtap='bindAvatarTap' pxSize="50" />
         </view>
         <view class="weui-cell__bd">
             <view class="title">{{post.title}}</view>

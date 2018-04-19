@@ -88,7 +88,7 @@
     <view class="weui-cell weui-cell_switch">
         <view class="weui-cell__bd">对外展示信息</view>
         <view wx:if='{{disabled}}' class="weui-cell__ft">
-            <view class='weui-input disabled'>{{isDisplay ? "是" : "否"}}</view>
+            <view class='display'>{{isDisplay ? "是" : "否"}}</view>
         </view>
         <view wx:else class="weui-cell__ft">
             <switch checked='{{isDisplay}}' bindchange='onChange' data-prop='isDisplay' />

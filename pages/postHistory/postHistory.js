@@ -1,5 +1,5 @@
-const net4Post = require('../../../utils/net4Post.js')
-const loginManager = require('../../../utils/loginManager.js')
+const net4Post = require('../../utils/net4Post.js')
+const currentUser = require('../../utils/currentUser.js')
 
 // pages/myposts/myposts.js
 Page({
@@ -9,20 +9,6 @@ Page({
      */
     data: {
         posts: []
-    },
-
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onLoad: function(options) {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面初次渲染完成
-     */
-    onReady: function() {
-
     },
 
     /**
@@ -39,11 +25,11 @@ Page({
         wx.showLoading({ title: '更新帖子中...', mask: true })
         var that = this;
         net4Post.getPosts({
-            userId: loginManager.hc_info.user.userId,
+            userId: currentUser.data.userId,
             success: function(res) {
                 res.posts.forEach(item => {
-                    if (loginManager.hc_info.user.letter) item.letter = loginManager.hc_info.user.letter;
-                    if (loginManager.hc_info.user.avatar) item.posterAvatar = loginManager.hc_info.user.avatar;
+                    item.posterNickname = currentUser.data.nickname;
+                    if (currentUser.data.avatar) item.posterAvatar = currentUser.data.avatar;
                 })
                 if (res.status == 10001) {
                     that.setData({ posts: null });
@@ -67,10 +53,12 @@ Page({
                         postId: e.currentTarget.dataset.post.postId,
                         success: res => {
                             wx.hideLoading();
-                            wx.navigateTo({ url: '/pages/postdetail/postdetail?post=' + JSON.stringify(res.postInfo) });
+                            wx.navigateTo({ url: '/pages/postDetail/postDetail?post=' + JSON.stringify(res.postInfo) });
                         }
                     })
-                } else if (res.tapIndex == 1) this.deletePost(e.currentTarget.dataset.post);
+                } else if (res.tapIndex == 1) {
+                    this.deletePost(e.currentTarget.dataset.post);
+                }
             }
         });
     },
@@ -82,7 +70,7 @@ Page({
         wx.showLoading({ title: '删除中...', mask: true });
         var that = this;
         net4Post.deletePost({
-            userId: loginManager.hc_info.user.userId,
+            userId: currentUser.data.userId,
             postId: post.postId,
             success: res => {
                 console.log(res);
@@ -92,39 +80,4 @@ Page({
             }
         })
     },
-
-    /**
-     * 生命周期函数--监听页面隐藏
-     */
-    onHide: function() {
-
-    },
-
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function() {
-
-    },
-
-    /**
-     * 页面相关事件处理函数--监听用户下拉动作
-     */
-    onPullDownRefresh: function() {
-
-    },
-
-    /**
-     * 页面上拉触底事件的处理函数
-     */
-    onReachBottom: function() {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function() {
-
-    }
 })

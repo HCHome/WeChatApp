@@ -1,4 +1,4 @@
-/* pages/postdetail/postdetail.wxss */
+/* pages/postDetail/postDetail.wxss */
 
 page {
     padding-bottom: 32px;

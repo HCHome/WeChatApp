@@ -7,4 +7,5 @@ avatar-view {
 #gender_img {
     width: 13px;
     height: 13px;
+    padding-left: 2px;
 }

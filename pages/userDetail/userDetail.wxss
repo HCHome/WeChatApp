@@ -1,12 +1,19 @@
-/* pages/personinfo/personinfo.wxss */
+/* pages/userDetail/userDetail.wxss */
 .weui-cells__title {
     margin: 15px;
     padding: 0;
     text-align: center;
     align-items: center;
+    color: black;
+    font-size: 17px;
 }
-/*
-.weui-cell:before {
-    left: 0;
+
+avatar-view {
+    margin-right: 15px;
 }
-*/
+
+.name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}

@@ -1,4 +1,6 @@
 /* pages/userinfosetting/userinfosetting.wxss */
-.disabled {
+.display {
     color: gray;
+    height: 32px;
+    line-height: 32px;
 }

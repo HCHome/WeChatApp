@@ -1,8 +1,6 @@
 // pages/home/home.js
 const app = getApp();
-const loginManager = require('../../utils/loginManager.js');
-const unitConvert  = require('../../utils/unitConvert.js');
-const net4Post     = require('../../utils/net4Post.js');
+const net4Post = require('../../utils/net4Post.js');
 
 Page({
 
@@ -23,16 +21,12 @@ Page({
         inputVal: ""
     },
 
-    _data: {
-        postIds: [] // 记录当前的id，用于防止重复
-    },
-
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
         var tmp = app.globalData.categories.concat();
-        tmp.push({ name: '找潮友', img: '/pages/resources/找潮友.png' });
+        tmp.push({ name: '找潮友', img: '/resources/找潮友.png' });
         this.setData({ categoryItems: tmp });
         // 关闭跳转时的loading提示
         wx.hideToast();
@@ -42,60 +36,25 @@ Page({
      * 生命周期函数--监听页面显示
      */
     onShow: function() {
-        // 刷新帖子
         this.setData({ posts: [] });
         this._data.postIds = [];
-        this.renewPosts();
+        this.getTopPost();
+        this.getLastPost();
+    },
+
+    /***** 帖子相关的处理 *****/
+
+    /**
+     * 帖子ID保存
+     */
+    _data: {
+        postIds: [] // 记录当前的id，用于防止重复
     },
 
     /**
-     * 拉倒底部进行加载
+     * 获取置顶的帖子
      */
-    onReachBottom: function() {
-        if (this.data.moreTip == "加载更多") {
-            this.setData({ moreTip: "加载中" });
-            this.getMorePosts();
-        }
-    },
-
-    /**
-     * 下拉刷新
-     */
-    onPullDownRefresh: function() {
-        this.setData({ moreTip: "加载中" });
-        this.renewPosts();
-    },
-
-    /**
-     * 分类点击
-     */
-    category_tap: function(e) {
-        var category = e.currentTarget.id;
-        if (category == '找潮友')
-            wx.navigateTo({ url: '/pages/cylist/cylist' });
-        else
-            wx.navigateTo({ url: '/pages/category/category?category=' + category });
-    },
-
-    /**
-     * 点击帖子内容
-     */
-    notice_tap: function(e) {
-        wx.navigateTo({ url: '/pages/postdetail/postdetail?post=' + JSON.stringify(e.currentTarget.dataset.notice) });
-    },
-    postTap: function(e) {
-        wx.navigateTo({
-            url: '/pages/postdetail/postdetail?post=' + JSON.stringify(e.detail.post)
-        });
-    },
-
-    /**
-     * 获取帖子相关
-     */
-
-    // 获取新的帖子
-    renewPosts: function() {
-        wx.showNavigationBarLoading();
+    getTopPost: function() {
         var that = this;
         net4Post.getPosts({
             category: 'top',
@@ -103,32 +62,42 @@ Page({
                 if (res.status == 10001) that.setData({ notice: res.posts });
                 if (res.posts.length == 0) that.setData({ hasNotice: false });
             },
-            complete: () => {
-                net4Post.getPosts({
-                    category: 'all',
-                    success: res => {
-                        if (res.status == 10001) {
-                            var posts = that.data.posts;
-                            res.posts.forEach(item => {
-                                if (!that._data.postIds.includes(item.postId)) {
-                                    posts.unshift(item);
-                                    that._data.postIds.push(item.postId);
-                                }
-                            });
-                            that.setData({ posts: posts });
-                        }
-                    },
-                    complete: () => {
-                        wx.stopPullDownRefresh();
-                        wx.hideNavigationBarLoading();
-                    }
-                });
+            fail: () => {
+                that.setData({ hasNotice: false });
             }
-        });
-
+        })
     },
 
-    // 获取更多帖子
+    /**
+     * 获取最新的帖子
+     */
+    getLastPost: function() {
+        wx.showNavigationBarLoading();
+        var that = this;
+        net4Post.getPosts({
+            category: 'all',
+            success: res => {
+                if (res.status == 10001) {
+                    var posts = that.data.posts;
+                    res.posts.forEach(item => {
+                        if (!that._data.postIds.includes(item.postId)) {
+                            posts.unshift(item);
+                            that._data.postIds.push(item.postId);
+                        }
+                    });
+                    that.setData({ posts: posts });
+                }
+            },
+            complete: () => {
+                wx.stopPullDownRefresh();
+                wx.hideNavigationBarLoading();
+            }
+        });
+    },
+
+    /**
+     * 获取更多帖子
+     */
     getMorePosts: function() {
         wx.showNavigationBarLoading();
         var that = this;
@@ -156,6 +125,47 @@ Page({
                 }, 5000);
             }
         })
+    },
+
+    /**
+     * 拉倒底部进行加载
+     */
+    onReachBottom: function() {
+        if (this.data.moreTip == "加载更多") {
+            this.setData({ moreTip: "加载中" });
+            this.getMorePosts();
+        }
+    },
+
+    /**
+     * 下拉刷新
+     */
+    onPullDownRefresh: function() {
+        this.setData({ moreTip: "加载中" });
+        this.getLastPost();
+    },
+
+    /**
+     * 分类点击
+     */
+    category_tap: function(e) {
+        var category = e.currentTarget.id;
+        if (category == '找潮友')
+            wx.navigateTo({ url: '/pages/userList/userList' });
+        else
+            wx.navigateTo({ url: '/pages/category/category?category=' + category });
+    },
+
+    /**
+     * 点击帖子内容
+     */
+    notice_tap: function(e) {
+        wx.navigateTo({ url: '/pages/postDetail/postDetail?post=' + JSON.stringify(e.currentTarget.dataset.notice) });
+    },
+    postTap: function(e) {
+        wx.navigateTo({
+            url: '/pages/postDetail/postDetail?post=' + JSON.stringify(e.detail.post)
+        });
     },
 
     /**
@@ -188,7 +198,7 @@ Page({
     search_all: function(e) {
         if (this.data.inputVal != "") {
             wx.navigateTo({
-                url: '/pages/search/result/result?keyWord=' + this.data.inputVal
+                url: '/pages/search/search?keyWord=' + this.data.inputVal
             });
             this.hideInput();
         }
@@ -196,7 +206,7 @@ Page({
     search_post: function(e) {
         if (this.data.inputVal != "") {
             wx.navigateTo({
-                url: '/pages/search/post/post?keyWord=' + this.data.inputVal
+                url: '/pages/search4Post/search4Post?keyWord=' + this.data.inputVal
             });
             this.hideInput();
         }
@@ -204,7 +214,7 @@ Page({
     search_person: function(e) {
         if (this.data.inputVal != "") {
             wx.navigateTo({
-                url: '/pages/search/person/person?keyWord=' + this.data.inputVal
+                url: '/pages/search4Person/search4Person?keyWord=' + this.data.inputVal
             });
             this.hideInput();
         }

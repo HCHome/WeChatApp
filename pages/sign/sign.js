@@ -1,6 +1,6 @@
 // pages/sign/sign.js
 const app = getApp();
-const loginManager = require('../../utils/loginManager.js');
+const currentUser = require('../../utils/currentUser.js');
 const net4User = require('../../utils/net4User.js');
 Page({
 
@@ -8,7 +8,7 @@ Page({
      * 页面的初始数据
      */
     data: {
-        signScore: 30,
+        signScore: 0,
         letter: null,
         imgUrl: null,
         order: null,
@@ -28,24 +28,24 @@ Page({
      */
     onLoad: function(options) {
         wx.showLoading({ title: '获取数据中' });
-        if (loginManager.hc_info.user.isSign) {
+        if (currentUser.data.isSign) {
             var buttonText = '今日已签到';
             var btnDisabled = true;
         } else {
             var buttonText = '签到';
             var btnDisabled = false;
         }
-        if (loginManager.hc_info.user.avatar) this.setData({
-            imgUrl: loginManager.hc_info.user.avatar,
-            signScore: loginManager.hc_info.user.signScore,
-            signButtonShow: loginManager.hc_info.user.isSign,
+        if (currentUser.data.avatar) this.setData({
+            imgUrl: currentUser.data.avatar,
+            signScore: currentUser.data.signScore,
+            signButtonShow: currentUser.data.isSign,
             buttonText: buttonText,
             btnDisabled: btnDisabled
         });
         else this.setData({
-            letter: loginManager.hc_info.user.letter,
-            signScore: loginManager.hc_info.user.signScore,
-            signButtonShow: loginManager.hc_info.user.isSign,
+            letter: currentUser.data.letter,
+            signScore: currentUser.data.signScore,
+            signButtonShow: currentUser.data.isSign,
             buttonText: buttonText,
             btnDisabled: btnDisabled
         });
@@ -59,14 +59,14 @@ Page({
     renewRank: function() {
         var that = this;
         net4User.signRank({
-            userId: loginManager.hc_info.user.userId,
+            userId: currentUser.data.userId,
             success: res => {
                 // 列表
                 res.data.data.scoreRankList.forEach(item => {
                     if (!item.avatar) item.letter = item.nickname[item.nickname.length - 1];
                 });
                 // 当前用户排名
-                loginManager.hc_info.user.signScore = res.data.data.userScoreRank.signScore;
+                currentUser.data.signScore = res.data.data.userScoreRank.signScore;
                 that.setData({
                     scoreRankList: res.data.data.scoreRankList,
                     order: res.data.data.userScoreRank.scoreRank,
@@ -85,7 +85,7 @@ Page({
         if (!this.data.btnDisabled) {
             wx.showLoading({ title: '签到中...' });
             net4User.sign({
-                userId: loginManager.hc_info.user.userId,
+                userId: currentUser.data.userId,
                 success: res => {
                     wx.hideLoading();
                     if (res.data.status == 10001) {
@@ -100,7 +100,7 @@ Page({
                         });
                     } else wx.showToast({
                         title: '签到失败',
-                        image: '/pages/resources/warning.png',
+                        image: '/resources/warning.png',
                         duration: 1500
                     });
                 }
@@ -113,7 +113,7 @@ Page({
      */
     onUserTap: function(e) {
         wx.navigateTo({
-            url: '/pages/personinfo/personinfo?userId='+ e.currentTarget.dataset.id
+            url: '/pages/userDetail/userDetail?userId='+ e.currentTarget.dataset.id
         });
     }
 })

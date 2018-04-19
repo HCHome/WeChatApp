@@ -33,7 +33,7 @@ Component({
             this.triggerEvent('replyMenu', e, {});
         },
         avatarTap: function (e) {
-            wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + this.properties.reply.replierId });
+            wx.navigateTo({ url: "/pages/userDetail/userDetail?userId=" + this.properties.reply.replierId });
         }
     }
 })

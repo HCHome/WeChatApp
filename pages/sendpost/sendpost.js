@@ -1,7 +1,7 @@
 // pages/sendpost/sendpost.js
 const app = getApp();
 const net4Post = require('../../utils/net4Post.js');
-const loginManager = require('../../utils/loginManager.js');
+const currentUser = require('../../utils/currentUser.js');
 
 Page({
 
@@ -32,12 +32,7 @@ Page({
         var tmp = []
         app.globalData.categories.forEach(item => { tmp.push(item.name) })
         this.setData({ categoryArray: tmp, chosenCategory: tmp[0] });
-    },
 
-    /**
-     * 生命周期函数--监听页面加载
-     */
-    onShow: function() {
         this._data.title = null;
         this._data.text = null;
     },
@@ -63,7 +58,7 @@ Page({
                     if (!imgArray.includes(item)) imgArray.push(item);
                 })
                 that.setData({ chosenImgs: imgArray });
-            },
+            }
         });
     },
 
@@ -77,7 +72,7 @@ Page({
                 title: '请输入标题',
                 duration: 1000,
                 mask: true,
-                image: '/pages/resources/warning.png'
+                image: '/resources/warning.png'
             });
         // 输入检查·内容
         else if (this._data.text == null || this._data.text == '')
@@ -85,7 +80,7 @@ Page({
                 title: '请输入帖子内容',
                 duration: 1000,
                 mask: true,
-                image: '/pages/resources/warning.png'
+                image: '/resources/warning.png'
             });
         // 发布
         else {
@@ -93,7 +88,7 @@ Page({
             // 发帖
             var that = this;
             net4Post.sendPost({
-                userId: loginManager.hc_info.user.userId,
+                userId: currentUser.data.userId,
                 category: that.data.chosenCategory,
                 title: that._data.title,
                 text: that._data.text,
@@ -108,6 +103,15 @@ Page({
                     })
                     that.setData({ chosenImgs: [], initValue: ''});
                     wx.switchTab({ url: '/pages/home/home' });
+                },
+                fail: () => {
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '发布失败',
+                        image: '/resources/warning.png',
+                        mask: true,
+                        duration: 1500
+                    });
                 }
             })
         }

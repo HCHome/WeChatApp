@@ -1,8 +1,7 @@
 // pages/home/home.js
 
 const app = getApp()
-const loginManager = require('../../utils/loginManager.js')
-const unitConvert = require('../../utils/unitConvert.js')
+const net4User = require('../../utils/net4User.js')
 const authImg = require('./authImg.js')
 
 Page({
@@ -28,7 +27,7 @@ Page({
         wx.showLoading({ title: '登录中...', mask: true });
         // 进行登录
         var that = this;
-        loginManager.login({
+        net4User.login({
             success: res => {
                 if (res.data.status) {
                     wx.hideLoading();
@@ -39,7 +38,7 @@ Page({
                 wx.hideLoading();
                 wx.showToast({
                     title: '服务器错误',
-                    image: "/pages/resources/warning.png",
+                    image: "/resources/warning.png",
                     mask: true,
                     duration: 1000
                 });
@@ -60,7 +59,7 @@ Page({
             case 10004:
                 wx.showToast({
                     title: '服务器错误',
-                    image: "/pages/resources/warning.png",
+                    image: "/resources/warning.png",
                     mask: true,
                     duration: 1000
                 });
@@ -70,7 +69,7 @@ Page({
             case 10003:
                 wx.showToast({
                     title: '未认证潮友',
-                    image: "/pages/resources/warning.png",
+                    image: "/resources/warning.png",
                     mask: true,
                     duration: 1000
                 });
@@ -104,7 +103,7 @@ Page({
     },
 
     // 申请安全码
-    getcode: function() { wx.navigateTo({ url: "/pages/getCode/getCode" }); },
+    apply: function() { wx.navigateTo({ url: "/pages/apply/apply" }); },
 
     /**
      * 认证
@@ -114,13 +113,13 @@ Page({
         if (!this._data.inputSecureCode || this._data.inputSecureCode == '') {
             wx.showToast({
                 title: '请输入安全码',
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 duration: 1000
             })
         } else if (!this.testAuth()) {
             wx.showToast({
                 title: '图形验证码错误',
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 duration: 1000
             })
         } else {
@@ -136,7 +135,7 @@ Page({
                     wx.hideLoading();
                     wx.showToast({
                         title: '服务器错误',
-                        image: "/pages/resources/warning.png",
+                        image: "/resources/warning.png",
                         mask: true,
                         duration: 1000
                     });
@@ -159,7 +158,7 @@ Page({
             // hc服务器异常
             wx.showToast({
                 title: '服务器错误',
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 mask: true,
                 duration: 1000
             });
@@ -167,7 +166,7 @@ Page({
             // 安全码错误
             wx.showToast({
                 title: '安全码错误',
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 mask: true,
                 duration: 1000
             });
@@ -176,7 +175,7 @@ Page({
             // 登录态过期
             wx.showToast({
                 title: '微信登录信息过期',
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 mask: true,
                 duration: 1000
             });

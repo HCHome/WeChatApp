@@ -1,7 +1,6 @@
 // pages/person/person.js
-const loginManager = require('../../../utils/loginManager.js');
-const net4Post = require('../../../utils/net4Post.js');
-const net4User = require('../../../utils/net4User.js');
+const currentUser = require('../../utils/currentUser.js');
+const net4User = require('../../utils/net4User.js');
 
 Page({
 
@@ -27,14 +26,14 @@ Page({
      */
     onShow: function() {
         var gender_img = "";
-        if (loginManager.hc_info.user.sex)
-            gender_img = loginManager.hc_info.user.sex == "男" ? "../../resources/male.png" : "../../resources/female.png";
+        if (currentUser.data.sex)
+            gender_img = currentUser.data.sex == "男" ? "../../resources/male.png" : "../../resources/female.png";
         this.setData({
-            letter     : loginManager.hc_info.user.letter,
-            avatar     : loginManager.hc_info.user.avatar,
-            nickName   : loginManager.hc_info.user.nickname,
+            letter     : currentUser.data.nickname[currentUser.data.nickname.length - 1],
+            avatar     : currentUser.data.avatar,
+            nickName   : currentUser.data.nickname,
             gender_img : gender_img,
-            unReadCount: loginManager.hc_info.user.unReadCount
+            unReadCount: currentUser.data.unReadCount
         });
     },
 
@@ -52,17 +51,17 @@ Page({
         wx.showLoading({ title: "正在获取信息...", mask: true });
         var that = this;
         net4User.getUserInfo({
-            userId: loginManager.hc_info.user.userId,
+            userId: currentUser.data.userId,
             success: res => {
                 // 性别的图
                 var gender_img = "";
-                if (loginManager.hc_info.user.sex)
-                    gender_img = loginManager.hc_info.user.sex == "男" ? "../../resources/male.png" : "../../resources/female.png";
+                if (currentUser.data.sex)
+                    gender_img = currentUser.data.sex == "男" ? "../../resources/male.png" : "../../resources/female.png";
                 // 同步信息到页面
                 that.setData({
-                    letter    : loginManager.hc_info.user.letter,
-                    avatar    : loginManager.hc_info.user.avatar,
-                    nickName  : loginManager.hc_info.user.nickname,
+                    letter    : currentUser.data.nickname[currentUser.data.nickname.length - 1],
+                    avatar    : currentUser.data.avatar,
+                    nickName  : currentUser.data.nickname,
                     gender_img: gender_img
                 });
                 // 关闭提示
@@ -74,17 +73,17 @@ Page({
     /**
      * 跳转到收到的回复页面
      */
-    toMsg: function(e) { wx.navigateTo({ url: '/pages/my/receivemsg/receivemsg' }); },
+    toMsg: function(e) { wx.navigateTo({ url: '/pages/replyList/replyList' }); },
 
     /**
      * 跳转到我的帖子页面
      */
-    toMyPosts: function(e) { wx.navigateTo({ url: '/pages/my/myposts/myposts'}); },
+    toMyPosts: function(e) { wx.navigateTo({ url: '/pages/postHistory/postHistory'}); },
 
     /**
      * 跳转到个人信息修改页面
      */
-    infoModify: function(e) { wx.navigateTo({ url: '/pages/my/userinfosetting/userinfosetting' }); },
+    infoModify: function(e) { wx.navigateTo({ url: '/pages/setting/setting' }); },
 
 
 })

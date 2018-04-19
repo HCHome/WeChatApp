@@ -6,8 +6,8 @@
         "pages/category/category",
         "pages/userList/userList",
         "pages/search/search",
+        "pages/search4Person/search4Person",
         "pages/search4Post/search4Post",
-        "pages/search/search4Person",
         "pages/sign/sign",
         "pages/sendPost/sendPost",
         "pages/my/my",
@@ -17,41 +17,40 @@
         "pages/postDetail/postDetail",
         "pages/userDetail/userDetail"
     ],
-    "window": {
+    "window":
+    {
         "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#5AA7FF",
         "navigationBarTitleText": "海潮之家",
         "navigationBarTextStyle": "white",
         "backgroundColor": "#5AA7FF"
     },
-    "tabBar": {
-        "color": "#5AA7FF",
-        "selectedColor": "#5AA7FF",
+    "tabBar":
+    {
         "list": [
-            {
-                "pagePath": "pages/home/home",
-                "iconPath": "resources/home.png",
-                "selectedIconPath": "resources/home_on.png",
-                "text": "首页"
-            },
-            {
-                "pagePath": "pages/sign/sign",
-                "iconPath": "resources/sign.png",
-                "selectedIconPath": "resources/sign_on.png",
-                "text": "签到"
-            },
-            {
-                "pagePath": "pages/sendPost/sendPost",
-                "iconPath": "resources/newPost.png",
-                "selectedIconPath": "resources/newPost_on.png",
-                "text": "发帖"
-            },
-            {
-                "pagePath": "pages/my/my",
-                "iconPath": "resources/person.png",
-                "selectedIconPath": "resources/person_on.png",
-                "text": "我的"
-            }
-        ]
+        {
+            "pagePath": "pages/home/home",
+            "text": "首页",
+            "iconPath": "resources/home.png",
+            "selectedIconPath": "resources/home_on.png"
+        },
+        {
+            "pagePath": "pages/sign/sign",
+            "text": "签到",
+            "iconPath": "resources/sign.png",
+            "selectedIconPath": "resources/sign_on.png"
+        },
+        {
+            "pagePath": "pages/sendPost/sendPost",
+            "text": "发帖",
+            "iconPath": "resources/newPost.png",
+            "selectedIconPath": "resources/newPost_on.png"
+        },
+        {
+            "pagePath": "pages/my/my",
+            "text": "我的",
+            "iconPath": "resources/person.png",
+            "selectedIconPath": "resources/person_on.png"
+        }]
     }
 }

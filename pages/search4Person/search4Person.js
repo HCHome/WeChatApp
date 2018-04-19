@@ -1,6 +1,6 @@
 // pages/search/search.js
 const app = getApp()
-var net4Search = require("../../../utils/net4Search.js")
+var net4User = require("../../utils/net4User.js")
 
 Page({
 
@@ -53,11 +53,10 @@ Page({
      */
     getResult: function(keyWord) {
         var that = this;
-        net4Search.search({
-            type: "person",
+        net4User.search({
             keyWord: keyWord,
-            success4Person: res => {
-                var tmp = net4Search.mergeUserList(res.data.data.jobResult, res.data.data.nicknameResult, res.data.data.professionResult, res.data.data.schoolResult);
+            success: res => {
+                var tmp = net4User.mergeUserList(res.data.data.jobResult, res.data.data.nicknameResult, res.data.data.professionResult, res.data.data.schoolResult);
                 tmp.sort((a,b) => (a.userid - b.userid));
                 that._data.all              = tmp;
                 that._data.jobResult        = res.data.data.jobResult;

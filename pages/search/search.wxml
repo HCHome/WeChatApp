@@ -45,7 +45,8 @@
         <view id="user__hd" class="weui-panel__hd" style="font-size: 13px;">无相关用户</view>
     </block>
 </view>
-<view id="post-part" class="weui-panel weui-panel_access" wx:if="{{posts != null}}">
+<!-- 搜贴结果 -->
+<view id="post-part" class="weui-panel weui-panel_access" wx:if="{{posts.length != null}}">
     <block wx:if="{{posts.length > 0}}">
         <view class="weui-panel__hd" style="font-size: 13px;">相关帖子</view>
         <view class="weui-panel__bd">

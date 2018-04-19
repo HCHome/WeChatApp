@@ -1,7 +1,7 @@
-// pages/postdetail/postdetail.js
+// pages/postDetail/postDetail.js
 const app = getApp();
-const net4Reply = require('../../utils/net4Reply.js');
-const loginManager = require('../../utils/loginManager.js');
+var net4Post = require("../../utils/net4Post.js");
+var currentUser = require("../../utils/currentUser.js")
 
 Page({
 
@@ -9,19 +9,9 @@ Page({
      * 页面的初始数据
      */
     data: {
-        // 发布者信息
-        category: null,
-        createdDate: null,
+        // 帖子本体
+        post: null,
         letter: null,
-        pictureCount: null,
-        pictureUrl: null,
-        postId: null,
-        posterAvatar: null,
-        posterId: null,
-        posterNickname: null,
-        repliesCount: null,
-        text: null,
-        title: null,
         updatedDate: null,
         viewOrder: '倒序查看',
 
@@ -54,19 +44,8 @@ Page({
     onLoad: function(options) {
         var post = JSON.parse(options.post);
         this.setData({
-            category: post.category,
-            createdDate: post.createdDate,
-            letter: post.letter ? post.letter : null,
-            pictureCount: post.pictureCount,
-            pictureUrl: post.pictureUrl,
-            postId: post.postId,
-            posterAvatar: post.posterAvatar,
-            posterId: post.posterId,
-            posterNickname: post.posterNickname,
-            repliesCount: post.repliesCount,
-            text: post.text,
-            title: post.title,
-            updatedDate: post.updatedDate
+            post: post,
+            letter: post.posterNickname[post.posterNickname.length - 1]
         });
         this.getReply();
     },
@@ -93,7 +72,7 @@ Page({
      * 点击楼主
      */
     onPosterTap: function(e) {
-        wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + this.data.posterId });
+        wx.navigateTo({ url: "/pages/userDetail/userDetail?userId=" + this.data.posterId });
     },
 
     // 针对回复的操作菜单
@@ -101,7 +80,7 @@ Page({
         // 判断权限：楼主or回复发布者
         var targetReply = e.detail.reply;
         if (targetReply) {
-            if (loginManager.hc_info.user.userId == this.data.posterId || loginManager.hc_info.user.userId == targetReply.replierId) {
+            if (currentUser.data.userId == this.data.posterId || currentUser.data.userId == targetReply.replierId) {
                 var that = this;
                 wx.showActionSheet({
                     itemList: ['回复', '删除'],
@@ -132,7 +111,7 @@ Page({
                 title: '请输入回复',
                 duration: 1000,
                 mask: true,
-                image: '/pages/resources/warning.png'
+                image: '/resources/warning.png'
             });
         else
             this.postReply();
@@ -150,9 +129,9 @@ Page({
      */
     onReachBottom: function() {
         if (this.data.tip == '加载更多') {
-            var nextID = 0;
-            if (this.data.replyList.length > 0) nextID = this.data.replyList[this.data.replyList.length - 1].replyId;
-            this.getReply(nextID);
+            var lastID = 0;
+            if (this.data.replyList.length > 0) lastID = this.data.replyList[this.data.replyList.length - 1].replyId;
+            this.getReply(lastID);
         }
     },
 
@@ -164,9 +143,9 @@ Page({
         this.setData({ tip: '正在加载' });
         wx.showNavigationBarLoading();
         var that = this;
-        net4Reply.getReply({
+        net4Post.getReply({
             lastReplyId: lastID ? lastID : 0,
-            postId: this.data.postId,
+            postId: this.data.post.postId,
             success: res => {
                 if (res.status == 10001) {
                     var replies = that.data.replyList;
@@ -199,7 +178,7 @@ Page({
     // 删除回复
     deleteReply: function(reply) {
         var that = this;
-        net4Reply.deleteReply({
+        net4Post.deleteReply({
             replyId: reply.replyId,
             success: res => {
                 if (res.data.status == 10001) {
@@ -225,7 +204,7 @@ Page({
                 // 弹窗提示
                 wx.showToast({
                     title: '删除失败',
-                    image: '/pages/resources/warning.png',
+                    image: '/resources/warning.png',
                     mask: true,
                     duration: 1500
                 });
@@ -247,29 +226,43 @@ Page({
             title: '发布中...',
             mask: true
         });
-        net4Reply.postReply({
-            userId: loginManager.hc_info.user.userId,
-            postId: this.data.postId,
+        net4Post.postReply({
+            userId: currentUser.data.userId,
+            postId: this.data.post.postId,
             repliedFloor: this._data.repliedReply ? this._data.repliedReply.floor : 0,
             repliedFloorUserId: this._data.repliedReply ? this._data.repliedReply.replierId : this.data.posterId,
-            posterId: this.data.posterId,
+            posterId: this.data.post.posterId,
             text: this._data.replyText,
             success: res => {
-                wx.hideLoading();
-                wx.showToast({
-                    title: '发布成功',
-                    icon: "success",
-                    duration: 1500
-                });
-                that.getReply(that.data.replyList.length > 0 ? that.data.replyList[that.data.replyList.length - 1].replyId : 0);
-                that.setData({ replyValue: '' }); // 清空输入框
-                that.setRepliedFloor(null);
+                if (res.data.status != 10001)
+                    this.fail();
+                else {
+                    wx.hideLoading();
+                    console.log({
+                        userId: currentUser.data.userId,
+                        postId: this.data.post.postId,
+                        repliedFloor: this._data.repliedReply ? this._data.repliedReply.floor : 0,
+                        repliedFloorUserId: this._data.repliedReply ? this._data.repliedReply.replierId : this.data.posterId,
+                        posterId: this.data.post.posterId,
+                        text: this._data.replyText,
+                    })
+                    console.log(res)
+
+                    wx.showToast({
+                        title: '发布成功',
+                        icon: "success",
+                        duration: 1500
+                    });
+                    that.getReply(that.data.replyList.length > 0 ? that.data.replyList[that.data.replyList.length - 1].replyId : 0);
+                    that.setData({ replyValue: '' }); // 清空输入框
+                    that.setRepliedFloor(null);
+                }
             },
             fail: () => {
                 wx.hideLoading();
                 wx.showToast({
                     title: '发布失败',
-                    image: '/pages/resources/warning.png',
+                    image: '/resources/warning.png',
                     duration: 1500
                 });
             },

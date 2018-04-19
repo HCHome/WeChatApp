@@ -56,13 +56,13 @@ Component({
         draw: function(e) {
             // 尺寸相关
             var size = null;
-            var unitConvert = require('../../utils/unitConvert.js');
+            var utils = require('../../utils/utils.js');
             if (this.data.pxSize != null)
                 size = parseInt(this.data.pxSize);
             else if (this.data.rpxSize != null)
-                size = unitConvert.rpx2px(parseFloat(this.data.rpxSize));
+                size = utils.rpx2px(parseFloat(this.data.rpxSize));
             else
-                size = unitConvert.rpx2px(100);
+                size = utils.rpx2px(100);
             size = size * parseFloat(this.data.scale);
             this.setData({ size: size + 'px' });
             // 如果给了letter 就绘图

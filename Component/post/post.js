@@ -12,7 +12,6 @@ Component({
                 posterId: 0,
                 posterNickname: "",
                 posterAvatar: '',
-                letter: '',
                 title: "",
                 category: "",
                 createdDate: '2000.1.1',
@@ -23,7 +22,7 @@ Component({
                 repliesCount: 0
             },
             observer: function(newVal, oldVal) {
-                this.setText(newVal.text)
+                this.setValue(newVal)
             }
         }
     },
@@ -32,6 +31,7 @@ Component({
      * 组件的初始数据
      */
     data: {
+        letter: '',
         showedText: ""
     },
 
@@ -40,7 +40,7 @@ Component({
      */
     methods: {
         bindAvatarTap: function(e) {
-            wx.navigateTo({ url: "/pages/personinfo/personinfo?userId=" + this.properties.post.posterId });
+            wx.navigateTo({ url: "/pages/userDetail/userDetail?userId=" + this.properties.post.posterId });
         },
         bindTap: function(e) {
             e.post = this.properties.post;
@@ -52,17 +52,20 @@ Component({
                 urls: this.properties.post.pictureUrl
             });
         },
-        setText: function(text) {
-            var sText = text;
+        setValue: function(val) {
+            var sText = val.text;
             var count = 0;
-            for (var i = 0; i < text.length; i++) {
-                if (text[i] == "\n") count++;
+            for (var i = 0; i < val.text.length; i++) {
+                if (val.text[i] == "\n") count++;
                 if (count >= 5) {
-                    sText = text.substr(0, i) + "...";
+                    sText = val.text.substr(0, i) + "...";
                     break;
                 }
             }
-            this.setData({ showedText: sText });
+            var letter = "";
+            if (val.posterAvatar || val.posterAvatar == "")
+                letter = val.posterNickname[val.posterNickname.length - 1];
+            this.setData({ showedText: sText, letter: letter });
         }
     }
 })

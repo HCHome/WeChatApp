@@ -1,6 +1,6 @@
 // pages/search/search.js
 const app = getApp()
-var net4Search = require("../../../utils/net4Search.js")
+var net4Post = require("../../utils/net4Post.js")
 
 Page({
 
@@ -34,21 +34,20 @@ Page({
         if (options) {
             wx.setNavigationBarTitle({title: "搜索\"" + options.keyWord + "\"相关帖子"});
             this.setData({ initVal: options.keyWord });
-            this.getResult(options.keyWord);
+            this.search(options.keyWord);
         }
     },
 
     /**
      * 请求搜索结果
      */
-    getResult: function(keyWord) {
+    search: function(keyWord) {
         var that = this;
-        net4Search.search({
-            type: "post",
+        net4Post.search({
             keyWord: keyWord,
-            success4Post: res => {
+            success: res => {
                 that._data["全部"] = res.posts;
-                res.posts.forEach(item => { that._data[item.category].push(item); })
+                res.posts.forEach(item => { that._data[item.category].push(item); });
                 that.setData({ posts: that._data["全部"], tip: "暂无更多相关帖子" });
             },
         })

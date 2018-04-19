@@ -1,5 +1,10 @@
-<!--pages/personinfo/personinfo.wxml-->
-<view class="weui-cells__title"><avatar-view letter="{{nickname[nickname.length - 1]}}" imageUrl="{{avatar}}" /></view>
+<!--pages/userDetail/userDetail.wxml-->
+<view class="weui-cells__title">
+    <view class="name">
+        <avatar-view letter="{{nickname[nickname.length - 1]}}" imageUrl="{{avatar}}" />
+        <text>{{nickname}}</text>
+    </view>
+</view>
 <view class="weui-cells weui-cells_after-title">
     <view wx:for="{{infos}}" wx:key="{{item.key}}" class="weui-cell">
         <view class="weui-cell__bd">{{item.key}}</view>

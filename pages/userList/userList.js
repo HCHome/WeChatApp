@@ -1,5 +1,5 @@
 // pages/cylist/cylist.js
-var net4Cylist = require("../../utils/net4Cylist.js")
+var net4User = require("../../utils/net4User.js")
 var app = getApp()
 
 Page({
@@ -146,7 +146,7 @@ Page({
         var term = this.data.termArr[this.data.termIndex];
         if (term != '不限') req.term = term;
 
-        net4Cylist.getList(req);
+        net4User.getList(req);
     },
 
     /**

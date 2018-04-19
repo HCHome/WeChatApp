@@ -1,6 +1,6 @@
 // pages/userinfosetting/userinfosetting.js
-const loginManager = require('../../../utils/loginManager.js');
-const net4User = require('../../../utils/net4User.js');
+const currentUser = require('../../utils/currentUser.js');
+const net4User = require('../../utils/net4User.js');
 Page({
 
     /**
@@ -33,17 +33,17 @@ Page({
      */
     syncUserInfo: function() {
         this.setData({
-            isDisplay   :!!(loginManager.hc_info.user.isDisplay),
-            isSingleDog :!!(loginManager.hc_info.user.isSingleDog),
-            job         :loginManager.hc_info.user.job          ? loginManager.hc_info.user.job          : '',
-            nickname    :loginManager.hc_info.user.nickname     ? loginManager.hc_info.user.nickname     : '',
-            phoneNumber :loginManager.hc_info.user.phoneNumber  ? loginManager.hc_info.user.phoneNumber  : '',
-            profession  :loginManager.hc_info.user.profession   ? loginManager.hc_info.user.profession   : '',
-            qqNumber    :loginManager.hc_info.user.qqNumber     ? loginManager.hc_info.user.qqNumber     : '',
-            school      :loginManager.hc_info.user.school       ? loginManager.hc_info.user.school       : '',
-            sex         :loginManager.hc_info.user.sex          ? loginManager.hc_info.user.sex          : '',
-            term        :loginManager.hc_info.user.term         ? loginManager.hc_info.user.term         : '',
-            wechatNumber:loginManager.hc_info.user.wechatNumber ? loginManager.hc_info.user.wechatNumber : '',
+            isDisplay   :!!(currentUser.data.isDisplay),
+            isSingleDog :!!(currentUser.data.isSingleDog),
+            job         :currentUser.data.job          ? currentUser.data.job          : '',
+            nickname    :currentUser.data.nickname     ? currentUser.data.nickname     : '',
+            phoneNumber :currentUser.data.phoneNumber  ? currentUser.data.phoneNumber  : '',
+            profession  :currentUser.data.profession   ? currentUser.data.profession   : '',
+            qqNumber    :currentUser.data.qqNumber     ? currentUser.data.qqNumber     : '',
+            school      :currentUser.data.school       ? currentUser.data.school       : '',
+            sex         :currentUser.data.sex          ? currentUser.data.sex          : '',
+            term        :currentUser.data.term         ? currentUser.data.term         : '',
+            wechatNumber:currentUser.data.wechatNumber ? currentUser.data.wechatNumber : '',
         });
     },
 
@@ -95,7 +95,7 @@ Page({
         wx.showLoading({ title: '保存中...', mask: true });
         // 新的信息
         var reqData = {
-            userId      : loginManager.hc_info.user.userId,
+            userId      : currentUser.data.userId,
             isDisplay   : this.data.isDisplay,
             isSingleDog : this.data.isSingleDog  == null ? this.data.isSingleDog  : this.data.isSingleDog,
             job         : this.data.job          == null ? this.data.job          : this.data.job,
@@ -114,7 +114,7 @@ Page({
                 wx.hideLoading();
                 if (res.data.status == 10001) {
                     // 更新后台保存的数据
-                    loginManager.setHC_info(reqData);
+                    currentUser.renewHCInfo(reqData);
                     // 页面数据更新
                     that.setData(reqData);
                     wx.showToast({

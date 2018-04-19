@@ -1,17 +1,17 @@
-<!--pages/postdetail/postdetail.wxml-->
+<!--pages/postDetail/postDetail.wxml-->
 <!--楼主部分  -->
-<view id='title'>{{title}}</view>
+<view id='title'>{{post.title}}</view>
 <view id='context'>
-    <text>{{text}}</text>
+    <text>{{post.text}}</text>
 </view>
-<ninegrid-view pictureCount="{{pictureCount}}" pictureUrl="{{pictureUrl}}" />
+<ninegrid-view pictureCount="{{post.pictureCount}}" pictureUrl="{{post.pictureUrl}}" />
 <view class="weui-cell" style="border: none;" bindtap="onPosterTap">
     <view class="weui-cell__hd avatar-cell-hd" style="position: relative;margin-right: 10px;">
-        <avatar-view letter='{{letter}}' imageUrl='{{posterAvatar}}' pxSize='25' />
+        <avatar-view letter='{{letter}}' imageUrl='{{post.posterAvatar}}' pxSize='25' />
     </view>
     <view class="weui-cell__bd">
-        <view style="font-size: 10px;color: #888888;">{{posterNickname}}</view>
-        <view style="font-size: 10px;color: #888888;">{{category}} | {{createdDate}}</view>
+        <view style="font-size: 10px;color: #888888;">{{post.posterNickname}}</view>
+        <view style="font-size: 10px;color: #888888;">{{post.category}} | {{post.createdDate}}</view>
     </view>
 </view>
 <label id="btn">

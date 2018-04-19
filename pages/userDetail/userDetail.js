@@ -1,4 +1,4 @@
-// pages/personinfo/personinfo.js
+// pages/userDetail/userDetail.js
 var net4User = require("../../utils/net4User.js")
 Page({
 
@@ -42,7 +42,7 @@ Page({
             wx.hideLoading();
             wx.showToast({
                 title: "获取失败！",
-                image: "/pages/resources/warning.png",
+                image: "/resources/warning.png",
                 duration: 1000,
                 complete: function() { wx.navigateBack({ delta: 1 }); }
             });
@@ -55,7 +55,6 @@ Page({
                 wx.hideLoading();
                 var user = res.data.data.user;
                 var infos = [];
-                infos.push({ key: "姓名", value: user.nickname });
                 infos.push({ key: "性别", value: user.sex });
 
                 if (user.isDisplay) {
@@ -77,7 +76,7 @@ Page({
                 wx.hideLoading();
                 wx.showToast({
                     title: "获取失败！",
-                    image: "/pages/resources/warning.png",
+                    image: "/resources/warning.png",
                     duration: 1000,
                     complete: function() { wx.navigateBack({ delta: 1 }); }
                 });

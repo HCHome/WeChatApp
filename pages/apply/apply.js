@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-const loginManager = require('../../utils/loginManager.js')
+const net4User = require('../../utils/net4User.js')
 
 Page({
     data: {
@@ -34,20 +34,20 @@ Page({
         if (!this.data.name)
             wx.showToast({
                 title: '请输入姓名',
-                image: '/pages/resources/warning.png',
+                image: '/resources/warning.png',
                 duration: 1000
             });
         else if (!this.data.msg)
             wx.showToast({
                 title: '留言不能为空',
-                image: '/pages/resources/warning.png',
+                image: '/resources/warning.png',
                 duration: 1000
             });
         // 输入没有问题，进行提交
         else {
             wx.showLoading({ title: '正在提交', mask: true });
             var that = this;
-            loginManager.hc_apply({
+            net4User.apply_hc({
                 term: that.term(),
                 name: that.data.name,
                 message: that.data.msg,
@@ -74,7 +74,7 @@ Page({
                 fail: () => {
                     wx.showToast({
                         title: '发生异常，请重试',
-                        image: '/pages/resources/warning.png',
+                        image: '/resources/warning.png',
                         duration: 3000,
                         mask: true
                     });
