@@ -236,6 +236,7 @@ var _net4User = {
 
     /**
      * 筛选用户
+     * @param  {String}   searchWord  搜索关键词
      * @param  {int}      lastUserId  列表中最后一个用户的ID
      * @param  {function} success     成功拿到返回的回调函数
      * @param  {function} fail        未能拿到返回的回调函数
@@ -245,20 +246,8 @@ var _net4User = {
      * @return {null}
      */
     getList: function(Object) {
-        var req = {
-            url: app.globalData.url_hc + '/user/searchUser',
-            method: 'POST',
-            header: { 'content-type': 'application/x-www-form-urlencoded' },
-            data: {
-                lastUserId: Object && Object.lastUserId ? lastUserId : 0
-            },
-            success: res => { if (Object && typeof(Object.success) == 'function') Object.success(res); },
-            fail: () => { if (Object && typeof(Object.fail) == 'function') Object.fail(); }
-        }
-        if (Object && Object.term) req.data.term = Object.term;
-        if (Object && Object.sex) req.data.sex = Object.sex;
-        if (Object && typeof(Object.isSingleDog) != "undefined") req.data.isSingleDog = Object.isSingleDog;
-        wx.request(req)
+        var getUserList = require("./getUserList.js");
+        getUserList.getResult(Object);
     },
 
     /****** 3.用户签到、签到排名 *****/

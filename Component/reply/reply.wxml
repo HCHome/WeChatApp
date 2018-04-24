@@ -2,11 +2,11 @@
 <view class="reply" bindtap="onMenu">
     <view class="weui-cell" style="border: none;">
         <view class="weui-cell__hd" style="position: relative;margin-right: 10px;">
-            <avatar-view class='posterAvatar' letter='{{reply.letter}}' imageUrl='{{reply.replierAvatar}}' pxSize='25' catchtap='avatarTap' />
+            <avatar-view class='posterAvatar' letter='{{reply.replierNickname[reply.replierNickname.length - 1]}}' imageUrl='{{reply.replierAvatar}}' pxSize='25' catchtap='avatarTap' />
         </view>
         <view class="weui-cell__bd">
             <view style="font-size: 13px;">{{reply.replierNickname}}</view>
-            <view style="font-size: 10px;color: #888888;">{{reply.createdDate}}</view>
+            <view style="font-size: 10px;color: #888888;">{{createdDate}}</view>
         </view>
         <view class="weui-cell__ft">
             <view style="font-size: 13px;color: #888888;">#{{reply.floor}}</view>

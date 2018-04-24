@@ -57,7 +57,7 @@ Component({
             var count = 0;
             for (var i = 0; i < val.text.length; i++) {
                 if (val.text[i] == "\n") count++;
-                if (count >= 5) {
+                if (count >= 5 || i > 50) {
                     sText = val.text.substr(0, i) + "...";
                     break;
                 }

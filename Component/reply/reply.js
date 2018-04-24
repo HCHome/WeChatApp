@@ -8,10 +8,12 @@ Component({
             type: Object,
             value: null,
             observer: function (newVal, oldVal) {
+                var date = new Date(newVal.createdDate);
+                var createdDate = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
                 if (newVal.repliedFloor == 0) {
-                    this.setData({ text: newVal.text });
+                    this.setData({ text: newVal.text, createdDate: createdDate });
                 } else {
-                    this.setData({ text: '回复#' + newVal.repliedFloor + ':' + newVal.text });
+                    this.setData({ text: '回复#' + newVal.repliedFloor + ':' + newVal.text, createdDate: createdDate });
                 }
             }
         }

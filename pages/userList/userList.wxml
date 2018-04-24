@@ -19,8 +19,11 @@
 
 <!-- 筛选 -->
 <view class="filter" wx:if="{{searchWord != ''}}">
-    <text id="search_word-tip">关键词：{{searchWord}}</text>
-    <icon type="clear" size="14" bindtap="rmSearch"></icon>
+    <text class="filter-title">关键词</text>
+    <view>
+        <text id="searchWord">{{searchWord}}</text>
+        <icon type="clear" size="14" bindtap="rmSearch"></icon>
+    </view>
 </view>
 
 <view class="filter">

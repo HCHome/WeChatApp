@@ -38,6 +38,40 @@ avatar-view {
     margin: 10px 10px 0px 30px;
 }
 
+#reply_title {
+    position: relative;
+    height: 30px;
+    font-size: 12px;
+    border-bottom: 1px #eee solid;
+}
+
+#reply_count {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+}
+
+#order {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    text-decoration: underline;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#order-img {
+    height: 12px;
+    width: 20px;
+}
+
+.viewAll {
+    text-align: center;
+    font-size: 12px;
+    margin: 5px;
+}
+
 #replyView {
     font-size: 15px;
     background-color: #fff;

@@ -13,26 +13,33 @@ Page({
         post: null,
         letter: null,
         updatedDate: null,
-        viewOrder: '倒序查看',
 
         // 评论列表
         replyList: [],
 
-        // 提示
+        // 底部提示
         tip: "加载更多",
 
         // 输入框
         repliedFloorTip: '回复楼主',
         replyValue: '',
-        replyInputFocus: false
+        replyInputFocus: false,
+
+        // 排序按钮
+        orderBtn: null
     },
 
     /**
      * 后台使用的数据
      */
     _data: {
-        // 防止重复
-        replyIdList: [],
+        // 是否从“收到的回复页面”过来
+        startReplyId: null,
+
+        // 切换到排序的对应代码，这样要改页面文字不用改很多
+        switchToOldest: "切换到正序",
+        switchToLastest: "切换到逆序",
+
         // 回复楼层的信息
         replyText: '',
         repliedReply: 0
@@ -43,147 +50,221 @@ Page({
      */
     onLoad: function(options) {
         var post = JSON.parse(options.post);
+        var that = this;
         this.setData({
             post: post,
-            letter: post.posterNickname[post.posterNickname.length - 1]
+            letter: post.posterNickname[post.posterNickname.length - 1],
+            orderBtn: that._data.switchToOldest
         });
+        this._data.startReplyId = options.replyId;
         this.getReply();
     },
 
     /**
-     * 页面函数绑定
+     * 获取所有回复并进行排序
      */
+    getReply: function() {
+        this.setData({ tip: '正在加载' });
+        wx.showNavigationBarLoading();
 
-    // 回复楼主的按钮
-    replyPoster: function(e) {
-        this.setRepliedFloor(null);
-        this.setData({ replyInputFocus: true });
-    },
+        var that = this;
+        var net = lastId => {
+            net4Post.getReply({
+                lastReplyId: lastId,
+                postId: that.data.post.postId,
+                success: res => {
+                    if (res.status != 10001 || res.replyList.length == 0) {
+                        if (that.data.orderBtn == that._data.switchToOldest) {
+                            var sortFun = (a, b) => (b.floor - a.floor);
+                        } else {
+                            var sortFun = (a, b) => (a.floor - b.floor);
+                        }
+                        that.data.replyList.sort(sortFun);
+                        that.setData({ replyList: that.data.replyList });
 
-    // 改变排序
-    changeOrder: function(e) {
-        if (this.data.viewOrder == '正序查看')
-            this.sortReply('倒序查看');
-        else
-            this.sortReply('正序查看');
+                        wx.hideNavigationBarLoading();
+                        wx.stopPullDownRefresh();
+                        that.setData({ tip: "暂无更多回复" });
+                        if (that._data.startReplyId)
+                            that.scroll();
+                        return;
+                    }
+
+                    res.replyList.forEach(item => { that.data.replyList.push(item) });
+                    net(that.data.replyList[that.data.replyList.length - 1].replyId);
+                },
+                fail: () => {
+                    wx.hideNavigationBarLoading();
+                    wx.stopPullDownRefresh();
+                    this.setData({ tip: "暂无更多回复" });
+                }
+            });
+        }
+        net(0);
     },
 
     /**
-     * 点击楼主
+     * 滚动到点进来的回复在的位置
      */
-    onPosterTap: function(e) {
-        wx.navigateTo({ url: "/pages/userDetail/userDetail?userId=" + this.data.posterId });
-    },
+    scroll: function() {
+        var query = wx.createSelectorQuery()
+        query.select('#reply' + this._data.startReplyId).boundingClientRect();
+        query.exec(res => {
+            console.log(res)
 
-    // 针对回复的操作菜单
-    onMenu: function(e) {
-        // 判断权限：楼主or回复发布者
-        var targetReply = e.detail.reply;
-        if (targetReply) {
-            if (currentUser.data.userId == this.data.posterId || currentUser.data.userId == targetReply.replierId) {
-                var that = this;
-                wx.showActionSheet({
-                    itemList: ['回复', '删除'],
-                    success: res => {
-                        if (res.tapIndex == 0) {
-                            this.setRepliedFloor(targetReply);
-                            this.setData({ replyInputFocus: true });
-                        } else if (res.tapIndex == 1) this.deleteReply(targetReply);
-                    }
-                });
-            } else {
-                this.setRepliedFloor(targetReply);
-                this.setData({ replyInputFocus: true });
-            }
-        }
-    },
-
-    // 点击头像
-    avatarTap: function(e) {
-        console.log(e)
-    },
-
-    // 点击确定按钮
-    confirmReply: function(e) {
-        this._data.replyText = e.detail.value;
-        if (this._data.replyText == "")
-            wx.showToast({
-                title: '请输入回复',
-                duration: 1000,
-                mask: true,
-                image: '/resources/warning.png'
-            });
-        else
-            this.postReply();
+            wx.pageScrollTo({
+                scrollTop: res[0].top + wx.getSystemInfoSync().windowHeight / 2
+            })
+        })
     },
 
     /**
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh: function() {
+        this.data.replyList = [];
         this.getReply();
     },
 
     /**
-     * 页面上拉触底事件的处理函数
+     * 页面响应--切换排序
      */
-    onReachBottom: function() {
-        if (this.data.tip == '加载更多') {
-            var lastID = 0;
-            if (this.data.replyList.length > 0) lastID = this.data.replyList[this.data.replyList.length - 1].replyId;
-            this.getReply(lastID);
+    switchSort: function(e) {
+        if (this.data.orderBtn == this._data.switchToLastest) {
+            this.setData({ orderBtn: this._data.switchToOldest })
+            var sortFun = (a, b) => (b.floor - a.floor);
+        } else {
+            this.setData({ orderBtn: this._data.switchToLastest })
+            var sortFun = (a, b) => (a.floor - b.floor);
+        }
+        this.data.replyList.sort(sortFun);
+        this.setData({ replyList: this.data.replyList });
+    },
+
+
+    /**
+     * 页面响应--点击发帖者信息
+     */
+    onPosterTap: function(e) {
+        wx.navigateTo({
+            url: "/pages/userDetail/userDetail?userId=" + this.data.posterId
+        });
+    },
+
+    /**
+     * 页面响应--点击回复楼主
+     */
+    onReplyPoster: function(e) {
+        this.setRepliedFloor(null);
+        this.setData({ replyInputFocus: true });
+    },
+
+    /**
+     * 页面响应--输入回复
+     */
+    replyInput: function(e) { this._data.replyText = e.detail.value; },
+
+    /**
+     * 页面响应--点击键盘确定按钮
+     */
+    confirmReply: function(e) {
+        this._data.replyText = e.detail.value;
+        if (this._data.replyText == "") {
+            wx.showToast({
+                title: '请输入回复',
+                duration: 1000,
+                mask: true,
+                image: '/resources/warning.png'
+            });
+        } else {
+            wx.showLoading({
+                title: "正在发送...",
+                mask: true
+            });
+            var that = this;
+            var req = {
+                userId: currentUser.data.userId,
+                postId: that.data.post.postId,
+                posterId: that.data.post.posterId,
+                text: that._data.replyText,
+                success: res => {
+                    if (res.data.status == 10001) {
+                        wx.hideLoading();
+                        wx.showToast({
+                            title: '回复成功',
+                            duration: 1000,
+                            mask: true,
+                            icon: "success"
+                        });
+                        that.setData({
+                            repliedFloorTip: '回复楼主',
+                            replyValue: ''
+                        });
+                    } else {
+                        req.fail();
+                    }
+                },
+                fail: () => {
+                    wx.hideLoading();
+                    wx.showToast({
+                        title: '回复失败，请重试',
+                        duration: 1000,
+                        mask: true,
+                        image: '/resources/warning.png'
+                    });
+                }
+            }
+            if (this._data.repliedReply) {
+                req.repliedFloor = this._data.repliedReply.floor;
+                req.repliedFloorUserId = this._data.repliedReply.replierId;
+            }
+            net4Post.postReply(req);
         }
     },
 
     /**
-     * 后台调用函数
+     * 页面响应--点击回复
      */
-    // 获取回复
-    getReply: function(lastID) {
-        this.setData({ tip: '正在加载' });
-        wx.showNavigationBarLoading();
-        var that = this;
-        net4Post.getReply({
-            lastReplyId: lastID ? lastID : 0,
-            postId: this.data.post.postId,
-            success: res => {
-                if (res.status == 10001) {
-                    var replies = that.data.replyList;
-                    for (var i = 0; i < res.replyList.length; i++)
-                        if (!that._data.replyIdList.includes(res.replyList[i].replyId)) {
-                            that._data.replyIdList.push(res.replyList[i].replyId);
-                            // 修改一下日期格式
-                            var date = new Date(res.replyList[i].createdDate);
-                            res.replyList[i].createdDate = date.getFullYear() + '.' + (date.getMonth() + 1) + '.' + date.getDate();
-                            // 头像设置
-                            if (res.replyList[i].replierAvatar == '')
-                                res.replyList[i].letter = res.replyList[i].replierNickname[res.replyList[i].replierNickname.length - 1];
-                            replies.push(res.replyList[i]);
-                        }
-                    that.setData({ replyList: replies });
-                    that.sortReply();
+    onMenu: function(e) {
+        var targetReply = e.detail.reply;
+        if (currentUser.data.userId == this.data.posterId ||
+            currentUser.data.userId == targetReply.replierId) {
+            var that = this;
+            wx.showActionSheet({
+                itemList: ['回复', '删除'],
+                success: res => {
+                    if (res.tapIndex == 0) {
+                        this.setRepliedFloor(targetReply);
+                        this.setData({ replyInputFocus: true });
+                    } else if (res.tapIndex == 1) this.deleteReply(targetReply);
                 }
-            },
-            complete: () => {
-                wx.hideNavigationBarLoading();
-                wx.stopPullDownRefresh();
-                if (that.data.tip == '正在加载') {
-                    that.setData({ tip: '暂无更多回复' });
-                    setTimeout(() => { that.setData({ tip: '加载更多' }); }, 5000);
-                }
-            }
-        })
+            });
+        } else {
+            this.setRepliedFloor(targetReply);
+            this.setData({ replyInputFocus: true });
+        }
     },
 
-    // 删除回复
+    /**
+     * 设置回复楼层
+     */
+    setRepliedFloor: function(repliedReply) {
+        this._data.repliedReply = repliedReply;
+        if (repliedReply == null)
+            this.setData({ repliedFloorTip: '回复楼主' });
+        else
+            this.setData({ repliedFloorTip: '回复#' + repliedReply.floor });
+    },
+
+    /**
+     * 删除回复
+     */
     deleteReply: function(reply) {
         var that = this;
         net4Post.deleteReply({
             replyId: reply.replyId,
             success: res => {
                 if (res.data.status == 10001) {
-                    // 删除ID列表
-                    that._data.replyIdList.splice(that._data.replyIdList.indexOf(reply.replyId), 1);
                     // 删除显示的回复列表
                     var i = 0;
                     while (that.data.replyList[i].replyId != reply.replyId) { i++; }
@@ -210,75 +291,5 @@ Page({
                 });
             }
         });
-    },
-
-    // 设置回复楼层
-    setRepliedFloor: function(repliedReply) {
-        this._data.repliedReply = repliedReply;
-        if (repliedReply == null) this.setData({ repliedFloorTip: '回复楼主' });
-        else this.setData({ repliedFloorTip: '回复#' + repliedReply.floor });
-    },
-
-    // 发送回复
-    postReply: function() {
-        var that = this;
-        wx.showLoading({
-            title: '发布中...',
-            mask: true
-        });
-        net4Post.postReply({
-            userId: currentUser.data.userId,
-            postId: this.data.post.postId,
-            repliedFloor: this._data.repliedReply ? this._data.repliedReply.floor : 0,
-            repliedFloorUserId: this._data.repliedReply ? this._data.repliedReply.replierId : this.data.posterId,
-            posterId: this.data.post.posterId,
-            text: this._data.replyText,
-            success: res => {
-                if (res.data.status != 10001)
-                    this.fail();
-                else {
-                    wx.hideLoading();
-                    console.log({
-                        userId: currentUser.data.userId,
-                        postId: this.data.post.postId,
-                        repliedFloor: this._data.repliedReply ? this._data.repliedReply.floor : 0,
-                        repliedFloorUserId: this._data.repliedReply ? this._data.repliedReply.replierId : this.data.posterId,
-                        posterId: this.data.post.posterId,
-                        text: this._data.replyText,
-                    })
-                    console.log(res)
-
-                    wx.showToast({
-                        title: '发布成功',
-                        icon: "success",
-                        duration: 1500
-                    });
-                    that.getReply(that.data.replyList.length > 0 ? that.data.replyList[that.data.replyList.length - 1].replyId : 0);
-                    that.setData({ replyValue: '' }); // 清空输入框
-                    that.setRepliedFloor(null);
-                }
-            },
-            fail: () => {
-                wx.hideLoading();
-                wx.showToast({
-                    title: '发布失败',
-                    image: '/resources/warning.png',
-                    duration: 1500
-                });
-            },
-        })
-    },
-
-    // 输入回复
-    replyInput: function(e) { this._data.replyText = e.detail.value; },
-
-    // 给回复排序，注意会设定界面显示的字，所以调用之前不需要先设定
-    sortReply: function(viewOrder) {
-        if (!viewOrder) var viewOrder = this.data.viewOrder;
-        if (viewOrder == '正序查看') { var sortFun = (a, b) => (b.floor - a.floor); } else { var sortFun = (a, b) => (a.floor - b.floor); }
-        var replies = this.data.replyList;
-        replies.sort(sortFun);
-        this.setData({ replyList: null });
-        this.setData({ viewOrder: viewOrder, replyList: replies });
     }
 })

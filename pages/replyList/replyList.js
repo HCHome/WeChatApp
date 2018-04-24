@@ -22,4 +22,21 @@ Page({
             }
         })
     },
+
+    /**
+     * 点击回复
+     */
+    onReplyTap: function(e) {
+        wx.showLoading({ title: '跳转中...', mask: true });
+        net4Post.getPostInfo({
+            postId: e.currentTarget.dataset.reply.postId,
+            success: res => {
+                wx.hideLoading();
+                wx.navigateTo({
+                    url: '/pages/postDetail/postDetail?post=' + JSON.stringify(res.postInfo) +
+                        '&replyId=' + e.currentTarget.dataset.reply.replyId
+                });
+            }
+        })
+    }
 })

@@ -4,7 +4,7 @@
 .post {
     display: flex;
     flex-direction: column;
-    border-bottom: #ccc 1px solid;
+    border-bottom: #eee 1px solid;
 }
 
 avatar-view {

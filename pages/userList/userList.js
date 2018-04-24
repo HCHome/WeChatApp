@@ -77,18 +77,19 @@ Page({
             inputVal: e.detail.value
         });
     },
+    /**
+     * 切换筛选的响应
+     */
     search: function(e) {
-        // TODO 搜索筛人
         this.setData({ searchWord: this.data.inputVal });
-    },
-    rmSearch: function(e) {
-        // TODO 去掉搜索
-        this.setData({ searchWord: "" });
+        this.getList();
     },
 
-    /**
-     * 筛选
-     */
+    rmSearch: function(e) {
+        this.setData({ searchWord: "" });
+        this.getList();
+    },
+
     sexSelect: function(e) {
         if (this.data.sexArr[e.currentTarget.dataset.index].checked) return;
 
@@ -124,14 +125,13 @@ Page({
         this.setData({
             isLoading: true,
             users: []
-        })
-
+        });
 
         var that = this;
         var req = {
             lastUserId : lastID ? lastID : 0,
             success: res => {
-                that.setData({ isLoading: false, users : res.data.data.users })
+                that.setData({ isLoading: false, users : res.users })
             }
         }
 
@@ -141,25 +141,27 @@ Page({
 
         var singleDog = null;
         this.data.singleArr.forEach(item => { if (item.checked) singleDog = item.val; });
-        if (singleDog != '不限') req.singleDog = singleDog;
+        if (singleDog != '不限') req.isSingleDog = (singleDog == "是");
 
         var term = this.data.termArr[this.data.termIndex];
         if (term != '不限') req.term = term;
 
+        if (this.data.searchWord != "") req.searchWord = this.data.searchWord;
+
         net4User.getList(req);
+    },
+
+    /**
+     * 跳转到用户详情页
+     */
+    onUserTap: function(e) {
+        wx.navigateTo({ url: "/pages/userDetail/userDetail?userId=" + e.currentTarget.dataset.user.userId });
     },
 
     /**
      * 页面上拉触底事件的处理函数
      */
     onReachBottom: function() {
-
-    },
-
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function() {
 
     }
 })

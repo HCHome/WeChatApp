@@ -15,11 +15,21 @@
     </view>
 </view>
 <label id="btn">
-    <button class="weui-btn mini-btn" type="default" size="mini" bindtap='replyPoster'>回复楼主</button>
+    <button class="weui-btn mini-btn" type="default" size="mini" bindtap='onReplyPoster'>回复楼主</button>
 </label>
 <!--评论部分  -->
-<reply-view wx:for='{{replyList}}' wx:key='{{item.floor}}' reply='{{item}}' bind:replyMenu='onMenu' bind:avatarTap='avatarTap' />
-<!--上拉加载  -->
+<view id="reply_title">
+    <view id="reply_count">回复({{post.repliesCount}})</view>
+    <view id="order" bindtap="switchSort">
+        <image mode="aspectFit" id="order-img" src="{{orderBtn == '切换到正序' ? '/resources/order-lastest.png' : '/resources/order-oldest.png'}}" />
+        {{orderBtn}}
+    </view>
+</view>
+<!-- 刷新按钮 -->
+<!-- <button wx:if="{{fromReply}}" class="viewAll weui-btn" type="default" bindtap="onViewAll">查看所有回复</button> -->
+<!-- 回复列表 -->
+<reply-view wx:for='{{replyList}}' wx:key='{{item.floor}}' id="{{'reply' + item.replyId}}" reply='{{item}}' bind:replyMenu='onMenu' />
+<!-- 上拉加载  -->
 <!--加载更多的提示  -->
 <view class="weui-loadmore" style="font-size: 13px; color: #888888; margin: 5px auto;">
     <block wx:if="{{tip == '正在加载'}}">
