@@ -31,14 +31,14 @@
 <label hidden="{{inputShowed}}">
     <!--分区  -->
     <scroll-view id='category_part' scroll-x='true'>
-        <view class='category' hover-class="weui-grid_active" wx:for='{{categoryItems}}' wx:key='name' id='{{item.name}}' bindtap='category_tap'>
+        <view class='category' hover-class="weui-grid_active" wx:for='{{categoryItems}}' wx:key='{{item.name}}' id='{{item.name}}' bindtap='category_tap'>
             <image class='category_img' src='{{item.img}}' mode='scaleToFill'></image>
             <text class='category_name'>{{item.name}}</text>
         </view>
     </scroll-view>
     <!--置顶  -->
     <view id='noticePart'>
-        <view class='notice' wx:for='{{notice}}' wx:key='*this' bindtap='notice_tap' data-notice='{{item}}'>
+        <view class='notice' wx:for='{{notice}}' wx:key='{{notice.postId}}' bindtap='notice_tap' data-notice='{{item}}'>
             <text class='notice_cls'>置顶</text>
             <text class='notice_title' wx:if='{{hasNotice}}'>{{item.title}}</text>
             <text class='notice_title' wx:else>暂无新公告</text>

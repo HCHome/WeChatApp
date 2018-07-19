@@ -13,7 +13,7 @@
                 <input class="weui-input" placeholder="请输入安全码" bindchange="SecureCodeInput"/>
             </view>
             <view class="weui-cell__ft">
-                <view class="weui-vcode-btn" bindtap="getcode">获取安全码</view>
+                <view class="weui-vcode-btn" bindtap="apply">获取安全码</view>
             </view>
         </view>
         <view class="weui-cell weui-cell_input weui-cell_vcode">
@@ -24,8 +24,12 @@
                 <input class="weui-input" placeholder="请输入验证码" bindchange="AuthCodeInput" />
             </view>
             <view class="weui-cell__ft">
-                <canvas mode='scaleToFill' style='width: 108px; height: 44px;' bindtap='renewAuthimg' canvas-id='auth_img'></canvas>
+                <block wx:if="{{img_src != null}}">
+                    <image class="weui-vcode-img" src="{{img_src}}" mode='aspectFit' style='display: block; width: 108px; height: 44px;' bindtap='renewAuthimg'></image>
+                </block>
+                <view wx:else class="weui-vcode-btn" bindtap="renewAuthimg">刷新验证码</view>
             </view>
+            <canvas style='width: 108px; height: 44px; position: fixed; top: -50px; left: -150px;' canvas-id='auth_img'></canvas>
         </view>
     </view>
     <button wx:if="{{showInput}}" class="weui-btn" type="primary" bindtap="buttonClick">{{button_text}}</button>

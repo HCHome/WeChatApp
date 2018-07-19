@@ -1,4 +1,5 @@
 /* pages/userinfosetting/userinfosetting.wxss */
+
 .display {
     color: gray;
     height: 32px;

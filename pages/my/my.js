@@ -73,7 +73,10 @@ Page({
     /**
      * 跳转到收到的回复页面
      */
-    toMsg: function(e) { wx.navigateTo({ url: '/pages/replyList/replyList' }); },
+    toMsg: function(e) {
+        currentUser.renewHCInfo({ unReadCount: 0 });
+        wx.navigateTo({ url: '/pages/replyList/replyList' });
+    },
 
     /**
      * 跳转到我的帖子页面

@@ -1,4 +1,5 @@
 // pages/userinfosetting/userinfosetting.js
+const app = getApp();
 const currentUser = require('../../utils/currentUser.js');
 const net4User = require('../../utils/net4User.js');
 Page({
@@ -8,7 +9,7 @@ Page({
      */
     data: {
         toHome: false,
-        // 初始信息
+        // 初始信息，变量名和WXML中的prop一致
         nickname    : null,
         isSingleDog : null,
         job         : null,
@@ -23,6 +24,7 @@ Page({
         // 选择范围
         sexRange: ['男', '女'],
         YNRange : ['是', '否'],
+        termRange: [],
         // 是否处于禁用编辑状态
         disabled: true,
         btnText: '编辑'
@@ -51,6 +53,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
+        for (var i = app.globalData.terms.start; i <= app.globalData.terms.end; i++) {
+            this.data.termRange.push(i);
+        }
+        this.setData({ termRange: this.data.termRange });
         if (options && options.toHome) {
             this.setData({ toHome: true });
             this.btnTap();
@@ -66,8 +72,33 @@ Page({
         if (this.data.btnText == '编辑')
             this.setData({ btnText:'保存', disabled: false });
         else {
-            this.setData({ btnText:'编辑', disabled: true });
-            this.saveInfo();
+            if (this.checkInput()) {
+                this.setData({ btnText:'编辑', disabled: true });
+                this.saveInfo();
+            }
+        }
+    },
+
+    /**
+     * 校验填写的数据的有效性
+     */
+    checkInput: function () {
+        if (!this.data.sex) {
+            wx.showToast({
+                image: "/resources/warning.png",
+                title: '请填写性别',
+                duration: 1500
+            });
+            return false;
+        } else if (!this.data.term) {
+            wx.showToast({
+                image: "/resources/warning.png",
+                title: '请填写入会年级',
+                duration: 1500
+            });
+            return false;
+        } else {
+            return true;
         }
     },
 
@@ -82,6 +113,8 @@ Page({
             temp[prop] = (value==0);
         else if (prop == 'sex')
             temp[prop] = value == 0 ? "男" : "女";
+        else if (prop == 'term')
+            temp[prop] = this.data.termRange[value];
         else
             temp[prop] = value;
         this.setData(temp);

@@ -350,7 +350,7 @@ var _net4Post = {
     postReply: function (Object) {
         if (Object.text) {
             wx.request({
-                url: app.globalData.url_hc + '/post/postReplies',
+                url: app.globalData.url_hc + '/post/addReply',
                 method: 'POST',
                 header: { 'content-type': 'application/x-www-form-urlencoded' },
                 data: {

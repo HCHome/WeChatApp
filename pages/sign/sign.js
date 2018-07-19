@@ -61,19 +61,26 @@ Page({
         net4User.signRank({
             userId: currentUser.data.userId,
             success: res => {
-                // 列表
-                res.data.data.scoreRankList.forEach(item => {
-                    if (!item.avatar) item.letter = item.nickname[item.nickname.length - 1];
-                });
-                // 当前用户排名
-                currentUser.data.signScore = res.data.data.userScoreRank.signScore;
-                that.setData({
-                    scoreRankList: res.data.data.scoreRankList,
-                    order: res.data.data.userScoreRank.scoreRank,
-                    signScore: res.data.data.userScoreRank.signScore
-                });
                 // 关闭loading提示
                 wx.hideLoading();
+                if (res.data.status == 10001) {
+                    // 列表
+                    res.data.data.scoreRankList.forEach(item => {
+                        if (!item.avatar) item.letter = item.nickname[item.nickname.length - 1];
+                    });
+                    // 当前用户排名
+                    currentUser.data.signScore = res.data.data.userScoreRank.signScore;
+                    that.setData({
+                        scoreRankList: res.data.data.scoreRankList,
+                        order: res.data.data.userScoreRank.scoreRank,
+                        signScore: res.data.data.userScoreRank.signScore
+                    });
+                } else if (res.data.status == 10002) {
+                    wx.showToast({
+                        title: '服务器异常，请稍后重试！',
+                        duration: 1500
+                    })
+                }
             }
         });
     },

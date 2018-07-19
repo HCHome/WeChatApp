@@ -200,6 +200,7 @@ Page({
                             repliedFloorTip: '回复楼主',
                             replyValue: ''
                         });
+                        that.onPullDownRefresh();
                     } else {
                         req.fail();
                     }

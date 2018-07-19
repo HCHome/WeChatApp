@@ -1,11 +1,12 @@
 /* pages/home/home.wxss */
 
 page {
-    background-color: #5AA7FF;
+    background-color: #eef7f2;
     height: 100vh;
+    /*
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: center;*/
 }
 
 #main {
@@ -14,12 +15,14 @@ page {
     align-items: center;
     width: 100vw;
     max-height: calc(100vh-88px-200px-80px-46px);
+    padding-top: 10vh;
 }
 
 #logo {
     display: flex;
     width: 200px;
     height: 200px;
+    margin-bottom: 20px;
 }
 
 .weui-cells {

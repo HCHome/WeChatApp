@@ -1,5 +1,5 @@
 <!--pages/userinfosetting/userinfosetting.wxml-->
-<view class="weui-cells__title">{{toHome ? "首次登录请补全个人信息" : "个人信息"}}</view>
+<view class="weui-cells__title">{{toHome ? "首次登录请补全个人信息" : "个人信息"}}(带*必填)</view>
 <view class="weui-cells weui-cells_after-title">
     <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
@@ -18,6 +18,22 @@
                 <view class='weui-input {{disabled ? "disabled" : ""}}' >{{sex == null ? "请选择" : sex}}</view>
             </picker>
         </view>
+        <view class="weui-cell__ft">
+            <view class="weui-label" style="color: red;">*</view>
+        </view>
+    </view>
+    <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+            <view class="weui-label">入会年级</view>
+        </view>
+        <view class="weui-cell__bd">
+            <picker disabled='{{disabled}}' value='{{term}}' range='{{termRange}}' bindchange='onChange' data-prop='term'>
+                <view class='weui-input {{disabled ? "disabled" : ""}}' >{{term == null ? "未填写" : term}}</view>
+            </picker>
+        </view>
+        <view class="weui-cell__ft">
+            <view class="weui-label" style="color: red;">*</view>
+        </view>
     </view>
     <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
@@ -27,14 +43,6 @@
             <picker disabled='{{disabled}}' value='{{isSingleDog ? 0 : 1}}' range='{{YNRange}}' bindchange='onChange' data-prop='isSingleDog'>
                 <view class='weui-input {{disabled ? "disabled" : ""}}'>{{isSingleDog ? "是" : "否"}}</view>
             </picker>
-        </view>
-    </view>
-    <view class="weui-cell weui-cell_input">
-        <view class="weui-cell__hd">
-            <view class="weui-label">入会年级</view>
-        </view>
-        <view class="weui-cell__bd">
-            <input class='weui-input {{disabled ? "disabled" : ""}}' disabled='{{disabled}}' value='{{term}}' maxlength="4" placeholder="未填写" bindchange='onChange' data-prop='term' />
         </view>
     </view>
     <view class="weui-cell weui-cell_input">
@@ -95,4 +103,4 @@
         </view>
     </view>
 </view>
-<button class="weui-btn" type="primary" bindtap='btnTap'>{{btnText}}</button>
+<button class="weui-btn" style="width: 50%;" type="primary" bindtap='btnTap'>{{btnText}}</button>

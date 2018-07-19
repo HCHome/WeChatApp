@@ -31,7 +31,7 @@ Page({
 
         var tmp = []
         app.globalData.categories.forEach(item => { tmp.push(item.name) })
-        this.setData({ categoryArray: tmp, chosenCategory: tmp[0] });
+        this.setData({ categoryArray: tmp, chosenCategory: tmp[1] });
 
         this._data.title = null;
         this._data.text = null;

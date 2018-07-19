@@ -1,4 +1,5 @@
 /**
+ * 本文件代码不生效
  * 目前的回复采取直接获取所有回复的方式，但暂时保留这部分代码
  */
 
@@ -111,7 +112,7 @@ var _replyManager = {
                 }
             }
         })
-    },
+    }
 }
 
 module.exports = _replyManager;

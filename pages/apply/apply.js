@@ -53,23 +53,23 @@ Page({
                 message: that.data.msg,
                 success: res => {
                     wx.hideLoading();
-                    if (res.data.status == '10001') {
+                    if (res.data.status == 10001) {
                         wx.showToast({
                             title: '提交成功！',
                             icon: 'success',
                             duration: 3000
                         });
 
-                        // 给login页面传入正在申请中的信息
-                        var pages = getCurrentPages();
-                        var currPage = pages[pages.length - 1];   //当前页面
-                        var prevPage = pages[pages.length - 2];  //上一个页面
-
-                        //直接调用上一个页面的函数，告知applying
-                        prevPage.setApply(res.data);
                         // 返回
                         setTimeout(() => { wx.navigateBack({ delta: 1 }); }, 3000);
-                    } else this.fail();
+                    } else {
+                        wx.showToast({
+                            title: '发生异常，请重试',
+                            image: '/resources/warning.png',
+                            duration: 3000,
+                            mask: true
+                        });
+                    }
                 },
                 fail: () => {
                     wx.showToast({
@@ -78,7 +78,6 @@ Page({
                         duration: 3000,
                         mask: true
                     });
-                    wx.navigateBack({ delta: 1 });
                 }
             });
         }
