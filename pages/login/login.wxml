@@ -32,6 +32,6 @@
             <canvas style='width: 108px; height: 44px; position: fixed; top: -50px; left: -150px;' canvas-id='auth_img'></canvas>
         </view>
     </view>
-    <button wx:if="{{showInput}}" class="weui-btn" type="primary" bindtap="buttonClick">{{button_text}}</button>
+    <button wx:if="{{showButton}}" open-type="getUserInfo"  class="weui-btn" type="primary" bindgetuserinfo="buttonClick">{{button_text}}</button>
     <view class="apply" wx:if="{{showApply}}">已提交注册申请，请等待管理员发送安全码</view>
 </view>

@@ -2,7 +2,7 @@
 App({
     globalData: {
         applyDate: null,
-        url_hc: "https://haichaoxuehui.com/HCHomeServer",
+        url_hc: "https://cjtellyou.xyz/HCHomeServer",
         categories: [
             { name: '实习就业', img: '/resources/实习就业.png' },
             { name: '潮友日常', img: '/resources/潮友日常.png' },

@@ -11,6 +11,7 @@ Page({
      */
     data: {
         showInput: false,
+        showButton: true,
         showApply: false,
         button_text: "",
         img_src: loadingImg
@@ -30,14 +31,14 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function(options) {
-        // this.setData({
-        //     showInput: true,
-        //     showApply: true,
-        //     button_text: "注册",
-        // })
-        // return;
+        this.setData({
+            showButton: true,
+            button_text: "登录",
+        });
+    },
+
+    login: function(e) {
         wx.showLoading({ title: '登录中...', mask: true });
-        // 进行登录
         var that = this;
         net4User.login({
             success: res => {
@@ -85,13 +86,13 @@ Page({
                     mask: true,
                     duration: 1000
                 });
-                this.setData({ showInput: true, showApply: false, button_text: "认证" });
+                this.setData({ showInput: true, showButton: true, showApply: false, button_text: "认证" });
                 this.renewAuthimg();
                 break;
             // 注册中
             case 10006:
                 this._data.applying = res.data.data;
-                this.setData({ showInput: false, showApply: true });
+                this.setData({ showInput: false, showButton: false, showApply: true });
                 break;
         }
     },
@@ -101,9 +102,15 @@ Page({
     AuthCodeInput: function(e) { this._data.inputAuth = e.detail.value; },
 
     // 按钮
-    buttonClick: function() {
+    buttonClick: function(e) {
+        if (e.detail.errMsg == "getUserInfo:ok") {
+            net4User.setAvatar(e.detail.userInfo.avatarUrl);
+        }
+
         if (this.data.button_text == '认证')
             this.hc_register();
+        else if (this.data.button_text == '登录')
+            this.login();
         else if (this.data.button_text == '重新登录')
             this.onLoad();
     },

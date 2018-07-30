@@ -35,6 +35,8 @@
             <view class="weui-label" style="color: red;">*</view>
         </view>
     </view>
+    <!--
+        单身信息，删除
     <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
             <view class="weui-label">是否单身</view>
@@ -45,6 +47,7 @@
             </picker>
         </view>
     </view>
+    -->
     <view class="weui-cell weui-cell_input">
         <view class="weui-cell__hd">
             <view class="weui-label">工作</view>

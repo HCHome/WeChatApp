@@ -4,6 +4,20 @@ avatar-view {
     left: 0;
 }
 
+button::after{
+    border: none;
+}
+
+.auth-setting {
+    display: inline;
+    color: gray;
+    font-size: 13px;
+    text-decoration: underline;
+    height: 13px;
+    padding: 0;
+    background: transparent;
+}
+
 #gender_img {
     width: 13px;
     height: 13px;

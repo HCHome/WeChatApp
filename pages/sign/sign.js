@@ -43,7 +43,7 @@ Page({
             btnDisabled: btnDisabled
         });
         else this.setData({
-            letter: currentUser.data.letter,
+            letter: currentUser.data.nickname[currentUser.data.nickname.length - 1],
             signScore: currentUser.data.signScore,
             signButtonShow: currentUser.data.isSign,
             buttonText: buttonText,
@@ -66,7 +66,7 @@ Page({
                 if (res.data.status == 10001) {
                     // 列表
                     res.data.data.scoreRankList.forEach(item => {
-                        if (!item.avatar) item.letter = item.nickname[item.nickname.length - 1];
+                        item.letter = item.nickname[item.nickname.length - 1];
                     });
                     // 当前用户排名
                     currentUser.data.signScore = res.data.data.userScoreRank.signScore;

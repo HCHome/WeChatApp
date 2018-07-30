@@ -12,7 +12,8 @@ Page({
         avatar: '',
         nickName: '',
         gender_img: '',
-        unReadCount: 0
+        unReadCount: 0,
+        showAuth: false
     },
 
     /**
@@ -33,7 +34,8 @@ Page({
             avatar     : currentUser.data.avatar,
             nickName   : currentUser.data.nickname,
             gender_img : gender_img,
-            unReadCount: currentUser.data.unReadCount
+            unReadCount: currentUser.data.unReadCount,
+            showAuth   : !currentUser.data.avatar
         });
     },
 
@@ -42,6 +44,22 @@ Page({
      */
     onReady: function() {
         this.getUserInfo();
+    },
+
+    /**
+     * 打开授权设置页面
+     */
+    onOpenSetting: function(e) {
+        console.log(e.detail.authSetting)
+        if (e.detail.authSetting["scope.userInfo"]) {
+            this.setData({
+                showAuth: false
+            });
+            wx.showToast({
+                title: "下次登录刷新头像",
+                duration: 2000
+            });
+        }
     },
 
     /**

@@ -42,6 +42,7 @@
     </block>
 </view>
 
+<!--
 <view class="filter">
     <text class="filter-title">是否单身</text>
     <block wx:for="{{singleArr}}" wx:key="*this.val">
@@ -49,7 +50,7 @@
             {{item.val}}
         </button>
     </block>
-</view>
+</view> -->
 
 <!-- 结果 -->
 <view wx:if="{{isLoading}}" class="weui-loadmore loading_tip">

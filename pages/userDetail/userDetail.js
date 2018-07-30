@@ -61,7 +61,7 @@ Page({
                     infos.push({ key: "学校",     value: user.school      });
                     infos.push({ key: "年级",     value: user.term        });
                     infos.push({ key: "专业",     value: user.profession  });
-                    infos.push({ key: "是否单身", value: user.isSingleDog == null ? "" : (user.isSingleDog ? "是" : "否") });
+                    // infos.push({ key: "是否单身", value: user.isSingleDog == null ? "" : (user.isSingleDog ? "是" : "否") });
                     infos.push({ key: "工作",     value: user.job         });
                     infos.push({ key: "联系方式", value: user.phoneNumber });
                     infos.push({ key: "QQ号码",   value: user.qqNumber    });

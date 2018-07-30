@@ -1,6 +1,7 @@
 /**
  * 和用户相关的所有网络操作，包括
  * 1.登录操作：微信登录、用户信息获取、海潮登录、海潮注册、留言申请
+ * 1.1 用户微信信息(头像)变更
  * 2.用户搜索、搜索结果处理与筛选
  * 3.用户签到、签到排名
  * 4.用户信息获取与修改
@@ -29,11 +30,7 @@ var _net4User = {
         var that = this;
         this.login_wx({
             success: res => {
-                // 获取头像，无论成败，都进行hc登录
-                that.getWxInfo({
-                    success: function() { that.login_hc(Object); },
-                    fail: function() { that.login_hc(Object); }
-                });
+                that.login_hc(Object);
             },
             fail: () => {
                 if (Object && Object.success && typeof(Object.success) == 'function')
@@ -63,20 +60,12 @@ var _net4User = {
     },
 
     /**
-     * 获取用户的微信信息
-     * @param  {function} success 成功拿到信息的回调函数
-     * @param  {function} fail    未能拿到信息的回调函数
+     * 1.1 用户微信信息(头像)变更
+     * @param {string} avatarUrl 微信头像信息
      * @return {null}
      */
-    getWxInfo: function(Object) {
-        var that = this;
-        wx.getUserInfo({
-            success: res => {
-                that.loginData.avatar = res.userInfo.avatarUrl;
-                Object.success(res);
-            },
-            fail: () => { Object.fail(); }
-        })
+    setAvatar: function(avatarUrl) {
+        this.loginData.avatar = avatarUrl;
     },
 
     /**

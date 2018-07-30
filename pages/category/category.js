@@ -7,6 +7,7 @@ Page({
      * 页面的初始数据
      */
     data: {
+        category: null,
         postLists: [],
         tip: '加载更多'
     },
@@ -23,7 +24,7 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        this._data.category = options.category;
+        this.setData({ category: options.category });
         wx.setNavigationBarTitle({ title: options.category });
     },
 
@@ -86,7 +87,7 @@ Page({
     renewPosts: function () {
         var that = this;
         net4Post.getPosts({
-            category: that._data.category,
+            category: that.data.category,
             success: res => {
                 if (res.status == 10001) {
                     var posts = that.data.postLists;
@@ -113,7 +114,7 @@ Page({
     getMorePosts: function () {
         var that = this;
         net4Post.getPosts({
-            category: that._data.category,
+            category: that.data.category,
             lastPostId: that.data.posts.length == 0 ? 0 : that.data.posts[that.data.posts.length - 1].postId,
             success: res => {
                 if (res.status == 10001) {
